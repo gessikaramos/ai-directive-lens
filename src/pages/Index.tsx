@@ -16,8 +16,7 @@ const Index = () => {
         <HeroSection />
         <StatementSection />
         <SkillsSection />
-        {/* BLOCK 4 — Selected Work / Cases (Phase 3) */}
-        <div id="cases" />
+        <CasesSection />
         <AboutSection />
         <ContactSection />
       </main>

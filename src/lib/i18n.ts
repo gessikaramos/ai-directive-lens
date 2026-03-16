@@ -48,6 +48,17 @@ export const translations: Record<string, Record<Lang, string>> = {
   'contact.send': { en: 'Send Message', pt: 'Enviar Mensagem' },
   'contact.sent': { en: 'Message sent! I\'ll get back to you soon.', pt: 'Mensagem enviada! Retornarei em breve.' },
 
+  // Cases
+  'cases.label': { en: 'SELECTED WORK', pt: 'TRABALHOS SELECIONADOS' },
+  'cases.pietra.label': { en: 'CASE STUDY', pt: 'ESTUDO DE CASO' },
+  'cases.pietra.tagline': { en: 'AI-Directed Luxury Fashion Campaign', pt: 'Campanha de Moda de Luxo Dirigida por IA' },
+  'cases.pietra.intro': {
+    en: 'PIETRA is a luxury fashion campaign built entirely through AI creative direction — from character casting to final editorial. Two original AI models, Hollis and Kris, were designed with stable visual DNA and directed across 24 images, 2 videos, and 10 distinct looks.',
+    pt: 'PIETRA é uma campanha de moda de luxo construída inteiramente através de direção criativa com IA — do casting de personagens ao editorial final. Duas modelos originais de IA, Hollis e Kris, foram desenhadas com DNA visual estável e dirigidas em 24 imagens, 2 vídeos e 10 looks distintos.',
+  },
+  'cases.pietra.casting': { en: 'AI MODEL CASTING', pt: 'CASTING DE MODELOS IA' },
+  'cases.pietra.cta': { en: 'Discuss a Campaign', pt: 'Discutir uma Campanha' },
+
   // Footer
   'footer.rights': { en: '© 2026 Lola Lab. All rights reserved.', pt: '© 2026 Lola Lab. Todos os direitos reservados.' },
   'footer.credit': { en: 'Design & Direction — Gessika Olivieri', pt: 'Design & Direção — Gessika Olivieri' },
