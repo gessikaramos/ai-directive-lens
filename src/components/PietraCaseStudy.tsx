@@ -224,7 +224,7 @@ const PietraCaseStudy = () => {
       </div>
 
       {/* 10. Creative Pipeline */}
-      <div className="px-6 md:px-12 lg:px-20">
+      <div data-anim="case-reveal" className="px-6 md:px-12 lg:px-20">
         <SectionLabel>CREATIVE PIPELINE</SectionLabel>
         <div className="flex flex-col md:flex-row md:divide-x divide-border">
           {pipelineSteps.map((step) => (
