@@ -31,7 +31,7 @@ const skills: SkillCard[] = [
     label: 'AI Character Design',
     titleKey: 'skill.character.title',
     tagline: 'Consistent characters across scenes and styles.',
-    thumbnail: '/images/hollis/casting/hollis-frente.jpg',
+    thumbnail: '/images/kris/casting/kris-closeup.jpg',
     category: ['character'],
   },
   {
@@ -39,7 +39,7 @@ const skills: SkillCard[] = [
     label: 'AI Fashion Direction',
     titleKey: 'skill.fashion.title',
     tagline: 'Fashion editorials created through AI direction.',
-    thumbnail: '/images/hollis/campaign/campaign-01.jpg',
+    thumbnail: '/images/hollis/campaign/campaign-06.jpg',
     category: ['fashion'],
   },
   {
@@ -47,7 +47,7 @@ const skills: SkillCard[] = [
     label: 'Costume & Styling',
     titleKey: 'skill.costume.title',
     tagline: 'Wardrobe and styling direction for AI cinema.',
-    thumbnail: '/images/hollis/look1/look1-01.jpg',
+    thumbnail: '/images/kris/still/kris-still-04.jpg',
     category: ['fashion'],
   },
   {
@@ -195,6 +195,18 @@ const SkillsSection = () => {
           </div>
         ))}
       </div>
+
+      {/* View All button */}
+      {activeFilter !== 'all' && (
+        <div className="flex justify-center mt-10">
+          <button
+            onClick={() => setActiveFilter('all')}
+            className="label-style border-b border-foreground/30 pb-1 hover:border-foreground transition-colors duration-300"
+          >
+            View All Skills
+          </button>
+        </div>
+      )}
 
       {/* Modal */}
       {openSkill && ModalContentComponent && (

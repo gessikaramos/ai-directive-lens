@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import AudioPlayer from './AudioPlayer';
+import Lightbox from './Lightbox';
 
 /* ─── CTA buttons ─── */
 function ModalCTA() {
@@ -26,10 +28,37 @@ function SectionLabel({ children }: { children: string }) {
   return <h4 className="label-style mb-4 mt-10">{children}</h4>;
 }
 
+/* ─── Reusable gallery ─── */
+interface ModalGalleryProps {
+  images: string[];
+  title: string;
+  onOpen: (src: string) => void;
+}
+
+const ModalGallery = ({ images, title, onOpen }: ModalGalleryProps) => (
+  <div className="mt-10">
+    <h4 className="label-style mb-4">{title}</h4>
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+      {images.map((src) => (
+        <div key={src} className="overflow-hidden cursor-pointer" onClick={() => onOpen(src)}>
+          <img
+            src={src}
+            alt=""
+            loading="lazy"
+            className="w-full aspect-[3/4] object-cover object-top transition-transform duration-500 hover:scale-[1.03]"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
 /* ════════════════════════════════════════════════
    1. AI Character Design
    ════════════════════════════════════════════════ */
 export function CharacterContent() {
+  const [lightbox, setLightbox] = useState<string | null>(null);
+
   return (
     <div>
       <p className="label-style mb-2">AI Character Design</p>
@@ -57,7 +86,33 @@ export function CharacterContent() {
         <li>• Casting sheets and model cards for production teams</li>
       </ul>
 
+      <ModalGallery
+        title="CHARACTER GALLERY"
+        images={[
+          '/images/kris/casting/kris-closeup.jpg',
+          '/images/kris/casting/kris-frente.jpg',
+          '/images/kris/casting/kris-costas.jpg',
+          '/images/kris/casting/kris-perfil.jpg',
+          '/images/kris/casting/kris-34.jpg',
+        ]}
+        onOpen={setLightbox}
+      />
+
+      <SectionLabel>360° Turnaround</SectionLabel>
+      <div className="mt-4">
+        <video
+          src="/videos/kris-360.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full max-w-2xl aspect-video object-cover"
+        />
+      </div>
+
       <ModalCTA />
+
+      {lightbox && <Lightbox src={lightbox} onClose={() => setLightbox(null)} />}
     </div>
   );
 }
@@ -66,6 +121,8 @@ export function CharacterContent() {
    2. AI Fashion Direction
    ════════════════════════════════════════════════ */
 export function FashionContent() {
+  const [lightbox, setLightbox] = useState<string | null>(null);
+
   return (
     <div>
       <p className="label-style mb-2">AI Fashion Direction</p>
@@ -90,7 +147,22 @@ export function FashionContent() {
         <li>• Art direction for brand campaigns</li>
       </ul>
 
+      <ModalGallery
+        title="EDITORIAL GALLERY"
+        images={[
+          '/images/hollis/campaign/campaign-06.jpg',
+          '/images/hollis/campaign/campaign-01.jpg',
+          '/images/hollis/campaign/campaign-02.jpg',
+          '/images/hollis/campaign/campaign-03.jpg',
+          '/images/hollis/campaign/campaign-04.jpg',
+          '/images/hollis/campaign/campaign-05.jpg',
+        ]}
+        onOpen={setLightbox}
+      />
+
       <ModalCTA />
+
+      {lightbox && <Lightbox src={lightbox} onClose={() => setLightbox(null)} />}
     </div>
   );
 }
@@ -99,6 +171,8 @@ export function FashionContent() {
    3. Costume & Styling
    ════════════════════════════════════════════════ */
 export function CostumeContent() {
+  const [lightbox, setLightbox] = useState<string | null>(null);
+
   return (
     <div>
       <p className="label-style mb-2">Costume & Styling</p>
@@ -123,7 +197,20 @@ export function CostumeContent() {
         <li>• Seasonal collection development</li>
       </ul>
 
+      <ModalGallery
+        title="STYLING GALLERY"
+        images={[
+          '/images/kris/still/kris-still-04.jpg',
+          '/images/kris/still/kris-still-01.jpg',
+          '/images/kris/still/kris-still-02.jpg',
+          '/images/kris/still/kris-still-03.jpg',
+        ]}
+        onOpen={setLightbox}
+      />
+
       <ModalCTA />
+
+      {lightbox && <Lightbox src={lightbox} onClose={() => setLightbox(null)} />}
     </div>
   );
 }
@@ -156,6 +243,26 @@ export function VideoContent() {
         <li>• 360° character turnarounds</li>
         <li>• Color-graded final deliverables</li>
       </ul>
+
+      <SectionLabel>Video Showcase</SectionLabel>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <video
+          src="/videos/bloom-final.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full aspect-video object-cover"
+        />
+        <video
+          src="/videos/bewe-shearling.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full aspect-video object-cover"
+        />
+      </div>
 
       <ModalCTA />
     </div>
