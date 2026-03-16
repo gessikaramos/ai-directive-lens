@@ -80,6 +80,7 @@ const PietraCaseStudy = () => {
     <div className="space-y-24 md:space-y-32">
       {/* 1. Fullscreen Hero */}
       <div
+        data-anim="pietra-hero"
         className="relative min-h-[80vh] flex items-center justify-center bg-cover bg-center"
         style={{ backgroundImage: 'url(/images/hollis/campaign/campaign-bottega.jpg)' }}
       >
