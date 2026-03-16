@@ -196,7 +196,7 @@ const PietraCaseStudy = () => {
       </div>
 
       {/* 9. 360° Turnaround */}
-      <div className="px-6 md:px-12 lg:px-20">
+      <div data-anim="case-reveal" className="px-6 md:px-12 lg:px-20">
         <SectionLabel>360° TURNAROUND</SectionLabel>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
