@@ -138,17 +138,17 @@ const SkillsSection = () => {
       {/* Sub-nav */}
       <div
         ref={navRef}
-        className="sticky top-16 z-40 bg-background/90 backdrop-blur-sm py-4 mb-12 border-b border-border overflow-x-auto"
+        className="sticky top-16 z-40 bg-background/95 backdrop-blur-md py-3 mb-10 overflow-x-auto"
       >
-        <div className="flex gap-6">
+        <div className="flex gap-5">
           {filters.map((f) => (
             <button
               key={f.key}
               onClick={() => setActiveFilter(activeFilter === f.key ? 'all' : f.key)}
-              className={`label-style whitespace-nowrap transition-colors duration-300 pb-2 border-b-2 ${
+              className={`label-style whitespace-nowrap transition-all duration-300 px-3 py-1.5 ${
                 activeFilter === f.key
-                  ? 'border-foreground !text-foreground'
-                  : 'border-transparent hover:text-foreground/60'
+                  ? 'text-foreground border border-foreground/30'
+                  : 'text-dim border border-transparent hover:text-foreground/60'
               }`}
             >
               {f.label}
