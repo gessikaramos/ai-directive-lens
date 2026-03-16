@@ -96,4 +96,13 @@
   .section-spacing {
     @apply py-24 md:py-36 lg:py-48;
   }
+
+  @keyframes subtle-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  .animate-subtle-bounce {
+    animation: subtle-bounce 2s ease-in-out infinite;
+  }
 }
