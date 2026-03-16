@@ -20,7 +20,7 @@ export default function ContactSection() {
 
   return (
     <section id="contact" className="section-spacing px-6 md:px-10 bg-background">
-      <div className="max-w-[700px] mx-auto">
+      <div data-anim="contact" className="max-w-[700px] mx-auto">
         <h2 className="text-3xl md:text-5xl font-light tracking-tight text-foreground mb-4">
           {t('contact.headline', lang)}
         </h2>

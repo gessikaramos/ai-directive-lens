@@ -163,6 +163,7 @@ const SkillsSection = () => {
         {filtered.map((skill) => (
           <div
             key={skill.slug}
+            data-anim="skill-card"
             onClick={() => setOpenSkill(skill.slug)}
             className="group cursor-pointer relative overflow-hidden aspect-[3/4] flex flex-col justify-end bg-card border border-border hover:border-foreground/20 transition-all duration-500"
           >

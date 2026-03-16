@@ -228,7 +228,7 @@ const PietraCaseStudy = () => {
         <SectionLabel>CREATIVE PIPELINE</SectionLabel>
         <div className="flex flex-col md:flex-row md:divide-x divide-border">
           {pipelineSteps.map((step) => (
-            <div key={step.num} className="flex-1 py-6 md:py-0 md:px-6 first:md:pl-0 last:md:pr-0 border-b md:border-b-0 border-border last:border-b-0">
+            <div key={step.num} data-anim="pipeline-step" className="flex-1 py-6 md:py-0 md:px-6 first:md:pl-0 last:md:pr-0 border-b md:border-b-0 border-border last:border-b-0">
               <p className="text-foreground font-semibold text-sm mb-1">
                 <span className="text-dim mr-2">{step.num}</span>
                 {step.title}

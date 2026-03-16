@@ -6,7 +6,7 @@ export default function AboutSection() {
 
   return (
     <section id="about" className="section-spacing px-6 md:px-10 bg-background">
-      <div className="max-w-[900px] mx-auto">
+      <div data-anim="about" className="max-w-[900px] mx-auto">
         <span className="label-style block mb-10">{t('about.label', lang)}</span>
 
         <h2 className="text-3xl md:text-5xl font-light tracking-tight text-foreground mb-10">
