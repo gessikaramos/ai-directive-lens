@@ -156,7 +156,7 @@ const PietraCaseStudy = () => {
       </div>
 
       {/* 5. Hollis — Look 1 (Bottega) */}
-      <div className="px-6 md:px-12 lg:px-20">
+      <div data-anim="case-reveal" className="px-6 md:px-12 lg:px-20">
         <SectionLabel>HOLLIS — LOOK 1 (BOTTEGA)</SectionLabel>
         <ImageGrid
           images={look1Images}
