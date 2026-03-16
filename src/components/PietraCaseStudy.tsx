@@ -117,7 +117,7 @@ const PietraCaseStudy = () => {
       </div>
 
       {/* 3. AI Model Casting */}
-      <div className="px-6 md:px-12 lg:px-20">
+      <div data-anim="case-reveal" className="px-6 md:px-12 lg:px-20">
         <SectionLabel>{t('cases.pietra.casting', lang)}</SectionLabel>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
