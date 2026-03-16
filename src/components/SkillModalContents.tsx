@@ -53,11 +53,41 @@ const ModalGallery = ({ images, title, onOpen }: ModalGalleryProps) => (
   </div>
 );
 
+/* ─── Clickable video thumbnail ─── */
+interface VideoThumbnailProps {
+  src: string;
+  onOpen: (src: string) => void;
+  className?: string;
+}
+
+const VideoThumbnail = ({ src, onOpen, className = '' }: VideoThumbnailProps) => (
+  <div
+    className={`relative cursor-pointer group ${className}`}
+    onClick={() => onOpen(src)}
+  >
+    <video
+      src={src}
+      autoPlay
+      muted
+      loop
+      playsInline
+      className="w-full aspect-video object-cover"
+    />
+    <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-colors duration-300">
+      <div className="w-14 h-14 rounded-full bg-black/50 flex items-center justify-center opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+        <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </div>
+    </div>
+  </div>
+);
+
 /* ════════════════════════════════════════════════
    1. AI Character Design
    ════════════════════════════════════════════════ */
 export function CharacterContent() {
-  const [lightbox, setLightbox] = useState<string | null>(null);
+  const [lightbox, setLightbox] = useState<string | { src: string; type: 'video' } | null>(null);
 
   return (
     <div>
@@ -95,24 +125,23 @@ export function CharacterContent() {
           '/images/kris/casting/kris-perfil.jpg',
           '/images/kris/casting/kris-34.jpg',
         ]}
-        onOpen={setLightbox}
+        onOpen={(src) => setLightbox(src)}
       />
 
       <SectionLabel>360° Turnaround</SectionLabel>
-      <div className="mt-4">
-        <video
-          src="/videos/kris-360.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full max-w-2xl aspect-video object-cover"
-        />
+      <div className="mt-4 max-w-2xl">
+        <VideoThumbnail src="/videos/kris-360.mp4" onOpen={(src) => setLightbox({ src, type: 'video' })} />
       </div>
 
       <ModalCTA />
 
-      {lightbox && <Lightbox src={lightbox} onClose={() => setLightbox(null)} />}
+      {lightbox && (
+        <Lightbox
+          src={typeof lightbox === 'string' ? lightbox : lightbox.src}
+          type={typeof lightbox === 'string' ? 'image' : lightbox.type}
+          onClose={() => setLightbox(null)}
+        />
+      )}
     </div>
   );
 }
@@ -219,6 +248,8 @@ export function CostumeContent() {
    4. Video Production
    ════════════════════════════════════════════════ */
 export function VideoContent() {
+  const [lightbox, setLightbox] = useState<string | null>(null);
+
   return (
     <div>
       <p className="label-style mb-2">Video Production</p>
@@ -246,25 +277,13 @@ export function VideoContent() {
 
       <SectionLabel>Video Showcase</SectionLabel>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        <video
-          src="/videos/bloom-final.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full aspect-video object-cover"
-        />
-        <video
-          src="/videos/bewe-shearling.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full aspect-video object-cover"
-        />
+        <VideoThumbnail src="/videos/bloom-final.mp4" onOpen={setLightbox} />
+        <VideoThumbnail src="/videos/bewe-shearling.mp4" onOpen={setLightbox} />
       </div>
 
       <ModalCTA />
+
+      {lightbox && <Lightbox src={lightbox} type="video" onClose={() => setLightbox(null)} />}
     </div>
   );
 }
