@@ -47,7 +47,7 @@ const skills: SkillCard[] = [
     label: 'Costume & Styling',
     titleKey: 'skill.costume.title',
     tagline: 'Wardrobe and styling direction for AI cinema.',
-    thumbnail: '/images/hollis/look1/look1-01.jpg',
+    thumbnail: '/images/kris/still/kris-still-04.jpg',
     category: ['fashion'],
   },
   {
