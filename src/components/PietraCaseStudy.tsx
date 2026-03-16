@@ -243,7 +243,7 @@ const PietraCaseStudy = () => {
       <div className="px-6 md:px-12 lg:px-20 text-center">
         <a
           href="#contact"
-          className="inline-block text-foreground label-style border-b border-foreground/30 pb-1 hover:border-foreground transition-colors duration-300"
+          className="inline-block text-foreground label-style border-b border-foreground/30 pb-1 hover:border-foreground underline-offset-4 transition-colors duration-300"
         >
           {t('cases.pietra.cta', lang)} →
         </a>

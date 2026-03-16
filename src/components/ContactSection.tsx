@@ -52,7 +52,7 @@ export default function ContactSection() {
             />
             <button
               type="submit"
-              className="label-style border border-foreground/30 px-8 py-3 hover:bg-foreground hover:text-background transition-all duration-500 tracking-[0.2em]"
+              className="label-style border border-foreground/30 px-8 py-3 hover:bg-foreground hover:text-background transition-all duration-500 tracking-[0.2em] hover:scale-[1.02] active:scale-[0.98]"
             >
               {t('contact.send', lang)}
             </button>
