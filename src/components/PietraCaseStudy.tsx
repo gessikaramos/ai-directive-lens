@@ -95,7 +95,7 @@ const PietraCaseStudy = () => {
       </div>
 
       {/* 2. Intro + Metadata */}
-      <div className="px-6 md:px-12 lg:px-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+      <div data-anim="case-reveal" className="px-6 md:px-12 lg:px-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         <div>
           <p className="text-foreground text-lg md:text-xl leading-relaxed">
             {t('cases.pietra.intro', lang)}
