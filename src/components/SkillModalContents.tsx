@@ -45,7 +45,7 @@ const ModalGallery = ({ images, title, onOpen }: ModalGalleryProps) => (
             src={src}
             alt=""
             loading="lazy"
-            className="w-full aspect-[3/4] object-cover object-top transition-transform duration-500 hover:scale-[1.03]"
+            className="w-full aspect-[9/16] object-cover object-top transition-transform duration-500 hover:scale-[1.03]"
           />
         </div>
       ))}
