@@ -62,9 +62,10 @@ export function useScrollAnimations() {
           duration: 0.8,
           stagger: 0.1,
           ease: 'power3.out',
+          immediateRender: false,
           scrollTrigger: {
-            trigger: skillCards[0],
-            start: 'top 85%',
+            trigger: skillCards[0].parentElement,
+            start: 'top 90%',
             toggleActions: 'play none none reverse',
           },
         });
@@ -182,6 +183,9 @@ export function useScrollAnimations() {
           },
         });
       });
+
+      // Refresh after layout settles (needed for Lenis sync)
+      ScrollTrigger.refresh();
     });
 
     return () => ctx.revert();
