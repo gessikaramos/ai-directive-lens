@@ -43,7 +43,7 @@ export default function Navbar() {
               <a
                 key={link.key}
                 href={link.href}
-                className="label-style hover:text-foreground transition-colors duration-300"
+                className="label-style underline-offset-4 hover:underline hover:text-foreground transition-all duration-300"
               >
                 {t(link.key, lang)}
               </a>
