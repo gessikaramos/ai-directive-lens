@@ -138,7 +138,7 @@ const SkillsSection = () => {
       {/* Sub-nav */}
       <div
         ref={navRef}
-        className="sticky top-16 z-40 bg-background/95 backdrop-blur-md py-3 mb-10 overflow-x-auto"
+        className="sticky top-14 z-40 bg-background py-4 mb-10 overflow-x-auto -mx-6 px-6 md:-mx-12 md:px-12 lg:-mx-20 lg:px-20 shadow-[0_8px_16px_8px_hsl(var(--background))]"
       >
         <div className="flex gap-5">
           {filters.map((f) => (
