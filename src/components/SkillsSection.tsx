@@ -39,7 +39,7 @@ const skills: SkillCard[] = [
     label: 'AI Fashion Direction',
     titleKey: 'skill.fashion.title',
     tagline: 'Fashion editorials created through AI direction.',
-    thumbnail: '/images/hollis/campaign/campaign-01.jpg',
+    thumbnail: '/images/hollis/campaign/campaign-06.jpg',
     category: ['fashion'],
   },
   {
