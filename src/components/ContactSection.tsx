@@ -62,7 +62,7 @@ export default function ContactSection() {
         {/* Email */}
         <a
           href="mailto:hello@lolalabstudio.com"
-          className="block mt-14 text-soft hover:text-foreground transition-colors duration-300 font-light"
+          className="block mt-14 text-soft hover:text-foreground underline-offset-4 hover:underline transition-colors duration-300 font-light"
         >
           hello@lolalabstudio.com
         </a>
