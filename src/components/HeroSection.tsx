@@ -33,8 +33,8 @@ export default function HeroSection() {
 
       {/* Scroll indicator */}
       <div data-anim="scroll-indicator" className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
-        <span className="label-style">{t('hero.scroll', lang)}</span>
-        <div className="w-px h-8 bg-foreground/20 animate-pulse" />
+        <span className="label-style animate-subtle-bounce">{t('hero.scroll', lang)}</span>
+        <div className="w-px h-8 bg-foreground/20" />
       </div>
     </section>
   );

@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
+import { useLanguage } from '@/hooks/use-language';
+import { t } from '@/lib/i18n';
 import SkillModal from './SkillModal';
 import {
   CharacterContent,
@@ -16,7 +18,7 @@ type SkillCategory = 'all' | 'character' | 'fashion' | 'video' | 'more';
 interface SkillCard {
   slug: string;
   label: string;
-  title: string;
+  titleKey: string;
   tagline: string;
   thumbnail: string | null;
   category: SkillCategory[];
@@ -27,7 +29,7 @@ const skills: SkillCard[] = [
   {
     slug: 'character',
     label: 'AI Character Design',
-    title: 'Characters With Memory',
+    titleKey: 'skill.character.title',
     tagline: 'Consistent characters across scenes and styles.',
     thumbnail: '/images/hollis/casting/hollis-frente.jpg',
     category: ['character'],
@@ -35,7 +37,7 @@ const skills: SkillCard[] = [
   {
     slug: 'fashion',
     label: 'AI Fashion Direction',
-    title: 'Editorial Without Cameras',
+    titleKey: 'skill.fashion.title',
     tagline: 'Fashion editorials created through AI direction.',
     thumbnail: '/images/hollis/campaign/campaign-01.jpg',
     category: ['fashion'],
@@ -43,7 +45,7 @@ const skills: SkillCard[] = [
   {
     slug: 'costume',
     label: 'Costume & Styling',
-    title: "Dressing What Doesn't Exist",
+    titleKey: 'skill.costume.title',
     tagline: 'Wardrobe and styling direction for AI cinema.',
     thumbnail: '/images/hollis/look1/look1-01.jpg',
     category: ['fashion'],
@@ -51,7 +53,7 @@ const skills: SkillCard[] = [
   {
     slug: 'video',
     label: 'Video Production',
-    title: 'Motion With Intention',
+    titleKey: 'skill.video.title',
     tagline: 'Cinematic AI video from frame to motion.',
     thumbnail: null,
     category: ['video'],
@@ -60,7 +62,7 @@ const skills: SkillCard[] = [
   {
     slug: 'copywriting',
     label: 'Copywriting',
-    title: 'Words That Frame Worlds',
+    titleKey: 'skill.copywriting.title',
     tagline: 'Manifestos, scripts, and narrative direction.',
     thumbnail: null,
     category: ['more'],
@@ -69,7 +71,7 @@ const skills: SkillCard[] = [
   {
     slug: 'technology',
     label: 'Technology',
-    title: 'Built To Think',
+    titleKey: 'skill.technology.title',
     tagline: 'AI tools designed from concept to UX.',
     thumbnail: null,
     category: ['more'],
@@ -78,7 +80,7 @@ const skills: SkillCard[] = [
   {
     slug: 'soundtrack',
     label: 'Soundtrack',
-    title: 'Sound Shapes Emotion',
+    titleKey: 'skill.soundtrack.title',
     tagline: 'Original music for cinematic storytelling.',
     thumbnail: null,
     category: ['more'],
@@ -87,7 +89,7 @@ const skills: SkillCard[] = [
   {
     slug: 'voice',
     label: 'Voice Design',
-    title: 'Cloned Voice, Authored Tone',
+    titleKey: 'skill.voice.title',
     tagline: 'Cinematic narration with cloned voice models.',
     thumbnail: null,
     category: ['more'],
@@ -114,6 +116,7 @@ const modalContent: Record<string, React.FC> = {
 };
 
 const SkillsSection = () => {
+  const { lang } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<SkillCategory>('all');
   const [openSkill, setOpenSkill] = useState<string | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
@@ -186,7 +189,7 @@ const SkillsSection = () => {
             {/* Text */}
             <div className="relative z-10 p-5">
               <p className="label-style mb-1">{skill.label}</p>
-              <h3 className="text-lg font-semibold text-foreground mb-1">{skill.title}</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-1">{t(skill.titleKey, lang)}</h3>
               <p className="text-soft text-xs leading-relaxed">{skill.tagline}</p>
             </div>
           </div>
@@ -200,7 +203,6 @@ const SkillsSection = () => {
           skillSlug={openSkill}
           onClose={() => {
             setOpenSkill(null);
-            // Clean up hash
             if (window.location.hash.startsWith('#skill/')) {
               window.history.pushState(null, '', '#work');
             }

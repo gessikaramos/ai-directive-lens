@@ -1,72 +1,4 @@
-import { useState } from 'react';
-import Lightbox from './Lightbox';
 import AudioPlayer from './AudioPlayer';
-
-/* ─── helper: clickable image grid ─── */
-function ImageGrid({
-  images,
-  cols = 3,
-}: {
-  images: { src: string; alt: string }[];
-  cols?: number;
-}) {
-  const [lb, setLb] = useState<string | null>(null);
-  const colClass =
-    cols === 5
-      ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-5'
-      : cols === 4
-      ? 'grid-cols-2 md:grid-cols-4'
-      : cols === 3
-      ? 'grid-cols-2 md:grid-cols-3'
-      : 'grid-cols-1 sm:grid-cols-2';
-
-  return (
-    <>
-      <div className={`grid ${colClass} gap-2`}>
-        {images.map((img) => (
-          <img
-            key={img.src}
-            src={img.src}
-            alt={img.alt}
-            loading="lazy"
-            className="w-full aspect-[2/3] object-cover object-top cursor-pointer hover:scale-[1.03] transition-transform duration-300"
-            onClick={() => setLb(img.src)}
-          />
-        ))}
-      </div>
-      {lb && <Lightbox src={lb} alt="" onClose={() => setLb(null)} />}
-    </>
-  );
-}
-
-/* ─── helper: video grid ─── */
-function VideoGrid({
-  videos,
-}: {
-  videos: { src: string; label: string }[];
-}) {
-  const [lb, setLb] = useState<string | null>(null);
-  return (
-    <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {videos.map((v) => (
-          <div key={v.src} className="cursor-pointer" onClick={() => setLb(v.src)}>
-            <video
-              src={v.src}
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="w-full aspect-video object-cover hover:scale-[1.02] transition-transform duration-300"
-            />
-            <p className="label-style mt-2">{v.label}</p>
-          </div>
-        ))}
-      </div>
-      {lb && <Lightbox src={lb} type="video" onClose={() => setLb(null)} />}
-    </>
-  );
-}
 
 /* ─── CTA buttons ─── */
 function ModalCTA() {
@@ -98,13 +30,6 @@ function SectionLabel({ children }: { children: string }) {
    1. AI Character Design
    ════════════════════════════════════════════════ */
 export function CharacterContent() {
-  const hollisCasting = [
-    'hollis-frente', 'hollis-costas', 'hollis-perfil', 'hollis-closeup', 'hollis-34',
-  ].map((n) => ({ src: `/images/hollis/casting/${n}.jpg`, alt: n }));
-  const krisCasting = [
-    'kris-frente', 'kris-costas', 'kris-perfil', 'kris-closeup', 'kris-34',
-  ].map((n) => ({ src: `/images/kris/casting/${n}.jpg`, alt: n }));
-
   return (
     <div>
       <p className="label-style mb-2">AI Character Design</p>
@@ -115,19 +40,22 @@ export function CharacterContent() {
         across an entire narrative.
       </p>
 
-      <SectionLabel>AI Casting — Hollis</SectionLabel>
-      <ImageGrid images={hollisCasting} cols={5} />
+      <SectionLabel>Process</SectionLabel>
+      <p className="text-soft max-w-2xl leading-relaxed">
+        Each character begins with a detailed character bible — defining facial structure, skin tone,
+        hair texture, body proportions, and personality traits. Through iterative prompt refinement
+        in Midjourney and Nano Banana, visual consistency is locked across poses, lighting conditions,
+        and wardrobe changes.
+      </p>
 
-      <SectionLabel>AI Casting — Kris</SectionLabel>
-      <ImageGrid images={krisCasting} cols={5} />
-
-      <SectionLabel>360° Turnaround</SectionLabel>
-      <VideoGrid
-        videos={[
-          { src: '/videos/hollis-360.mp4', label: 'Hollis — 360°' },
-          { src: '/videos/kris-360.mp4', label: 'Kris — 360°' },
-        ]}
-      />
+      <SectionLabel>Capabilities</SectionLabel>
+      <ul className="space-y-2 text-soft text-sm leading-relaxed max-w-2xl">
+        <li>• Character bible creation with visual DNA documentation</li>
+        <li>• Multi-angle consistency (front, profile, 3/4, close-up)</li>
+        <li>• Cross-scene identity preservation</li>
+        <li>• 360° turnaround generation for animation pipelines</li>
+        <li>• Casting sheets and model cards for production teams</li>
+      </ul>
 
       <ModalCTA />
     </div>
@@ -138,12 +66,6 @@ export function CharacterContent() {
    2. AI Fashion Direction
    ════════════════════════════════════════════════ */
 export function FashionContent() {
-  const campaign = Array.from({ length: 13 }, (_, i) => ({
-    src: `/images/hollis/campaign/campaign-${String(i + 1).padStart(2, '0')}.jpg`,
-    alt: `Campaign ${i + 1}`,
-  }));
-  campaign.push({ src: '/images/hollis/campaign/campaign-bottega.jpg', alt: 'Campaign Bottega' });
-
   return (
     <div>
       <p className="label-style mb-2">AI Fashion Direction</p>
@@ -153,8 +75,20 @@ export function FashionContent() {
         styling, casting, lighting, and composition while preserving the language of real photography.
       </p>
 
-      <SectionLabel>Hollis — Campaign</SectionLabel>
-      <ImageGrid images={campaign} cols={3} />
+      <SectionLabel>Approach</SectionLabel>
+      <p className="text-soft max-w-2xl leading-relaxed">
+        Every editorial begins with a mood board and creative brief — defining references, color palettes,
+        and styling direction. AI generation is treated as a camera: each prompt is a shot list instruction,
+        each refinement is a retake. The result is indistinguishable from a directed photo shoot.
+      </p>
+
+      <SectionLabel>Deliverables</SectionLabel>
+      <ul className="space-y-2 text-soft text-sm leading-relaxed max-w-2xl">
+        <li>• Full editorial campaigns (10–30 images)</li>
+        <li>• Lookbook generation with consistent model identity</li>
+        <li>• E-commerce and social media content packages</li>
+        <li>• Art direction for brand campaigns</li>
+      </ul>
 
       <ModalCTA />
     </div>
@@ -165,15 +99,6 @@ export function FashionContent() {
    3. Costume & Styling
    ════════════════════════════════════════════════ */
 export function CostumeContent() {
-  const look1 = Array.from({ length: 7 }, (_, i) => ({
-    src: `/images/hollis/look1/look1-${String(i + 1).padStart(2, '0')}.jpg`,
-    alt: `Look 1 - ${i + 1}`,
-  }));
-  const krisStills = Array.from({ length: 4 }, (_, i) => ({
-    src: `/images/kris/still/kris-still-${String(i + 1).padStart(2, '0')}.jpg`,
-    alt: `Kris Still ${i + 1}`,
-  }));
-
   return (
     <div>
       <p className="label-style mb-2">Costume & Styling</p>
@@ -183,11 +108,20 @@ export function CostumeContent() {
         Every look is designed to ground digital figures in physical reality.
       </p>
 
-      <SectionLabel>Hollis — Look 1 (Bottega)</SectionLabel>
-      <ImageGrid images={look1} cols={3} />
+      <SectionLabel>Method</SectionLabel>
+      <p className="text-soft max-w-2xl leading-relaxed">
+        Styling direction bridges real fashion knowledge with AI generation. Each look references actual
+        brands, fabrics, and silhouettes — then translates them into prompts that produce believable,
+        editorially compelling wardrobes.
+      </p>
 
-      <SectionLabel>Kris — Stills</SectionLabel>
-      <ImageGrid images={krisStills} cols={2} />
+      <SectionLabel>Scope</SectionLabel>
+      <ul className="space-y-2 text-soft text-sm leading-relaxed max-w-2xl">
+        <li>• Multi-look wardrobe planning per character</li>
+        <li>• Brand-specific styling (luxury, streetwear, editorial)</li>
+        <li>• Fabric and texture direction for realism</li>
+        <li>• Seasonal collection development</li>
+      </ul>
 
       <ModalCTA />
     </div>
@@ -207,13 +141,21 @@ export function VideoContent() {
         Tools include Higgsfield, Kling, Veo, and DaVinci Resolve for professional post-production.
       </p>
 
-      <SectionLabel>Films & Campaigns</SectionLabel>
-      <VideoGrid
-        videos={[
-          { src: '/videos/bloom-final.mp4', label: 'BLOOM — Short Film' },
-          { src: '/videos/bewe-shearling.mp4', label: 'Be We — Shearling Campaign' },
-        ]}
-      />
+      <SectionLabel>Pipeline</SectionLabel>
+      <p className="text-soft max-w-2xl leading-relaxed">
+        Video production starts with keyframe generation — hero images that define the visual language
+        of each shot. These frames are then animated through AI video tools, directed for camera movement,
+        pacing, and emotion. Final grading and editing happen in DaVinci Resolve.
+      </p>
+
+      <SectionLabel>Output Formats</SectionLabel>
+      <ul className="space-y-2 text-soft text-sm leading-relaxed max-w-2xl">
+        <li>• Short films and narrative content</li>
+        <li>• Fashion campaign videos</li>
+        <li>• Social media reels and vertical content</li>
+        <li>• 360° character turnarounds</li>
+        <li>• Color-graded final deliverables</li>
+      </ul>
 
       <ModalCTA />
     </div>

@@ -9,7 +9,7 @@ interface CaseCard {
   video: string;
   title: string;
   subtitle: string;
-  cta: string;
+  ctaKey: string;
 }
 
 const caseCards: CaseCard[] = [
@@ -18,14 +18,14 @@ const caseCards: CaseCard[] = [
     video: '/videos/bloom-final.mp4',
     title: 'BLOOM',
     subtitle: 'AI-Directed Short Film',
-    cta: 'Watch Film',
+    ctaKey: 'cases.bloom.cta',
   },
   {
     slug: 'bewe',
     video: '/videos/bewe-shearling.mp4',
     title: 'Be We',
     subtitle: 'AI Fashion Video Campaign',
-    cta: 'View Campaign',
+    ctaKey: 'cases.bewe.cta',
   },
 ];
 
@@ -48,11 +48,16 @@ const CasesSection = () => {
 
       {/* BLOOM + Be We — Fullscreen Video Cards */}
       {caseCards.map((card) => (
-        <div
+        <a
           key={card.slug}
+          href="#"
+          data-video={card.slug}
+          onClick={(e) => {
+            e.preventDefault();
+            setVideoLightbox(card.video);
+          }}
           data-anim="video-card"
-          className="relative min-h-[70vh] flex items-center justify-center overflow-hidden cursor-pointer group"
-          onClick={() => setVideoLightbox(card.video)}
+          className="relative min-h-[70vh] flex items-center justify-center overflow-hidden cursor-pointer group block"
         >
           <video
             src={card.video}
@@ -70,10 +75,10 @@ const CasesSection = () => {
             </h2>
             <p className="text-soft text-base mb-6">{card.subtitle}</p>
             <span className="label-style border-b border-foreground/30 pb-1 group-hover:border-foreground transition-colors duration-300">
-              {card.cta}
+              {t(card.ctaKey, lang)}
             </span>
           </div>
-        </div>
+        </a>
       ))}
 
       {/* Video Lightbox */}
