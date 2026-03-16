@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
 import SkillModal from './SkillModal';
+/* rebuild trigger */
 import {
   CharacterContent,
   FashionContent,
