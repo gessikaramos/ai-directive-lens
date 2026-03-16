@@ -171,7 +171,7 @@ const SkillsSection = () => {
                 src={skill.thumbnail}
                 alt={skill.label}
                 loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.05]"
+                className="absolute inset-0 w-full h-full object-cover object-top grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-[1.05]"
               />
             ) : (
               <div className="absolute inset-0 bg-card flex items-center justify-center">
@@ -180,13 +180,13 @@ const SkillsSection = () => {
             )}
 
             {/* Overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent" />
 
             {/* Text */}
             <div className="relative z-10 p-5">
-              <p className="label-style mb-1">{skill.label}</p>
-              <h3 className="text-lg font-semibold text-foreground mb-1">{t(skill.titleKey, lang)}</h3>
-              <p className="text-soft text-xs leading-relaxed">{skill.tagline}</p>
+              <h3 className="text-xl font-semibold text-foreground mb-1 leading-tight">{t(skill.titleKey, lang)}</h3>
+              <p className="label-style text-dim text-[10px] mb-1">{skill.label}</p>
+              <p className="text-soft text-xs leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500">{skill.tagline}</p>
             </div>
           </div>
         ))}
@@ -211,9 +211,8 @@ const SkillsSection = () => {
           skillSlug={openSkill}
           onClose={() => {
             setOpenSkill(null);
-            if (window.location.hash.startsWith('#skill/')) {
-              window.history.pushState(null, '', '#work');
-            }
+            // Clear hash to prevent Lenis scroll conflicts
+            window.history.replaceState(null, '', window.location.pathname);
           }}
         >
           <ModalContentComponent />

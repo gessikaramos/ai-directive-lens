@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
+import { getLenis } from '@/hooks/use-lenis';
 import { Menu, X } from 'lucide-react';
 
 export default function Navbar() {
@@ -20,6 +21,22 @@ export default function Navbar() {
     { key: 'nav.contact', href: '#contact' },
   ];
 
+  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (!target) return;
+
+    const lenis = getLenis();
+    if (lenis) {
+      lenis.scrollTo(target as HTMLElement, { offset: -80 });
+    } else {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Clean hash from URL to prevent Lenis conflicts
+    window.history.replaceState(null, '', window.location.pathname);
+  }, []);
+
   return (
     <>
       <nav
@@ -28,7 +45,17 @@ export default function Navbar() {
         }`}
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 flex items-center justify-between">
-          <a href="#" className="block">
+          <a
+            href="#"
+            className="block"
+            onClick={(e) => {
+              e.preventDefault();
+              const lenis = getLenis();
+              if (lenis) lenis.scrollTo(0);
+              else window.scrollTo({ top: 0, behavior: 'smooth' });
+              window.history.replaceState(null, '', window.location.pathname);
+            }}
+          >
             <img
               src="/images/logos/logo-horizontal.svg"
               alt="Lola Lab"
@@ -42,6 +69,7 @@ export default function Navbar() {
               <a
                 key={link.key}
                 href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className="label-style underline-offset-4 hover:underline hover:text-foreground transition-all duration-300"
               >
                 {t(link.key, lang)}
@@ -78,7 +106,7 @@ export default function Navbar() {
             <a
               key={link.key}
               href={link.href}
-              onClick={() => setMobileOpen(false)}
+              onClick={(e) => { handleNavClick(e, link.href); setMobileOpen(false); }}
               className="text-2xl font-light tracking-[0.15em] text-soft underline-offset-4 hover:underline hover:text-foreground transition-all duration-300"
             >
               {t(link.key, lang)}
