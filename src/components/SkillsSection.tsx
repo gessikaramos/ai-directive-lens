@@ -31,7 +31,7 @@ const skills: SkillCard[] = [
     label: 'AI Character Design',
     titleKey: 'skill.character.title',
     tagline: 'Consistent characters across scenes and styles.',
-    thumbnail: '/images/hollis/casting/hollis-frente.jpg',
+    thumbnail: '/images/kris/casting/kris-closeup.jpg',
     category: ['character'],
   },
   {
