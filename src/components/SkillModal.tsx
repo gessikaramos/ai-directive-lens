@@ -21,16 +21,19 @@ const SkillModal = ({ open, skillSlug, onClose, children }: SkillModalProps) => 
 
   useEffect(() => {
     const lenis = getLenis();
+    const html = document.documentElement;
     if (open) {
       window.history.pushState({ skill: skillSlug }, '', `#skill/${skillSlug}`);
       document.body.style.overflow = 'hidden';
-      // Stop Lenis so it doesn't intercept scroll inside the modal
+      // Stop Lenis and remove its overflow:clip from html
       if (lenis) lenis.stop();
+      html.classList.remove('lenis');
       requestAnimationFrame(() => setVisible(true));
     } else {
       setVisible(false);
       document.body.style.overflow = '';
-      // Resume Lenis when modal closes
+      // Resume Lenis and restore its html class
+      html.classList.add('lenis');
       if (lenis) lenis.start();
     }
   }, [open, skillSlug]);
