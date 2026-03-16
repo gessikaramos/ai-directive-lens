@@ -176,7 +176,7 @@ const PietraCaseStudy = () => {
       </div>
 
       {/* 7. Kris — Stills */}
-      <div className="px-6 md:px-12 lg:px-20">
+      <div data-anim="case-reveal" className="px-6 md:px-12 lg:px-20">
         <SectionLabel>KRIS — STILLS</SectionLabel>
         <ImageGrid
           images={krisStills}
