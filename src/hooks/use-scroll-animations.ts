@@ -185,6 +185,10 @@ export function useScrollAnimations() {
       });
     });
 
+      // Refresh after layout settles (needed for Lenis sync)
+      ScrollTrigger.refresh();
+    });
+
     return () => ctx.revert();
   }, []);
 }
