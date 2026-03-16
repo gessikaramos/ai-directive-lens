@@ -50,6 +50,7 @@ const CasesSection = () => {
       {caseCards.map((card) => (
         <div
           key={card.slug}
+          data-anim="video-card"
           className="relative min-h-[70vh] flex items-center justify-center overflow-hidden cursor-pointer group"
           onClick={() => setVideoLightbox(card.video)}
         >
@@ -62,7 +63,7 @@ const CasesSection = () => {
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
           />
           <div className="absolute inset-0 bg-background/60 group-hover:bg-background/50 transition-colors duration-500" />
-          <div className="relative z-10 text-center">
+          <div data-anim="video-card-content" className="relative z-10 text-center">
             <p className="label-style mb-3">CASE STUDY</p>
             <h2 className="text-4xl md:text-6xl font-bold text-foreground tracking-wider mb-3">
               {card.title}

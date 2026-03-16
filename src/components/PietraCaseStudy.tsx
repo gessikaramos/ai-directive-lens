@@ -50,7 +50,7 @@ interface ImageGridProps {
 }
 
 const ImageGrid = ({ images, cols, onOpen }: ImageGridProps) => (
-  <div className={`grid ${cols} gap-2`}>
+  <div data-anim="image-grid" className={`grid ${cols} gap-2`}>
     {images.map((src) => (
       <div
         key={src}
