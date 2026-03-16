@@ -69,7 +69,7 @@ const CasesSection = () => {
               {card.title}
             </h2>
             <p className="text-soft text-base mb-6">{card.subtitle}</p>
-            <span className="label-style border-b border-foreground/30 pb-1">
+            <span className="label-style border-b border-foreground/30 pb-1 group-hover:border-foreground transition-colors duration-300">
               {card.cta}
             </span>
           </div>

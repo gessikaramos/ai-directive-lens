@@ -52,7 +52,7 @@ export default function ContactSection() {
             />
             <button
               type="submit"
-              className="label-style border border-foreground/30 px-8 py-3 hover:bg-foreground hover:text-background transition-all duration-500 tracking-[0.2em]"
+              className="label-style border border-foreground/30 px-8 py-3 hover:bg-foreground hover:text-background transition-all duration-500 tracking-[0.2em] hover:scale-[1.02] active:scale-[0.98]"
             >
               {t('contact.send', lang)}
             </button>
@@ -62,7 +62,7 @@ export default function ContactSection() {
         {/* Email */}
         <a
           href="mailto:hello@lolalabstudio.com"
-          className="block mt-14 text-soft hover:text-foreground transition-colors duration-300 font-light"
+          className="block mt-14 text-soft hover:text-foreground underline-offset-4 hover:underline transition-colors duration-300 font-light"
         >
           hello@lolalabstudio.com
         </a>
@@ -75,7 +75,7 @@ export default function ContactSection() {
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="label-style hover:text-foreground transition-colors duration-300"
+              className="label-style underline-offset-4 hover:underline hover:text-foreground transition-colors duration-300"
             >
               {s.label}
             </a>
