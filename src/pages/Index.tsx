@@ -1,4 +1,6 @@
 import { LanguageProvider } from '@/hooks/use-language';
+import { useLenis } from '@/hooks/use-lenis';
+import { useScrollAnimations } from '@/hooks/use-scroll-animations';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import StatementSection from '@/components/StatementSection';
@@ -8,9 +10,12 @@ import CasesSection from '@/components/CasesSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 
-const Index = () => {
+const IndexContent = () => {
+  useLenis();
+  useScrollAnimations();
+
   return (
-    <LanguageProvider>
+    <>
       <Navbar />
       <main>
         <HeroSection />
@@ -21,6 +26,14 @@ const Index = () => {
         <ContactSection />
       </main>
       <Footer />
+    </>
+  );
+};
+
+const Index = () => {
+  return (
+    <LanguageProvider>
+      <IndexContent />
     </LanguageProvider>
   );
 };

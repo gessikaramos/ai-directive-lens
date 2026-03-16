@@ -1,17 +1,11 @@
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
-import { useEffect, useRef } from 'react';
 
 export default function HeroSection() {
   const { lang } = useLanguage();
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    // GSAP hero animation will be added in Phase 4
-  }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-screen w-full overflow-hidden flex items-center justify-center">
+    <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
       {/* Video background */}
       <video
         autoPlay
@@ -28,7 +22,7 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-background/50" />
 
       {/* Content */}
-      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
+      <div data-anim="hero-content" className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight leading-[1.1] text-foreground mb-6">
           {t('hero.headline', lang)}
         </h1>
@@ -38,7 +32,7 @@ export default function HeroSection() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+      <div data-anim="scroll-indicator" className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
         <span className="label-style">{t('hero.scroll', lang)}</span>
         <div className="w-px h-8 bg-foreground/20 animate-pulse" />
       </div>
