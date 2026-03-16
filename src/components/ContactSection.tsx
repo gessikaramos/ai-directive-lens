@@ -75,7 +75,7 @@ export default function ContactSection() {
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="label-style hover:text-foreground transition-colors duration-300"
+              className="label-style underline-offset-4 hover:underline hover:text-foreground transition-colors duration-300"
             >
               {s.label}
             </a>
