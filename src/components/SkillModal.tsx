@@ -20,7 +20,6 @@ const SkillModal = ({ open, skillSlug, onClose, children }: SkillModalProps) => 
 
   useEffect(() => {
     if (open) {
-      // Push history state for deep linking
       window.history.pushState({ skill: skillSlug }, '', `#skill/${skillSlug}`);
       document.body.style.overflow = 'hidden';
       requestAnimationFrame(() => setVisible(true));
@@ -46,27 +45,20 @@ const SkillModal = ({ open, skillSlug, onClose, children }: SkillModalProps) => 
 
   return (
     <div
-      className="fixed inset-0 z-[90] flex items-end justify-center"
-      style={{ backgroundColor: 'rgba(0,0,0,0.92)' }}
-      onClick={onClose}
+      className={`fixed inset-0 z-50 bg-background overflow-y-auto transition-opacity duration-500 ${
+        visible ? 'opacity-100' : 'opacity-0'
+      }`}
+      style={{ scrollBehavior: 'smooth' }}
     >
-      <div
-        className={`relative w-full max-w-5xl max-h-[92vh] overflow-y-auto bg-background transition-all duration-500 ease-out ${
-          visible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
-        }`}
-        style={{ padding: '3rem 2rem' }}
-        onClick={(e) => e.stopPropagation()}
+      <button
+        onClick={onClose}
+        className="fixed top-6 right-6 z-50 text-foreground/60 hover:text-foreground transition-colors"
       >
-        <button
-          onClick={onClose}
-          className="sticky top-0 float-right z-10 text-foreground/60 hover:text-foreground transition-opacity"
-        >
-          <X className="w-5 h-5" />
-        </button>
+        <X className="w-6 h-6" />
+      </button>
 
+      <div className="max-w-4xl mx-auto px-6 py-20">
         {children}
-
-        <div className="clear-both" />
       </div>
     </div>
   );
