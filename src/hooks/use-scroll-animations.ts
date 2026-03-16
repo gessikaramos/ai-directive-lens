@@ -42,9 +42,9 @@ export function useScrollAnimations() {
       document.querySelectorAll('[data-anim="statement"]').forEach((el) => {
         gsap.from(el, {
           opacity: 0,
-          y: 40,
-          duration: 1.2,
-          ease: 'power3.out',
+          y: 20,
+          duration: 2.0,
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: el,
             start: 'top 80%',

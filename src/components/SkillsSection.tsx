@@ -196,6 +196,18 @@ const SkillsSection = () => {
         ))}
       </div>
 
+      {/* View All button */}
+      {activeFilter !== 'all' && (
+        <div className="flex justify-center mt-10">
+          <button
+            onClick={() => setActiveFilter('all')}
+            className="label-style border-b border-foreground/30 pb-1 hover:border-foreground transition-colors duration-300"
+          >
+            View All Skills
+          </button>
+        </div>
+      )}
+
       {/* Modal */}
       {openSkill && ModalContentComponent && (
         <SkillModal
