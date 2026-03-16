@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="Camada_2" data-name="Camada 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 126.68 92.88">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 180">
   <defs>
     <style>
-      .cls-1, .cls-2, .cls-3 {
+      .logo-text {
         fill: #fff;
-      }
-
-      .cls-2 {
-        font-size: 48px;
-        letter-spacing: .05em;
-      }
-
-      .cls-2, .cls-3 {
-        font-family: Inter-ExtraBold, Inter;
-        font-variation-settings: 'opsz' 14, 'wght' 800;
+        font-family: Inter, sans-serif;
         font-weight: 700;
+        letter-spacing: 0.05em;
       }
-
-      .cls-3 {
-        font-size: 41.66px;
-        letter-spacing: .05em;
+      .logo-shape {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 3.5;
+      }
+      .logo-dot {
+        fill: #fff;
       }
     </style>
   </defs>
-  <g id="Camada_1-2" data-name="Camada 1">
-    <text class="cls-2" transform="translate(0 41.46)"><tspan x="0" y="0">Lola</tspan></text>
-    <text class="cls-3" transform="translate(.49 79.45)"><tspan x="0" y="0">Lab</tspan></text>
-    <circle class="cls-1" cx="96.51" cy="73.63" r="6.04"/>
-  </g>
+  <!-- Circle drawing -->
+  <circle class="logo-shape" cx="70" cy="42" r="28"/>
+  <!-- Small dot above circle -->
+  <circle class="logo-dot" cx="70" cy="8" r="4"/>
+  <!-- Text -->
+  <text class="logo-text" x="70" y="110" text-anchor="middle" font-size="42">Lola</text>
+  <text class="logo-text" x="60" y="148" text-anchor="middle" font-size="36">Lab</text>
+  <!-- Period dot -->
+  <circle class="logo-dot" cx="100" cy="142" r="5"/>
 </svg>

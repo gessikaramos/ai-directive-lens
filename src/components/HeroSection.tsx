@@ -1,19 +1,23 @@
+import { useState } from 'react';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
 
 export default function HeroSection() {
   const { lang } = useLanguage();
+  const [videoReady, setVideoReady] = useState(false);
 
   return (
-    <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
+    <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-background">
       {/* Video background */}
       <video
         autoPlay
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
-        poster="/images/hollis/campaign/campaign-bottega.jpg"
+        onCanPlay={() => setVideoReady(true)}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+          videoReady ? 'opacity-100' : 'opacity-0'
+        }`}
       >
         <source src="/videos/hero-loop.mp4" type="video/mp4" />
       </video>

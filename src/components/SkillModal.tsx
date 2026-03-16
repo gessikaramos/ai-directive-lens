@@ -28,13 +28,22 @@ const SkillModal = ({ open, skillSlug, onClose, children }: SkillModalProps) => 
       // Stop Lenis and remove its overflow:clip from html
       if (lenis) lenis.stop();
       html.classList.remove('lenis');
+      html.classList.remove('lenis-smooth');
       requestAnimationFrame(() => setVisible(true));
     } else {
       setVisible(false);
       document.body.style.overflow = '';
       // Resume Lenis and restore its html class
       html.classList.add('lenis');
-      if (lenis) lenis.start();
+      html.classList.add('lenis-smooth');
+      if (lenis) {
+        lenis.start();
+        // Force Lenis to recalculate after modal close
+        requestAnimationFrame(() => {
+          lenis.resize();
+          window.dispatchEvent(new Event('resize'));
+        });
+      }
     }
   }, [open, skillSlug]);
 
