@@ -68,7 +68,7 @@ const SkillModal = ({ open, skillSlug, onClose, children }: SkillModalProps) => 
       className={`fixed inset-0 z-50 bg-background overflow-y-auto transition-opacity duration-500 ${
         visible ? 'opacity-100' : 'opacity-0'
       }`}
-      style={{ scrollBehavior: 'smooth' }}
+      style={{ overscrollBehavior: 'contain' }}
     >
       <button
         onClick={onClose}
