@@ -50,7 +50,7 @@ interface ImageGridProps {
 }
 
 const ImageGrid = ({ images, cols, onOpen }: ImageGridProps) => (
-  <div className={`grid ${cols} gap-2`}>
+  <div data-anim="image-grid" className={`grid ${cols} gap-2`}>
     {images.map((src) => (
       <div
         key={src}
@@ -80,6 +80,7 @@ const PietraCaseStudy = () => {
     <div className="space-y-24 md:space-y-32">
       {/* 1. Fullscreen Hero */}
       <div
+        data-anim="pietra-hero"
         className="relative min-h-[80vh] flex items-center justify-center bg-cover bg-center"
         style={{ backgroundImage: 'url(/images/hollis/campaign/campaign-bottega.jpg)' }}
       >
@@ -94,7 +95,7 @@ const PietraCaseStudy = () => {
       </div>
 
       {/* 2. Intro + Metadata */}
-      <div className="px-6 md:px-12 lg:px-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+      <div data-anim="case-reveal" className="px-6 md:px-12 lg:px-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         <div>
           <p className="text-foreground text-lg md:text-xl leading-relaxed">
             {t('cases.pietra.intro', lang)}
@@ -116,7 +117,7 @@ const PietraCaseStudy = () => {
       </div>
 
       {/* 3. AI Model Casting */}
-      <div className="px-6 md:px-12 lg:px-20">
+      <div data-anim="case-reveal" className="px-6 md:px-12 lg:px-20">
         <SectionLabel>{t('cases.pietra.casting', lang)}</SectionLabel>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
@@ -145,7 +146,7 @@ const PietraCaseStudy = () => {
       </div>
 
       {/* 4. Hollis — Campaign Editorial */}
-      <div className="px-6 md:px-12 lg:px-20">
+      <div data-anim="case-reveal" className="px-6 md:px-12 lg:px-20">
         <SectionLabel>HOLLIS — CAMPAIGN EDITORIAL</SectionLabel>
         <ImageGrid
           images={campaignImages}
@@ -155,7 +156,7 @@ const PietraCaseStudy = () => {
       </div>
 
       {/* 5. Hollis — Look 1 (Bottega) */}
-      <div className="px-6 md:px-12 lg:px-20">
+      <div data-anim="case-reveal" className="px-6 md:px-12 lg:px-20">
         <SectionLabel>HOLLIS — LOOK 1 (BOTTEGA)</SectionLabel>
         <ImageGrid
           images={look1Images}
@@ -165,7 +166,7 @@ const PietraCaseStudy = () => {
       </div>
 
       {/* 6. Hollis — Other Shots */}
-      <div className="px-6 md:px-12 lg:px-20">
+      <div data-anim="case-reveal" className="px-6 md:px-12 lg:px-20">
         <SectionLabel>HOLLIS — OTHER SHOTS</SectionLabel>
         <ImageGrid
           images={outrasImages}
@@ -175,7 +176,7 @@ const PietraCaseStudy = () => {
       </div>
 
       {/* 7. Kris — Stills */}
-      <div className="px-6 md:px-12 lg:px-20">
+      <div data-anim="case-reveal" className="px-6 md:px-12 lg:px-20">
         <SectionLabel>KRIS — STILLS</SectionLabel>
         <ImageGrid
           images={krisStills}
@@ -195,7 +196,7 @@ const PietraCaseStudy = () => {
       </div>
 
       {/* 9. 360° Turnaround */}
-      <div className="px-6 md:px-12 lg:px-20">
+      <div data-anim="case-reveal" className="px-6 md:px-12 lg:px-20">
         <SectionLabel>360° TURNAROUND</SectionLabel>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
@@ -223,11 +224,11 @@ const PietraCaseStudy = () => {
       </div>
 
       {/* 10. Creative Pipeline */}
-      <div className="px-6 md:px-12 lg:px-20">
+      <div data-anim="case-reveal" className="px-6 md:px-12 lg:px-20">
         <SectionLabel>CREATIVE PIPELINE</SectionLabel>
         <div className="flex flex-col md:flex-row md:divide-x divide-border">
           {pipelineSteps.map((step) => (
-            <div key={step.num} className="flex-1 py-6 md:py-0 md:px-6 first:md:pl-0 last:md:pr-0 border-b md:border-b-0 border-border last:border-b-0">
+            <div key={step.num} data-anim="pipeline-step" className="flex-1 py-6 md:py-0 md:px-6 first:md:pl-0 last:md:pr-0 border-b md:border-b-0 border-border last:border-b-0">
               <p className="text-foreground font-semibold text-sm mb-1">
                 <span className="text-dim mr-2">{step.num}</span>
                 {step.title}
