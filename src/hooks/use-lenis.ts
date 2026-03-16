@@ -7,6 +7,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 let lenisInstance: Lenis | null = null;
 
+export function getLenis() {
+  return lenisInstance;
+}
+
 export function useLenis() {
   useEffect(() => {
     if (lenisInstance) return;

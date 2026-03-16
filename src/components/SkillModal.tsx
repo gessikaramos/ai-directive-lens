@@ -1,5 +1,6 @@
-import { useEffect, useCallback, useState, ReactNode } from 'react';
+import { useEffect, useCallback, useState, useRef, ReactNode } from 'react';
 import { X } from 'lucide-react';
+import { getLenis } from '@/hooks/use-lenis';
 
 interface SkillModalProps {
   open: boolean;
@@ -19,13 +20,18 @@ const SkillModal = ({ open, skillSlug, onClose, children }: SkillModalProps) => 
   );
 
   useEffect(() => {
+    const lenis = getLenis();
     if (open) {
       window.history.pushState({ skill: skillSlug }, '', `#skill/${skillSlug}`);
       document.body.style.overflow = 'hidden';
+      // Stop Lenis so it doesn't intercept scroll inside the modal
+      if (lenis) lenis.stop();
       requestAnimationFrame(() => setVisible(true));
     } else {
       setVisible(false);
       document.body.style.overflow = '';
+      // Resume Lenis when modal closes
+      if (lenis) lenis.start();
     }
   }, [open, skillSlug]);
 
@@ -41,10 +47,21 @@ const SkillModal = ({ open, skillSlug, onClose, children }: SkillModalProps) => 
     }
   }, [open, handleKeyDown, onClose]);
 
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Reset scroll to top when modal opens
+  useEffect(() => {
+    if (open && visible && modalRef.current) {
+      modalRef.current.scrollTop = 0;
+    }
+  }, [open, visible]);
+
   if (!open) return null;
 
   return (
     <div
+      ref={modalRef}
+      data-lenis-prevent
       className={`fixed inset-0 z-50 bg-background overflow-y-auto transition-opacity duration-500 ${
         visible ? 'opacity-100' : 'opacity-0'
       }`}
