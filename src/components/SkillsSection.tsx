@@ -8,10 +8,10 @@ import {
   FashionContent,
   CostumeContent,
   VideoContent,
-  CopywritingContent,
-  TechnologyContent,
+  UGCContent,
   SoundtrackContent,
   VoiceDesignContent,
+  CoursesContent,
 } from './SkillModalContents';
 
 type SkillCategory = 'all' | 'character' | 'fashion' | 'video' | 'more';
@@ -56,27 +56,17 @@ const skills: SkillCard[] = [
     label: 'Video Production',
     titleKey: 'skill.video.title',
     tagline: 'Cinematic AI video from frame to motion.',
+    thumbnail: '/images/video-thumb.jpg',
+    category: ['video'],
+  },
+  {
+    slug: 'ugc',
+    label: 'UGC',
+    titleKey: 'skill.ugc.title',
+    tagline: 'Scroll-stopping content for brands.',
     thumbnail: null,
     category: ['video'],
-    icon: '▶',
-  },
-  // {
-  //   slug: 'copywriting',
-  //   label: 'Copywriting',
-  //   titleKey: 'skill.copywriting.title',
-  //   tagline: 'Manifestos, scripts, and narrative direction.',
-  //   thumbnail: null,
-  //   category: ['more'],
-  //   icon: '✦',
-  // },
-  {
-    slug: 'technology',
-    label: 'Technology',
-    titleKey: 'skill.technology.title',
-    tagline: 'AI tools designed from concept to UX.',
-    thumbnail: null,
-    category: ['more'],
-    icon: '⚙',
+    icon: '📱',
   },
   {
     slug: 'soundtrack',
@@ -96,6 +86,15 @@ const skills: SkillCard[] = [
     category: ['more'],
     icon: '◉',
   },
+  {
+    slug: 'courses',
+    label: 'Courses',
+    titleKey: 'skill.courses.title',
+    tagline: 'Learn AI creative direction from the source.',
+    thumbnail: null,
+    category: ['more'],
+    icon: '🎓',
+  },
 ];
 
 const filters: { key: SkillCategory; label: string }[] = [
@@ -110,10 +109,10 @@ const modalContent: Record<string, React.FC> = {
   fashion: FashionContent,
   costume: CostumeContent,
   video: VideoContent,
-  copywriting: CopywritingContent,
-  technology: TechnologyContent,
+  ugc: UGCContent,
   soundtrack: SoundtrackContent,
   voice: VoiceDesignContent,
+  courses: CoursesContent,
 };
 
 const SkillsSection = () => {

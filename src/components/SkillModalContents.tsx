@@ -185,6 +185,14 @@ export function FashionContent() {
           '/images/hollis/campaign/campaign-03.jpg',
           '/images/hollis/campaign/campaign-04.jpg',
           '/images/hollis/campaign/campaign-05.jpg',
+          '/images/hollis/campaign/campaign-07.jpg',
+          '/images/hollis/campaign/campaign-08.jpg',
+          '/images/hollis/campaign/campaign-09.jpg',
+          '/images/hollis/campaign/campaign-10.jpg',
+          '/images/hollis/campaign/campaign-11.jpg',
+          '/images/hollis/campaign/campaign-12.jpg',
+          '/images/hollis/campaign/campaign-13.jpg',
+          '/images/hollis/campaign/campaign-bottega.jpg',
         ]}
         onOpen={setLightbox}
       />
@@ -237,6 +245,20 @@ export function CostumeContent() {
         onOpen={setLightbox}
       />
 
+      <ModalGallery
+        title="E-COMMERCE LOOKS"
+        images={[
+          '/images/hollis/look1/look1-01.jpg',
+          '/images/hollis/look1/look1-02.jpg',
+          '/images/hollis/look1/look1-03.jpg',
+          '/images/hollis/look1/look1-04.jpg',
+          '/images/hollis/look1/look1-05.jpg',
+          '/images/hollis/look1/look1-06.jpg',
+          '/images/hollis/look1/look1-07.jpg',
+        ]}
+        onOpen={setLightbox}
+      />
+
       <ModalCTA />
 
       {lightbox && <Lightbox src={lightbox} onClose={() => setLightbox(null)} />}
@@ -277,6 +299,7 @@ export function VideoContent() {
 
       <SectionLabel>Video Showcase</SectionLabel>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <VideoThumbnail src="/videos/hero-loop-logo.mp4" onOpen={setLightbox} />
         <VideoThumbnail src="/videos/bloom-final.mp4" onOpen={setLightbox} />
         <VideoThumbnail src="/videos/bewe-shearling.mp4" onOpen={setLightbox} />
       </div>
@@ -289,79 +312,60 @@ export function VideoContent() {
 }
 
 /* ════════════════════════════════════════════════
-   5. Copywriting
+   5. UGC
    ════════════════════════════════════════════════ */
-export function CopywritingContent() {
+export function UGCContent() {
+  const [lightbox, setLightbox] = useState<string | { src: string; type: 'video' } | null>(null);
+
   return (
     <div>
-      <p className="label-style mb-2">Copywriting</p>
-      <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">Words That Frame Worlds</h3>
+      <p className="label-style mb-2">UGC</p>
+      <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">Content That Converts</h3>
       <p className="text-soft max-w-2xl mb-8 leading-relaxed">
-        Manifestos, scripts, and narrative direction for AI-driven projects. Every word is crafted
-        to anchor visual storytelling in language that resonates with purpose.
+        User-generated content direction for brands — authentic, scroll-stopping videos
+        designed for social media performance. From concept to final cut, every piece is
+        crafted for engagement and conversion.
       </p>
 
-      <div className="mt-8 space-y-6">
-        <blockquote className="border-l-2 border-border pl-6 py-2">
-          <p className="text-lg md:text-xl font-light text-foreground italic leading-relaxed">
-            "She wasn't built to perform. She was built to remember."
-          </p>
-          <footer className="label-style mt-3">— LOLA, Short Film Manifesto</footer>
-        </blockquote>
-        <blockquote className="border-l-2 border-border pl-6 py-2">
-          <p className="text-lg md:text-xl font-light text-foreground italic leading-relaxed">
-            "Direction isn't about control. It's about knowing what deserves to exist."
-          </p>
-          <footer className="label-style mt-3">— Lola Lab, Brand Voice</footer>
-        </blockquote>
-        <blockquote className="border-l-2 border-border pl-6 py-2">
-          <p className="text-lg md:text-xl font-light text-foreground italic leading-relaxed">
-            "Every frame is a decision. Every cut is a conviction."
-          </p>
-          <footer className="label-style mt-3">— BLOOM, Opening Narration</footer>
-        </blockquote>
+      <SectionLabel>What We Deliver</SectionLabel>
+      <ul className="space-y-2 text-soft text-sm leading-relaxed max-w-2xl">
+        <li>• Product unboxing and lifestyle content</li>
+        <li>• Testimonial-style videos</li>
+        <li>• Social-first vertical content (Reels, TikTok, Shorts)</li>
+        <li>• Brand storytelling in authentic format</li>
+      </ul>
+
+      <SectionLabel>Video Samples</SectionLabel>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        <VideoThumbnail src="/videos/ugc-packing.mp4" onOpen={(src) => setLightbox({ src, type: 'video' })} />
+        <VideoThumbnail src="/videos/ugc-running.mp4" onOpen={(src) => setLightbox({ src, type: 'video' })} />
+        <VideoThumbnail src="/videos/ugc-smartwatch.mp4" onOpen={(src) => setLightbox({ src, type: 'video' })} />
       </div>
 
+      <ModalGallery
+        title="SOCIAL CONTENT"
+        images={[
+          '/images/hollis/outras/hollis-outras-08.jpg',
+          '/images/hollis/outras/hollis-outras-09.jpg',
+        ]}
+        onOpen={(src) => setLightbox(src)}
+      />
+
       <ModalCTA />
+
+      {lightbox && (
+        <Lightbox
+          src={typeof lightbox === 'string' ? lightbox : lightbox.src}
+          type={typeof lightbox === 'string' ? 'image' : lightbox.type}
+          onClose={() => setLightbox(null)}
+        />
+      )}
     </div>
   );
 }
 
 /* ════════════════════════════════════════════════
-   6. Technology
-   ════════════════════════════════════════════════ */
-export function TechnologyContent() {
-  return (
-    <div>
-      <p className="label-style mb-2">Technology</p>
-      <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">Built To Think</h3>
-      <p className="text-soft max-w-2xl mb-8 leading-relaxed">
-        AI tools and pipelines designed from concept to UX. From custom workflows integrating
-        Midjourney, Nano Banana, and Higgsfield to building digital products that leverage
-        generative AI for creative production at scale.
-      </p>
-
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {[
-          { title: 'Prompt Engineering', desc: 'Systematic prompt architecture for consistent character and scene generation.' },
-          { title: 'Pipeline Design', desc: 'End-to-end workflows connecting generation, refinement, and post-production tools.' },
-          { title: 'AI Model Selection', desc: 'Strategic evaluation of Midjourney, DALL-E, Stable Diffusion, and emerging models.' },
-          { title: 'Product Development', desc: 'Digital products and interfaces built with AI-native thinking.' },
-        ].map((item) => (
-          <div key={item.title} className="p-5 bg-accent-surface border border-border">
-            <h5 className="text-sm font-semibold text-foreground mb-2">{item.title}</h5>
-            <p className="text-soft text-sm leading-relaxed">{item.desc}</p>
-          </div>
-        ))}
-      </div>
-
-      <ModalCTA />
-    </div>
-  );
-}
-
-/* ════════════════════════════════════════════════
-   7. Soundtrack
+   6. Soundtrack
    ════════════════════════════════════════════════ */
 export function SoundtrackContent() {
   return (
@@ -384,7 +388,7 @@ export function SoundtrackContent() {
 }
 
 /* ════════════════════════════════════════════════
-   8. Voice Design
+   7. Voice Design
    ════════════════════════════════════════════════ */
 export function VoiceDesignContent() {
   return (
@@ -392,14 +396,83 @@ export function VoiceDesignContent() {
       <p className="label-style mb-2">Voice Design</p>
       <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">Cloned Voice, Authored Tone</h3>
       <p className="text-soft max-w-2xl mb-8 leading-relaxed">
-        Cinematic narration with cloned voice models. Custom voice design using ElevenLabs
+        Cinematic narration with cloned voice models. Custom voice design
         for consistent, emotionally directed voiceover across projects.
       </p>
 
       <SectionLabel>Audio Samples</SectionLabel>
       <div className="space-y-3">
         <AudioPlayer src="/audio/lola-audio-final.mp3" label="Lola — Final Audio" />
-        <AudioPlayer src="/audio/voz-gessika.mp3" label="Voice Clone — ElevenLabs" />
+        <AudioPlayer src="/audio/voz-gessika.mp3" label="Voice Clone" />
+      </div>
+
+      <ModalCTA />
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════════════
+   8. Courses
+   ════════════════════════════════════════════════ */
+export function CoursesContent() {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      setSubmitted(true);
+    }
+  };
+
+  return (
+    <div>
+      <p className="label-style mb-2">Courses</p>
+      <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">Learn AI Creative Direction</h3>
+      <p className="text-soft max-w-2xl mb-8 leading-relaxed">
+        We are preparing online courses on AI creative direction, visual storytelling, and
+        cinematic production pipelines. From character design to post-production — learn the
+        methods behind the work.
+      </p>
+
+      <SectionLabel>What to Expect</SectionLabel>
+      <ul className="space-y-2 text-soft text-sm leading-relaxed max-w-2xl">
+        <li>• AI character design and visual consistency</li>
+        <li>• Fashion editorial direction with AI tools</li>
+        <li>• Cinematic video production pipelines</li>
+        <li>• Prompt engineering for creative professionals</li>
+        <li>• Post-production and color grading workflows</li>
+      </ul>
+
+      <div className="mt-12 max-w-md">
+        <SectionLabel>Join the Waitlist</SectionLabel>
+        <p className="text-soft text-sm mb-6">
+          Be the first to know when enrollment opens. Leave your email and we will notify you.
+        </p>
+
+        {submitted ? (
+          <div className="p-6 border border-border bg-accent-surface text-center">
+            <p className="text-foreground font-medium mb-1">You are on the list.</p>
+            <p className="text-soft text-sm">We will reach out when the first cohort is ready.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex gap-3">
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="your@email.com"
+              className="flex-1 bg-transparent border-b border-border px-2 py-3 text-sm text-foreground placeholder:text-dim focus:outline-none focus:border-foreground transition-colors"
+            />
+            <button
+              type="submit"
+              className="px-6 py-3 text-sm font-medium text-primary-foreground bg-foreground hover:bg-foreground/90 transition-colors whitespace-nowrap"
+            >
+              Notify Me
+            </button>
+          </form>
+        )}
       </div>
 
       <ModalCTA />

@@ -1,94 +1,29 @@
-import { useState } from 'react';
-import { useLanguage } from '@/hooks/use-language';
-import { t } from '@/lib/i18n';
-import PietraCaseStudy from './PietraCaseStudy';
-import Lightbox from './Lightbox';
-
-interface CaseCard {
-  slug: string;
-  video: string;
-  title: string;
-  subtitle: string;
-  ctaKey: string;
-}
-
-const caseCards: CaseCard[] = [
-  {
-    slug: 'bloom',
-    video: '/videos/bloom-final.mp4',
-    title: 'BLOOM',
-    subtitle: 'AI-Directed Short Film',
-    ctaKey: 'cases.bloom.cta',
-  },
-  {
-    slug: 'bewe',
-    video: '/videos/bewe-shearling.mp4',
-    title: 'Be We',
-    subtitle: 'AI Fashion Video Campaign',
-    ctaKey: 'cases.bewe.cta',
-  },
+const pipelineSteps = [
+  { num: '01', title: 'Characterization', desc: 'Character bible, visual DNA, personality' },
+  { num: '02', title: 'Keyframes', desc: 'Midjourney + Nano Banana refinement' },
+  { num: '03', title: 'Direction', desc: 'Prompt engineering, styling, composition' },
+  { num: '04', title: 'Video', desc: 'Higgsfield + Kling 3.0 animation' },
+  { num: '05', title: 'Post-Production', desc: 'DaVinci Resolve, LUT, color grading' },
 ];
 
 const CasesSection = () => {
-  const { lang } = useLanguage();
-  const [videoLightbox, setVideoLightbox] = useState<string | null>(null);
-
   return (
     <section id="cases" className="section-spacing">
-      {/* Section label */}
-      <div className="px-6 md:px-12 lg:px-20 mb-16">
-        <p className="label-style">{t('cases.label', lang)}</p>
+      {/* Creative Pipeline */}
+      <div className="px-6 md:px-12 lg:px-20">
+        <p className="label-style mb-8">CREATIVE PIPELINE</p>
+        <div className="flex flex-col md:flex-row md:divide-x divide-border">
+          {pipelineSteps.map((step) => (
+            <div key={step.num} className="flex-1 py-6 md:py-0 md:px-6 first:md:pl-0 last:md:pr-0">
+              <p className="label-style text-dim mb-2">{step.num}</p>
+              <h4 className="text-sm font-semibold text-foreground uppercase tracking-wide mb-1">
+                {step.title}
+              </h4>
+              <p className="text-soft text-xs leading-relaxed">{step.desc}</p>
+            </div>
+          ))}
+        </div>
       </div>
-
-      {/* PIETRA — Expanded Case Study */}
-      <PietraCaseStudy />
-
-      {/* Spacer */}
-      <div className="h-16 md:h-24" />
-
-      {/* BLOOM + Be We — Fullscreen Video Cards */}
-      {caseCards.map((card) => (
-        <a
-          key={card.slug}
-          href="#"
-          data-video={card.slug}
-          onClick={(e) => {
-            e.preventDefault();
-            setVideoLightbox(card.video);
-          }}
-          data-anim="video-card"
-          className="relative min-h-[70vh] flex items-center justify-center overflow-hidden cursor-pointer group block"
-        >
-          <video
-            src={card.video}
-            muted
-            autoPlay
-            loop
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-          />
-          <div className="absolute inset-0 bg-background/60 group-hover:bg-background/50 transition-colors duration-500" />
-          <div data-anim="video-card-content" className="relative z-10 text-center">
-            <p className="label-style mb-3">CASE STUDY</p>
-            <h2 className="text-4xl md:text-6xl font-bold text-foreground tracking-wider mb-3">
-              {card.title}
-            </h2>
-            <p className="text-soft text-base mb-6">{card.subtitle}</p>
-            <span className="label-style border-b border-foreground/30 pb-1 group-hover:border-foreground transition-colors duration-300">
-              {t(card.ctaKey, lang)}
-            </span>
-          </div>
-        </a>
-      ))}
-
-      {/* Video Lightbox */}
-      {videoLightbox && (
-        <Lightbox
-          src={videoLightbox}
-          type="video"
-          onClose={() => setVideoLightbox(null)}
-        />
-      )}
     </section>
   );
 };

@@ -23,6 +23,8 @@ export const translations: Record<string, Record<Lang, string>> = {
   'skill.video.title': { en: 'Motion With Intention', pt: 'Movimento Com Intenção' },
   'skill.copywriting.title': { en: 'Words That Frame Worlds', pt: 'Palavras Que Enquadram Mundos' },
   'skill.technology.title': { en: 'Built To Think', pt: 'Construído Para Pensar' },
+  'skill.ugc.title': { en: 'Scroll-Stopping Content', pt: 'Conteúdo Que Para o Scroll' },
+  'skill.courses.title': { en: 'Learn AI Direction', pt: 'Aprenda Direção com IA' },
   'skill.soundtrack.title': { en: 'Sound Shapes Emotion', pt: 'Som Molda Emoção' },
   'skill.voice.title': { en: 'Cloned Voice, Authored Tone', pt: 'Voz Clonada, Tom Autoral' },
 
