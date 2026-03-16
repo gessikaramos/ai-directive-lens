@@ -105,4 +105,13 @@
   .animate-subtle-bounce {
     animation: subtle-bounce 2s ease-in-out infinite;
   }
+
+  /* Hide Lovable branding badge */
+  #lovable-badge,
+  [data-lovable-badge],
+  iframe[src*="lovable"],
+  div[class*="lovable-badge"],
+  a[href*="lovable.dev"][style*="fixed"] {
+    display: none !important;
+  }
 }

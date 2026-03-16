@@ -18,10 +18,12 @@ const Lightbox = ({ src, type = 'image', alt = '', onClose }: LightboxProps) => 
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
+    // Save previous overflow so we don't clobber parent modal's overflow:hidden
+    const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
+      document.body.style.overflow = prev;
     };
   }, [handleKeyDown]);
 

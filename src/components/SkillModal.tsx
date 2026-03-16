@@ -22,29 +22,40 @@ const SkillModal = ({ open, skillSlug, onClose, children }: SkillModalProps) => 
   useEffect(() => {
     const lenis = getLenis();
     const html = document.documentElement;
-    if (open) {
-      window.history.pushState({ skill: skillSlug }, '', `#skill/${skillSlug}`);
+
+    const stopScroll = () => {
       document.body.style.overflow = 'hidden';
-      // Stop Lenis and remove its overflow:clip from html
       if (lenis) lenis.stop();
       html.classList.remove('lenis');
       html.classList.remove('lenis-smooth');
-      requestAnimationFrame(() => setVisible(true));
-    } else {
-      setVisible(false);
+    };
+
+    const resumeScroll = () => {
       document.body.style.overflow = '';
-      // Resume Lenis and restore its html class
       html.classList.add('lenis');
       html.classList.add('lenis-smooth');
       if (lenis) {
         lenis.start();
-        // Force Lenis to recalculate after modal close
         requestAnimationFrame(() => {
           lenis.resize();
           window.dispatchEvent(new Event('resize'));
         });
       }
+    };
+
+    if (open) {
+      window.history.pushState({ skill: skillSlug }, '', `#skill/${skillSlug}`);
+      stopScroll();
+      requestAnimationFrame(() => setVisible(true));
+    } else {
+      setVisible(false);
+      resumeScroll();
     }
+
+    // Always restore scroll if the component unmounts while open
+    return () => {
+      if (open) resumeScroll();
+    };
   }, [open, skillSlug]);
 
   useEffect(() => {

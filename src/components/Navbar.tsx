@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
 import { getLenis } from '@/hooks/use-lenis';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Globe } from 'lucide-react';
 
 export default function Navbar() {
   const { lang, toggleLang } = useLanguage();
@@ -77,8 +77,10 @@ export default function Navbar() {
             ))}
             <button
               onClick={toggleLang}
-              className="label-style border border-border px-3 py-1.5 hover:bg-accent-surface transition-all duration-300"
+              className="label-style border border-border px-3 py-1.5 hover:bg-accent-surface transition-all duration-300 flex items-center gap-1.5"
+              aria-label={lang === 'en' ? 'Mudar para Português' : 'Switch to English'}
             >
+              <Globe className="w-3.5 h-3.5" />
               {lang === 'en' ? 'PT' : 'EN'}
             </button>
           </div>
@@ -114,9 +116,10 @@ export default function Navbar() {
           ))}
           <button
             onClick={() => { toggleLang(); setMobileOpen(false); }}
-            className="label-style border border-border px-4 py-2 mt-4"
+            className="label-style border border-border px-5 py-2.5 mt-4 flex items-center gap-2"
           >
-            {lang === 'en' ? 'PT' : 'EN'}
+            <Globe className="w-4 h-4" />
+            {lang === 'en' ? 'Português' : 'English'}
           </button>
         </div>
       )}
