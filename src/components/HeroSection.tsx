@@ -1,19 +1,47 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
 
 export default function HeroSection() {
   const { lang } = useLanguage();
   const [videoReady, setVideoReady] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Force autoplay on mobile — many browsers need an explicit play() call
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const tryPlay = () => {
+      video.play().catch(() => {
+        // If autoplay still blocked, show poster and try on first user interaction
+        const playOnInteraction = () => {
+          video.play().catch(() => {});
+          document.removeEventListener('touchstart', playOnInteraction);
+          document.removeEventListener('click', playOnInteraction);
+        };
+        document.addEventListener('touchstart', playOnInteraction, { once: true });
+        document.addEventListener('click', playOnInteraction, { once: true });
+      });
+    };
+
+    if (video.readyState >= 3) {
+      tryPlay();
+    } else {
+      video.addEventListener('canplay', tryPlay, { once: true });
+    }
+  }, []);
 
   return (
     <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-background">
       {/* Video background */}
       <video
+        ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
+        preload="auto"
         onCanPlay={() => setVideoReady(true)}
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
           videoReady ? 'opacity-100' : 'opacity-0'

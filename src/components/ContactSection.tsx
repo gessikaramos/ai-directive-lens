@@ -5,10 +5,33 @@ import { t } from '@/lib/i18n';
 export default function ContactSection() {
   const { lang } = useLanguage();
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSent(true);
+    setSending(true);
+    setError(false);
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    try {
+      const res = await fetch('https://formspree.io/f/xpwrzqkl', {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' },
+      });
+      if (res.ok) {
+        setSent(true);
+      } else {
+        setError(true);
+      }
+    } catch {
+      setError(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   const socials = [
@@ -34,27 +57,38 @@ export default function ContactSection() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <input
               type="text"
+              name="name"
               required
               placeholder={t('contact.name', lang)}
               className="w-full bg-transparent border-b border-border pb-3 text-foreground placeholder:text-dim focus:outline-none focus:border-foreground transition-colors duration-300 font-light"
             />
             <input
               type="email"
+              name="email"
               required
               placeholder={t('contact.email', lang)}
               className="w-full bg-transparent border-b border-border pb-3 text-foreground placeholder:text-dim focus:outline-none focus:border-foreground transition-colors duration-300 font-light"
             />
             <textarea
+              name="message"
               required
               rows={4}
               placeholder={t('contact.message', lang)}
               className="w-full bg-transparent border-b border-border pb-3 text-foreground placeholder:text-dim focus:outline-none focus:border-foreground transition-colors duration-300 font-light resize-none"
             />
+            {error && (
+              <p className="text-red-400 text-sm font-light">
+                {lang === 'en' ? 'Something went wrong. Please try again or email directly.' : 'Algo deu errado. Tente novamente ou envie um email diretamente.'}
+              </p>
+            )}
             <button
               type="submit"
-              className="label-style border border-foreground/30 px-8 py-3 hover:bg-foreground hover:text-background transition-all duration-500 tracking-[0.2em] hover:scale-[1.02] active:scale-[0.98]"
+              disabled={sending}
+              className="label-style border border-foreground/30 px-8 py-3 hover:bg-foreground hover:text-background transition-all duration-500 tracking-[0.2em] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-wait"
             >
-              {t('contact.send', lang)}
+              {sending
+                ? (lang === 'en' ? 'Sending...' : 'Enviando...')
+                : t('contact.send', lang)}
             </button>
           </form>
         )}
