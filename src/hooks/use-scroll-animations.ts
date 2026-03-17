@@ -45,10 +45,11 @@ export function useScrollAnimations() {
           y: 20,
           duration: 2.0,
           ease: 'power2.out',
+          immediateRender: false,
           scrollTrigger: {
             trigger: el,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse',
+            start: 'top 90%',
+            toggleActions: 'play none none none',
           },
         });
       });
@@ -66,7 +67,7 @@ export function useScrollAnimations() {
           scrollTrigger: {
             trigger: skillCards[0].parentElement,
             start: 'top 90%',
-            toggleActions: 'play none none reverse',
+            toggleActions: 'play none none none',
           },
         });
       }
@@ -78,10 +79,11 @@ export function useScrollAnimations() {
           y: 50,
           duration: 1,
           ease: 'power3.out',
+          immediateRender: false,
           scrollTrigger: {
             trigger: el,
-            start: 'top 85%',
-            toggleActions: 'play none none reverse',
+            start: 'top 90%',
+            toggleActions: 'play none none none',
           },
         });
       });
@@ -110,10 +112,11 @@ export function useScrollAnimations() {
           duration: 0.6,
           stagger: 0.05,
           ease: 'power2.out',
+          immediateRender: false,
           scrollTrigger: {
             trigger: el,
-            start: 'top 85%',
-            toggleActions: 'play none none reverse',
+            start: 'top 90%',
+            toggleActions: 'play none none none',
           },
         });
       });
@@ -127,10 +130,11 @@ export function useScrollAnimations() {
           duration: 0.8,
           stagger: 0.15,
           ease: 'power3.out',
+          immediateRender: false,
           scrollTrigger: {
             trigger: aboutSection,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse',
+            start: 'top 90%',
+            toggleActions: 'play none none none',
           },
         });
       }
@@ -144,10 +148,11 @@ export function useScrollAnimations() {
           duration: 0.8,
           stagger: 0.1,
           ease: 'power3.out',
+          immediateRender: false,
           scrollTrigger: {
             trigger: contactSection,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse',
+            start: 'top 90%',
+            toggleActions: 'play none none none',
           },
         });
       }
@@ -161,10 +166,11 @@ export function useScrollAnimations() {
           duration: 0.6,
           stagger: 0.1,
           ease: 'power2.out',
+          immediateRender: false,
           scrollTrigger: {
             trigger: pipelineSteps[0],
-            start: 'top 85%',
-            toggleActions: 'play none none reverse',
+            start: 'top 90%',
+            toggleActions: 'play none none none',
           },
         });
       }
@@ -176,10 +182,11 @@ export function useScrollAnimations() {
           y: 40,
           duration: 1,
           ease: 'power3.out',
+          immediateRender: false,
           scrollTrigger: {
             trigger: el,
-            start: 'top 70%',
-            toggleActions: 'play none none reverse',
+            start: 'top 80%',
+            toggleActions: 'play none none none',
           },
         });
       });
