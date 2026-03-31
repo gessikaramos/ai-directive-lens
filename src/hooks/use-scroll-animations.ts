@@ -98,6 +98,7 @@ export function useScrollAnimations() {
       if (pietraHero) {
         gsap.to(pietraHero.querySelector('div:last-child'), {
           y: -40,
+          force3D: true,
           ease: 'none',
           scrollTrigger: {
             trigger: pietraHero,
