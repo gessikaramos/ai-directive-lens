@@ -13,6 +13,7 @@ export function useScrollAnimations() {
         gsap.to(heroContent, {
           y: -80,
           opacity: 0,
+          force3D: true,
           ease: 'none',
           scrollTrigger: {
             trigger: heroContent,
@@ -29,6 +30,7 @@ export function useScrollAnimations() {
         gsap.to(scrollIndicator, {
           opacity: 0,
           y: 20,
+          force3D: true,
           scrollTrigger: {
             trigger: scrollIndicator,
             start: 'top 90%',
@@ -44,6 +46,7 @@ export function useScrollAnimations() {
           opacity: 0,
           y: 20,
           duration: 2.0,
+          force3D: true,
           ease: 'power2.out',
           immediateRender: false,
           scrollTrigger: {
@@ -61,6 +64,7 @@ export function useScrollAnimations() {
           opacity: 0,
           y: 60,
           duration: 0.8,
+          force3D: true,
           stagger: 0.1,
           ease: 'power3.out',
           immediateRender: false,
@@ -78,6 +82,7 @@ export function useScrollAnimations() {
           opacity: 0,
           y: 50,
           duration: 1,
+          force3D: true,
           ease: 'power3.out',
           immediateRender: false,
           scrollTrigger: {
@@ -93,6 +98,7 @@ export function useScrollAnimations() {
       if (pietraHero) {
         gsap.to(pietraHero.querySelector('div:last-child'), {
           y: -40,
+          force3D: true,
           ease: 'none',
           scrollTrigger: {
             trigger: pietraHero,
@@ -110,6 +116,7 @@ export function useScrollAnimations() {
           opacity: 0,
           y: 30,
           duration: 0.6,
+          force3D: true,
           stagger: 0.05,
           ease: 'power2.out',
           immediateRender: false,
@@ -128,6 +135,7 @@ export function useScrollAnimations() {
           opacity: 0,
           y: 40,
           duration: 0.8,
+          force3D: true,
           stagger: 0.15,
           ease: 'power3.out',
           immediateRender: false,
@@ -146,6 +154,7 @@ export function useScrollAnimations() {
           opacity: 0,
           y: 30,
           duration: 0.8,
+          force3D: true,
           stagger: 0.1,
           ease: 'power3.out',
           immediateRender: false,
@@ -164,6 +173,7 @@ export function useScrollAnimations() {
           opacity: 0,
           x: -20,
           duration: 0.6,
+          force3D: true,
           stagger: 0.1,
           ease: 'power2.out',
           immediateRender: false,
@@ -181,6 +191,7 @@ export function useScrollAnimations() {
           opacity: 0,
           y: 40,
           duration: 1,
+          force3D: true,
           ease: 'power3.out',
           immediateRender: false,
           scrollTrigger: {

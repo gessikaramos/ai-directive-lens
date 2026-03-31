@@ -98,20 +98,19 @@
   }
 
   @keyframes subtle-bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(8px); }
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, 8px, 0); }
   }
 
   .animate-subtle-bounce {
     animation: subtle-bounce 2s ease-in-out infinite;
   }
 
-  /* Hide Lovable branding badge */
-  #lovable-badge,
-  [data-lovable-badge],
-  iframe[src*="lovable"],
-  div[class*="lovable-badge"],
-  a[href*="lovable.dev"][style*="fixed"] {
-    display: none !important;
+  /* GPU-accelerated scroll animations */
+  [data-anim] {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
   }
 }
