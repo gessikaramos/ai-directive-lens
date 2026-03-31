@@ -116,6 +116,7 @@ export function useScrollAnimations() {
           opacity: 0,
           y: 30,
           duration: 0.6,
+          force3D: true,
           stagger: 0.05,
           ease: 'power2.out',
           immediateRender: false,
