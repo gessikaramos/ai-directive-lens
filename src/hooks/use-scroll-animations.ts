@@ -82,6 +82,7 @@ export function useScrollAnimations() {
           opacity: 0,
           y: 50,
           duration: 1,
+          force3D: true,
           ease: 'power3.out',
           immediateRender: false,
           scrollTrigger: {
