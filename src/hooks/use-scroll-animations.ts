@@ -13,6 +13,7 @@ export function useScrollAnimations() {
         gsap.to(heroContent, {
           y: -80,
           opacity: 0,
+          force3D: true,
           ease: 'none',
           scrollTrigger: {
             trigger: heroContent,
