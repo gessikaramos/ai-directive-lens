@@ -30,6 +30,7 @@ export function useScrollAnimations() {
         gsap.to(scrollIndicator, {
           opacity: 0,
           y: 20,
+          force3D: true,
           scrollTrigger: {
             trigger: scrollIndicator,
             start: 'top 90%',
