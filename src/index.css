@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-@import 'lenis/dist/lenis.css';
 
 @tailwind base;
 @tailwind components;
@@ -7,50 +6,50 @@
 
 @layer base {
   :root {
-    --background: 0 0% 4.3%;
-    --foreground: 60 33% 97.5%;
+    --background: 240 10% 4%;
+    --foreground: 0 0% 95%;
 
-    --card: 0 0% 6%;
-    --card-foreground: 60 33% 97.5%;
+    --card: 240 8% 7%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 6%;
-    --popover-foreground: 60 33% 97.5%;
+    --popover: 240 8% 7%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 60 33% 97.5%;
-    --primary-foreground: 0 0% 4.3%;
+    --primary: 68 100% 50%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 60 33% 97.5%;
+    --secondary: 240 6% 12%;
+    --secondary-foreground: 0 0% 95%;
 
-    --muted: 0 0% 10%;
-    --muted-foreground: 60 5.6% 70.6%;
+    --muted: 240 6% 12%;
+    --muted-foreground: 240 5% 55%;
 
-    --accent: 60 33% 97.5%;
-    --accent-foreground: 0 0% 4.3%;
+    --accent: 68 100% 50%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 60 33% 97.5%;
+    --destructive-foreground: 0 0% 95%;
 
-    --border: 0 0% 14%;
-    --input: 0 0% 14%;
-    --ring: 60 33% 97.5%;
+    --border: 240 6% 15%;
+    --input: 240 6% 15%;
+    --ring: 68 100% 50%;
 
-    --radius: 0rem;
+    --radius: 0.5rem;
 
-    /* Custom Lola Lab tokens */
-    --dim: 60 33% 97.5%;
-    --soft: 60 33% 97.5%;
-    --gray: 60 5.6% 70.6%;
-    --accent-bg: 60 33% 97.5%;
+    --surface: 240 8% 7%;
+    --lime: 68 100% 50%;
+    --purple: 263 86% 76%;
+    --api-yellow: 38 92% 50%;
+    --api-orange: 25 95% 53%;
 
-    --sidebar-background: 0 0% 4.3%;
-    --sidebar-foreground: 60 33% 97.5%;
-    --sidebar-primary: 60 33% 97.5%;
-    --sidebar-primary-foreground: 0 0% 4.3%;
-    --sidebar-accent: 0 0% 10%;
-    --sidebar-accent-foreground: 60 33% 97.5%;
-    --sidebar-border: 0 0% 14%;
-    --sidebar-ring: 60 33% 97.5%;
+    --sidebar-background: 240 10% 4%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 68 100% 50%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 240 6% 12%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 240 6% 15%;
+    --sidebar-ring: 68 100% 50%;
   }
 }
 
@@ -69,48 +68,20 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-}
 
-@layer utilities {
-  .text-dim {
-    color: hsla(60, 33%, 97.5%, 0.35);
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
   }
-
-  .text-soft {
-    color: hsla(60, 33%, 97.5%, 0.6);
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
   }
-
-  .text-gray {
-    color: hsl(60, 5.6%, 70.6%);
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 3px;
   }
-
-  .bg-accent-surface {
-    background-color: hsla(60, 33%, 97.5%, 0.06);
-  }
-
-  .label-style {
-    @apply uppercase tracking-[0.2em] text-[10px] font-medium;
-    color: hsla(60, 33%, 97.5%, 0.35);
-  }
-
-  .section-spacing {
-    @apply py-24 md:py-36 lg:py-48;
-  }
-
-  @keyframes subtle-bounce {
-    0%, 100% { transform: translate3d(0, 0, 0); }
-    50% { transform: translate3d(0, 8px, 0); }
-  }
-
-  .animate-subtle-bounce {
-    animation: subtle-bounce 2s ease-in-out infinite;
-  }
-
-  /* GPU-accelerated scroll animations */
-  [data-anim] {
-    will-change: transform, opacity;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    transform: translate3d(0, 0, 0);
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground));
   }
 }
