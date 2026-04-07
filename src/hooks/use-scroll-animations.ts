@@ -40,22 +40,46 @@ export function useScrollAnimations() {
         });
       }
 
-      // ── Statement: word-by-word reveal ──
-      document.querySelectorAll('[data-anim="statement"]').forEach((el) => {
-        gsap.from(el, {
-          opacity: 0,
-          y: 20,
-          duration: 2.0,
-          force3D: true,
-          ease: 'power2.out',
-          immediateRender: false,
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 90%',
-            toggleActions: 'play none none none',
-          },
-        });
-      });
+      // ── Statement: horizontal parallax ──
+      const statementLine1 = document.querySelector('[data-anim="statement-line1"]');
+      const statementLine2 = document.querySelector('[data-anim="statement-line2"]');
+      const statementParent = statementLine1?.closest('section');
+
+      if (statementLine1) {
+        gsap.fromTo(statementLine1,
+          { x: 0, opacity: 0 },
+          {
+            x: -300,
+            opacity: 1,
+            force3D: true,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: statementParent,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            },
+          }
+        );
+      }
+
+      if (statementLine2) {
+        gsap.fromTo(statementLine2,
+          { x: 0, opacity: 0 },
+          {
+            x: 300,
+            opacity: 1,
+            force3D: true,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: statementParent,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            },
+          }
+        );
+      }
 
       // ── Skills: stagger cards ──
       const skillCards = document.querySelectorAll('[data-anim="skill-card"]');
