@@ -12,6 +12,43 @@ export const translations: Record<string, Record<Lang, string>> = {
   'hero.tagline': { en: 'AI is the medium. Direction is the craft.', pt: 'IA é o meio. Direção é o ofício.' },
   'hero.scroll': { en: 'SCROLL', pt: 'SCROLL' },
 
+  // Intro
+  'intro.text': {
+    en: 'LolaLab is an AI-powered creative direction studio for luxury fashion, beauty, and lifestyle brands. We craft cinematic visual storytelling — from concept to final cut — using a proprietary AI pipeline built for editorial precision and speed.',
+    pt: 'LolaLab é um estúdio de direção criativa com IA para marcas de moda de luxo, beleza e lifestyle. Criamos narrativas visuais cinematográficas — do conceito ao corte final — usando um pipeline proprietário de IA construído para precisão editorial e velocidade.',
+  },
+
+  // Services
+  'services.label': { en: 'WHAT WE DO', pt: 'O QUE FAZEMOS' },
+  'services.headline': {
+    en: 'End-to-end AI creative direction for the world\'s most discerning brands.',
+    pt: 'Direção criativa com IA de ponta a ponta para as marcas mais exigentes do mundo.',
+  },
+  'services.1.title': { en: 'AI Video Production', pt: 'Produção de Vídeo com IA' },
+  'services.1.desc': {
+    en: 'Hyper-realistic AI-generated models, product showcases, and campaign films using Midjourney, Veo, Kling, and Higgsfield.',
+    pt: 'Modelos hiper-realistas gerados por IA, showcases de produtos e filmes de campanha usando Midjourney, Veo, Kling e Higgsfield.',
+  },
+  'services.2.title': { en: 'Sensory Storytelling', pt: 'Narrativa Sensorial' },
+  'services.2.desc': {
+    en: 'Cinematic narratives that evoke emotion and desire — built for TikTok, Reels, e-commerce, and editorial.',
+    pt: 'Narrativas cinematográficas que evocam emoção e desejo — feitas para TikTok, Reels, e-commerce e editorial.',
+  },
+  'services.3.title': { en: 'Creative Direction', pt: 'Direção Criativa' },
+  'services.3.desc': {
+    en: 'Full brand aesthetic oversight from concept to execution — ensuring every frame meets luxury standards.',
+    pt: 'Supervisão estética completa da marca, do conceito à execução — garantindo que cada frame atenda aos padrões de luxo.',
+  },
+  'services.4.title': { en: 'AI Strategy & Pipeline', pt: 'Estratégia & Pipeline de IA' },
+  'services.4.desc': {
+    en: 'Custom AI workflows tailored to your brand\'s needs, from ideation to scaled content production.',
+    pt: 'Workflows de IA customizados para as necessidades da sua marca, da ideação à produção de conteúdo em escala.',
+  },
+
+  // CTA
+  'cta.work': { en: 'See the work.', pt: 'Veja o trabalho.' },
+  'cta.contact': { en: 'Or let\'s talk.', pt: 'Ou vamos conversar.' },
+
   // Statement
   'statement.line1': { en: 'Artificial intelligence expands possibility.', pt: 'Inteligência artificial expande possibilidades.' },
   'statement.line2': { en: 'Direction decides what deserves to exist.', pt: 'Direção decide o que merece existir.' },
@@ -28,7 +65,7 @@ export const translations: Record<string, Record<Lang, string>> = {
   'skill.soundtrack.title': { en: 'Sound Shapes Emotion', pt: 'Som Molda Emoção' },
   'skill.voice.title': { en: 'Cloned Voice, Authored Tone', pt: 'Voz Clonada, Tom Autoral' },
 
-  // About
+  // About (homepage)
   'about.label': { en: 'ABOUT', pt: 'SOBRE' },
   'about.name': { en: 'Gessika Olivieri', pt: 'Gessika Olivieri' },
   'about.bio1': {
@@ -48,7 +85,45 @@ export const translations: Record<string, Record<Lang, string>> = {
     pt: 'direção criativa com IA • narrativa cinematográfica • editorial de moda • design de personagens • produção de vídeo • figurino • copywriting • design de voz',
   },
 
-  // Contact
+  // About page
+  'aboutPage.title': { en: 'About', pt: 'Sobre' },
+  'aboutPage.p1': {
+    en: 'LolaLab was founded by Gessika Olivieri — a creative director with over a decade of experience in fashion, editorial, and brand storytelling. Her background spans JWT/WPP (where she led 360 campaigns for Ford, winning an Awwwards Site of the Day), luxury fashion, and digital creative strategy.',
+    pt: 'LolaLab foi fundada por Gessika Olivieri — uma diretora criativa com mais de uma década de experiência em moda, editorial e storytelling de marca. Sua trajetória passa pela JWT/WPP (onde liderou campanhas 360 para Ford, ganhando um Awwwards Site of the Day), moda de luxo e estratégia criativa digital.',
+  },
+  'aboutPage.p2': {
+    en: 'Today, LolaLab operates at the intersection of cinematic craft and generative AI. Every project follows a proprietary pipeline — from character design and keyframe generation through Midjourney, to motion and video via Veo, Kling, and Higgsfield, voice and sound through ElevenLabs, and final post-production with cinematic color grading.',
+    pt: 'Hoje, LolaLab opera na interseção de craft cinematográfico e IA generativa. Cada projeto segue um pipeline proprietário — do design de personagens e geração de keyframes via Midjourney, ao motion e vídeo via Veo, Kling e Higgsfield, voz e som via ElevenLabs, e pós-produção final com color grading cinematográfico.',
+  },
+  'aboutPage.p3': {
+    en: 'The result is content that feels directed, not generated. Every frame carries the intention and editorial sensibility of a trained creative eye — because luxury demands more than prompts. It demands vision.',
+    pt: 'O resultado é conteúdo que parece dirigido, não gerado. Cada frame carrega a intenção e a sensibilidade editorial de um olho criativo treinado — porque luxo exige mais do que prompts. Exige visão.',
+  },
+  'aboutPage.p4': {
+    en: 'LolaLab works with fashion houses, premium beauty brands, and luxury hospitality groups ready for the AI creative era.',
+    pt: 'LolaLab trabalha com casas de moda, marcas premium de beleza e grupos de hospitalidade de luxo prontos para a era criativa da IA.',
+  },
+
+  // Work page
+  'work.title': { en: 'Selected Work', pt: 'Trabalho Selecionado' },
+  'work.subtitle': {
+    en: 'AI-directed campaigns, films, and visual systems for luxury brands.',
+    pt: 'Campanhas, filmes e sistemas visuais dirigidos por IA para marcas de luxo.',
+  },
+  'work.pietra.title': { en: 'PIETRA Collection', pt: 'Coleção PIETRA' },
+  'work.pietra.cat': { en: 'FASHION', pt: 'MODA' },
+  'work.film.title': { en: 'Cinematic Brand Film', pt: 'Filme Cinematográfico de Marca' },
+  'work.film.cat': { en: 'FILM', pt: 'FILME' },
+  'work.character.title': { en: 'AI Character System', pt: 'Sistema de Personagens IA' },
+  'work.character.cat': { en: 'CHARACTER DESIGN', pt: 'DESIGN DE PERSONAGENS' },
+  'work.editorial.title': { en: 'Editorial Campaign', pt: 'Campanha Editorial' },
+  'work.editorial.cat': { en: 'BEAUTY', pt: 'BELEZA' },
+
+  // Contact page
+  'contactPage.title': { en: "Let's Talk", pt: 'Vamos Conversar' },
+  'contactPage.role': { en: 'Gessika Olivieri — Creative Director & Founder', pt: 'Gessika Olivieri — Diretora Criativa & Fundadora' },
+
+  // Contact (homepage)
   'contact.headline': { en: 'Start Something Worth Directing', pt: 'Comece Algo Que Vale Dirigir' },
   'contact.subtitle': {
     en: 'For campaigns, films, characters, and digital experiences shaped with intention.',
@@ -74,7 +149,7 @@ export const translations: Record<string, Record<Lang, string>> = {
   'cases.bewe.cta': { en: 'View Campaign', pt: 'Ver Campanha' },
 
   // Footer
-  'footer.rights': { en: '© 2026 Lola Lab. All rights reserved.', pt: '© 2026 Lola Lab. Todos os direitos reservados.' },
+  'footer.rights': { en: '© 2026 LolaLab. All rights reserved.', pt: '© 2026 LolaLab. Todos os direitos reservados.' },
   'footer.credit': { en: 'Design & Direction — Gessika Olivieri', pt: 'Design & Direção — Gessika Olivieri' },
 };
 
