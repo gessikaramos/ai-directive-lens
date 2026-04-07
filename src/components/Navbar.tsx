@@ -1,13 +1,14 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
-import { getLenis } from '@/hooks/use-lenis';
 import { Menu, X, Globe } from 'lucide-react';
 
 export default function Navbar() {
   const { lang, toggleLang } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -16,26 +17,12 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { key: 'nav.work', href: '#work' },
-    { key: 'nav.about', href: '#about' },
-    { key: 'nav.contact', href: '#contact' },
+    { key: 'nav.work', to: '/work' },
+    { key: 'nav.about', to: '/about' },
+    { key: 'nav.contact', to: '/contact' },
   ];
 
-  const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const target = document.querySelector(href);
-    if (!target) return;
-
-    const lenis = getLenis();
-    if (lenis) {
-      lenis.scrollTo(target as HTMLElement, { offset: -80 });
-    } else {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // Clean hash from URL to prevent Lenis conflicts
-    window.history.replaceState(null, '', window.location.pathname);
-  }, []);
+  const isHome = location.pathname === '/';
 
   return (
     <>
@@ -45,35 +32,24 @@ export default function Navbar() {
         }`}
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 flex items-center justify-between">
-          <a
-            href="#"
-            className="block"
-            onClick={(e) => {
-              e.preventDefault();
-              const lenis = getLenis();
-              if (lenis) lenis.scrollTo(0);
-              else window.scrollTo({ top: 0, behavior: 'smooth' });
-              window.history.replaceState(null, '', window.location.pathname);
-            }}
-          >
+          <Link to="/" className="block">
             <img
               src="/images/logos/logo-horizontal.svg"
               alt="Lola Lab"
               className="h-5 md:h-6 opacity-90"
             />
-          </a>
+          </Link>
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-10">
             {navLinks.map(link => (
-              <a
+              <Link
                 key={link.key}
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link.href)}
+                to={link.to}
                 className="label-style underline-offset-4 hover:underline hover:text-foreground transition-all duration-300"
               >
                 {t(link.key, lang)}
-              </a>
+              </Link>
             ))}
             <button
               onClick={toggleLang}
@@ -105,14 +81,14 @@ export default function Navbar() {
             <X className="w-6 h-6" />
           </button>
           {navLinks.map(link => (
-            <a
+            <Link
               key={link.key}
-              href={link.href}
-              onClick={(e) => { handleNavClick(e, link.href); setMobileOpen(false); }}
+              to={link.to}
+              onClick={() => setMobileOpen(false)}
               className="text-2xl font-light tracking-[0.15em] text-soft underline-offset-4 hover:underline hover:text-foreground transition-all duration-300"
             >
               {t(link.key, lang)}
-            </a>
+            </Link>
           ))}
           <button
             onClick={() => { toggleLang(); setMobileOpen(false); }}

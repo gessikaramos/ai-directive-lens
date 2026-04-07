@@ -3,6 +3,9 @@ import { useLenis } from '@/hooks/use-lenis';
 import { useScrollAnimations } from '@/hooks/use-scroll-animations';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
+import IntroSection from '@/components/IntroSection';
+import ServicesSection from '@/components/ServicesSection';
+import HomeCTA from '@/components/HomeCTA';
 import StatementSection from '@/components/StatementSection';
 import SkillsSection from '@/components/SkillsSection';
 import AboutSection from '@/components/AboutSection';
@@ -19,6 +22,9 @@ const IndexContent = () => {
       <Navbar />
       <main>
         <HeroSection />
+        <IntroSection />
+        <ServicesSection />
+        <HomeCTA />
         <StatementSection />
         <SkillsSection />
         <CasesSection />
