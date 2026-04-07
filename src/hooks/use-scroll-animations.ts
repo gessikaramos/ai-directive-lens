@@ -47,9 +47,9 @@ export function useScrollAnimations() {
 
       if (statementLine1) {
         gsap.fromTo(statementLine1,
-          { x: 0, opacity: 0 },
+          { x: -300, opacity: 0 },
           {
-            x: -300,
+            x: 0,
             opacity: 1,
             force3D: true,
             ease: 'none',
