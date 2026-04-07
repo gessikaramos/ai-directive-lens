@@ -16,7 +16,7 @@ export default function StatementSection() {
         <p
           data-anim="statement-line"
           data-direction="reverse"
-          className="text-soft text-[clamp(1.5rem,4vw,3.5rem)] font-extralight leading-relaxed tracking-tight"
+          className="text-[clamp(1.5rem,4vw,3.5rem)] font-extralight leading-relaxed tracking-tight" style={{ color: 'hsla(60, 33%, 97.5%, 0.7)' }}
         >
           {t('statement.line2', lang)}
         </p>
