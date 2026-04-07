@@ -59,7 +59,7 @@ export function useScrollAnimations() {
         });
         // Horizontal parallax on scrub
         gsap.to(el, {
-          x: direction * 120,
+          x: direction * 300,
           force3D: true,
           ease: 'none',
           scrollTrigger: {
