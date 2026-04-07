@@ -40,12 +40,14 @@ export function useScrollAnimations() {
         });
       }
 
-      // ── Statement: word-by-word reveal ──
-      document.querySelectorAll('[data-anim="statement"]').forEach((el) => {
+      // ── Statement: horizontal parallax ──
+      document.querySelectorAll('[data-anim="statement-line"]').forEach((el) => {
+        const direction = (el as HTMLElement).dataset.direction === 'reverse' ? 1 : -1;
+        // Fade in on enter
         gsap.from(el, {
           opacity: 0,
-          y: 20,
-          duration: 2.0,
+          y: 30,
+          duration: 1.2,
           force3D: true,
           ease: 'power2.out',
           immediateRender: false,
@@ -53,6 +55,18 @@ export function useScrollAnimations() {
             trigger: el,
             start: 'top 90%',
             toggleActions: 'play none none none',
+          },
+        });
+        // Horizontal parallax on scrub
+        gsap.to(el, {
+          x: direction * 120,
+          force3D: true,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
           },
         });
       });
