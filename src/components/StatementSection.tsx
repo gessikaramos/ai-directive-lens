@@ -9,7 +9,7 @@ export default function StatementSection() {
       <div className="max-w-[1200px] w-full overflow-hidden text-center">
         <p
           data-anim="statement-line"
-          className="text-soft text-[clamp(1.5rem,4vw,3.5rem)] font-extralight leading-relaxed tracking-tight mb-4 md:mb-6"
+          className="text-[clamp(1.5rem,4vw,3.5rem)] font-extralight leading-relaxed tracking-tight mb-4 md:mb-6" style={{ color: 'hsla(60, 33%, 97.5%, 0.7)' }}
         >
           {t('statement.line1', lang)}
         </p>
