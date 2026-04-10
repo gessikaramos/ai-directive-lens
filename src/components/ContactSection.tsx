@@ -1,6 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
+import { toast } from 'sonner';
 
 export default function ContactSection() {
   const { lang } = useLanguage();
@@ -14,21 +15,34 @@ export default function ContactSection() {
     setError(false);
 
     const form = e.currentTarget;
-    const data = new FormData(form);
+    const formData = new FormData(form);
+
+    const payload = {
+      access_key: 'f1a2b3c4-placeholder',
+      name: formData.get('name'),
+      email: formData.get('email'),
+      message: formData.get('message'),
+      to: 'hello@lolalabstudio.com',
+      subject: `New message from ${formData.get('name')} via LolaLab website`,
+    };
 
     try {
-      const res = await fetch('https://formspree.io/f/xvzwvgby', {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        body: data,
-        headers: { Accept: 'application/json' },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
       });
-      if (res.ok) {
+      const data = await res.json();
+      if (data.success) {
         setSent(true);
+        toast.success(lang === 'en' ? 'Message sent successfully!' : 'Mensagem enviada com sucesso!');
       } else {
         setError(true);
+        toast.error(lang === 'en' ? 'Failed to send message.' : 'Falha ao enviar mensagem.');
       }
     } catch {
       setError(true);
+      toast.error(lang === 'en' ? 'Something went wrong.' : 'Algo deu errado.');
     } finally {
       setSending(false);
     }
