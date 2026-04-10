@@ -1,5 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { useLanguage } from '@/hooks/use-language';
+import { toast } from 'sonner';
 import { t } from '@/lib/i18n';
 
 export default function ContactSection() {
