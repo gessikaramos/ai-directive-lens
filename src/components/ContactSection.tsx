@@ -1,5 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { useLanguage } from '@/hooks/use-language';
+import { toast } from 'sonner';
 import { t } from '@/lib/i18n';
 
 export default function ContactSection() {
@@ -24,6 +25,7 @@ export default function ContactSection() {
       });
       if (res.ok) {
         setSent(true);
+        toast.success(lang === 'en' ? 'Message sent! We\'ll get back to you soon.' : 'Mensagem enviada! Retornaremos em breve.');
       } else {
         setError(true);
       }
