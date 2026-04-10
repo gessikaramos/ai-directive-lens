@@ -59,7 +59,7 @@ export default function Navbar() {
             <img
               src="/images/logos/logo-horizontal.svg"
               alt="Lola Lab"
-              className="h-8 md:h-10 opacity-90"
+              className="h-5 md:h-6 opacity-90"
             />
           </a>
 

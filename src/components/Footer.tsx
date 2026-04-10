@@ -10,7 +10,7 @@ export default function Footer() {
         <img
           src="/images/logos/logo-stacked.svg"
           alt="Lola Lab"
-          className="h-20 md:h-28 opacity-70"
+          className="h-12 md:h-16 opacity-70"
         />
         <p className="text-dim text-xs tracking-wide">{t('footer.rights', lang)}</p>
         <p className="text-dim text-xs tracking-wide">{t('footer.credit', lang)}</p>
