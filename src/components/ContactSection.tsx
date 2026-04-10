@@ -25,6 +25,7 @@ export default function ContactSection() {
       });
       if (res.ok) {
         setSent(true);
+        toast.success(lang === 'en' ? 'Message sent! We\'ll get back to you soon.' : 'Mensagem enviada! Retornaremos em breve.');
       } else {
         setError(true);
       }
