@@ -4,7 +4,9 @@ const CreativePipelineSection = () => {
   return (
     <section className="section-spacing">
       <div className="px-6 md:px-12 lg:px-20">
-        <p className="label-style text-champagne mb-4">CREATIVE PIPELINE</p>
+        <h2 className="mb-4 font-serif text-4xl italic tracking-wide text-foreground md:text-6xl">
+          Creative <span className="text-champagne">Pipeline</span>
+        </h2>
         <p className="text-soft text-lg md:text-xl mb-10">
           From concept to screen — what's moving through the studio right now.
         </p>
