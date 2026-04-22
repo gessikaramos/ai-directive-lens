@@ -23,8 +23,8 @@ const IndexContent = () => {
         <StatementSection />
         <SkillsSection />
         <CasesSection />
-        <AboutSection />
         <CreativePipelineSection />
+        <AboutSection />
         <ContactSection />
       </main>
       <Footer />
