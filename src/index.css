@@ -42,6 +42,9 @@
     --soft: 60 33% 97.5%;
     --gray: 60 5.6% 70.6%;
     --accent-bg: 60 33% 97.5%;
+    --champagne: 39 43% 61%;
+    --pipeline-card: 0 0% 7.8%;
+    --pipeline-card-lift: 0 0% 11%;
 
     --sidebar-background: 0 0% 4.3%;
     --sidebar-foreground: 60 33% 97.5%;
@@ -91,6 +94,23 @@
   .label-style {
     @apply uppercase tracking-[0.2em] text-[10px] font-medium;
     color: hsla(60, 33%, 97.5%, 0.35);
+  }
+
+  .text-champagne {
+    color: hsl(var(--champagne));
+  }
+
+  .pipeline-card-surface {
+    background: linear-gradient(145deg, hsl(var(--pipeline-card)), hsl(var(--pipeline-card-lift)));
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 
   .section-spacing {
