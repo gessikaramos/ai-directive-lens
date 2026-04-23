@@ -113,6 +113,21 @@
     display: none;
   }
 
+  .embedsocial-hashtag,
+  .embedsocial-hashtag * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .embedsocial-hashtag ::-webkit-scrollbar {
+    display: none;
+  }
+
+  .es-widget-branding,
+  .feed-powered-by-es {
+    display: none !important;
+  }
+
   .section-spacing {
     @apply py-24 md:py-36 lg:py-48;
   }
