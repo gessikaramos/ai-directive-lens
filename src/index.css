@@ -119,8 +119,27 @@
     -ms-overflow-style: none;
   }
 
+  .embedsocial-hashtag {
+    overflow: hidden !important;
+  }
+
+  iframe[src*="embedsocial"] {
+    overflow: hidden !important;
+  }
+
+  .embedsocial-hashtag > div,
+  .embedsocial-hashtag > div > div {
+    overflow: hidden !important;
+    scrollbar-width: none !important;
+  }
+
   .embedsocial-hashtag ::-webkit-scrollbar {
     display: none;
+  }
+
+  .embedsocial-hashtag > div::-webkit-scrollbar,
+  .embedsocial-hashtag > div > div::-webkit-scrollbar {
+    display: none !important;
   }
 
   .es-widget-branding,
