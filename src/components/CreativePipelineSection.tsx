@@ -1,6 +1,16 @@
-const pipelineCards = Array.from({ length: 6 }, (_, index) => index + 1);
+import { useEffect } from "react";
 
 const CreativePipelineSection = () => {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.id = "EmbedSocialHashtagScript";
+    script.src = "https://embedsocial.com/cdn/ht.js";
+
+    if (!document.getElementById("EmbedSocialHashtagScript")) {
+      document.head.appendChild(script);
+    }
+  }, []);
+
   return (
     <section className="section-spacing">
       <div className="px-6 md:px-12 lg:px-20">
@@ -10,18 +20,18 @@ const CreativePipelineSection = () => {
         </p>
       </div>
 
-      <div className="overflow-x-auto scrollbar-none snap-x snap-mandatory scroll-smooth px-6 md:px-12 lg:px-20">
-        <div className="flex gap-5">
-          {pipelineCards.map((card) => (
-            <article
-              key={card}
-              className="pipeline-card-surface relative aspect-[4/5] w-[280px] shrink-0 snap-start overflow-hidden rounded border border-[hsl(var(--champagne)/0.15)] transition duration-300 hover:scale-[1.02] hover:border-[hsl(var(--champagne)/0.45)] hover:shadow-[0_0_24px_hsl(var(--champagne)/0.12)]"
-            >
-              <div className="absolute inset-x-0 bottom-0 border-t border-[hsl(var(--champagne)/0.12)] bg-background/70 px-4 py-3">
-                <p className="text-sm text-foreground/80">Coming soon</p>
-              </div>
-            </article>
-          ))}
+      <div className="px-6 md:px-12 lg:px-20">
+        <div className="embedsocial-hashtag" data-ref="cfbc2fcc7de86a91675a9e1906653c7eec3c0fa0">
+          <a
+            className="feed-powered-by-es feed-powered-by-es-feed-img es-widget-branding"
+            href="https://embedsocial.com/instagram-widget/"
+            target="_blank"
+            title="Instagram widget"
+            rel="noopener noreferrer"
+          >
+            <img src="https://embedsocial.com/cdn/icon/embedsocial-logo.webp" alt="EmbedSocial" />
+            <div className="es-widget-branding-text">Instagram widget</div>
+          </a>
         </div>
       </div>
 
