@@ -147,6 +147,27 @@
     display: none !important;
   }
 
+  /* Hide EmbedSocial widget header/hero section */
+  .embedsocial-hashtag .es-widget-header,
+  .embedsocial-hashtag .es-header,
+  .embedsocial-hashtag .es-hero,
+  .embedsocial-hashtag .es-hero-section,
+  .embedsocial-hashtag [class*="hero"],
+  .embedsocial-hashtag [class*="header"],
+  .embedsocial-hashtag [class*="Header"],
+  .embedsocial-hashtag [class*="cta-button"],
+  .embedsocial-hashtag [class*="CTA"],
+  .embedsocial-hashtag [class*="badge"] {
+    display: none !important;
+  }
+
+  /* Make widget background transparent/dark */
+  .embedsocial-hashtag,
+  .embedsocial-hashtag > div {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+
   .section-spacing {
     @apply py-24 md:py-36 lg:py-48;
   }
