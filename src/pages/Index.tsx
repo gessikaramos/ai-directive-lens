@@ -6,7 +6,6 @@ import HeroSection from '@/components/HeroSection';
 import StatementSection from '@/components/StatementSection';
 import SkillsSection from '@/components/SkillsSection';
 import AboutSection from '@/components/AboutSection';
-import CasesSection from '@/components/CasesSection';
 import CreativePipelineSection from '@/components/CreativePipelineSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
@@ -22,7 +21,6 @@ const IndexContent = () => {
         <HeroSection />
         <StatementSection />
         <SkillsSection />
-        <CasesSection />
         <CreativePipelineSection />
         <AboutSection />
         <ContactSection />
