@@ -11,7 +11,7 @@ import {
   UGCContent,
   SoundtrackContent,
   VoiceDesignContent,
-  CoursesContent,
+  AtelierContent,
 } from './SkillModalContents';
 
 type SkillCategory = 'all' | 'character' | 'fashion' | 'video' | 'more';
