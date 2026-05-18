@@ -278,7 +278,7 @@ export function VideoContent() {
       <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">Motion With Intention</h3>
       <p className="text-soft max-w-2xl mb-8 leading-relaxed">
         Cinematic video production using AI pipelines — from keyframes to graded final cut.
-        Tools include Higgsfield, Kling, Veo, and DaVinci Resolve for professional post-production.
+        Tools include Kling 3.0, Veo, Seedance, and DaVinci Resolve for professional post-production.
       </p>
 
       <SectionLabel>Pipeline</SectionLabel>
