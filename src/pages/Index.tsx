@@ -22,7 +22,6 @@ const IndexContent = () => {
         <StatementSection />
         <SkillsSection />
         <CreativePipelineSection />
-        <CreativePipelineSection />
         <AboutSection />
         <ContactSection />
       </main>
