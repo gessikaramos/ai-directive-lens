@@ -108,7 +108,7 @@ const modalContent: Record<string, React.FC> = {
   ugc: UGCContent,
   soundtrack: SoundtrackContent,
   voice: VoiceDesignContent,
-  courses: CoursesContent,
+  atelier: AtelierContent,
 };
 
 const SkillsSection = () => {
