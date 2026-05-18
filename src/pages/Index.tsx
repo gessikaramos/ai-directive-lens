@@ -21,7 +21,7 @@ const IndexContent = () => {
         <HeroSection />
         <StatementSection />
         <SkillsSection />
-        <CasesSection />
+        <CreativePipelineSection />
         <CreativePipelineSection />
         <AboutSection />
         <ContactSection />
