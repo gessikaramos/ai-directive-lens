@@ -278,7 +278,7 @@ export function VideoContent() {
       <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">Motion With Intention</h3>
       <p className="text-soft max-w-2xl mb-8 leading-relaxed">
         Cinematic video production using AI pipelines — from keyframes to graded final cut.
-        Tools include Higgsfield, Kling, Veo, and DaVinci Resolve for professional post-production.
+        Tools include Kling 3.0, Veo, Seedance, and DaVinci Resolve for professional post-production.
       </p>
 
       <SectionLabel>Pipeline</SectionLabel>
@@ -412,67 +412,42 @@ export function VoiceDesignContent() {
 }
 
 /* ════════════════════════════════════════════════
-   8. Courses
+   8. Atelier
    ════════════════════════════════════════════════ */
-export function CoursesContent() {
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email) {
-      setSubmitted(true);
-    }
-  };
-
+export function AtelierContent() {
   return (
     <div>
-      <p className="label-style mb-2">Courses</p>
-      <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">Learn AI Creative Direction</h3>
+      <p className="label-style mb-2">Atelier</p>
+      <h3 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">Cohort-Based Formation for AI Cinema Directors</h3>
       <p className="text-soft max-w-2xl mb-8 leading-relaxed">
-        We are preparing online courses on AI creative direction, visual storytelling, and
-        cinematic production pipelines. From character design to post-production — learn the
-        methods behind the work.
+        Lola Lab Atelier is a laboratory for directors learning to lead cinematic AI work — not a course.
+        Cohort-based, experimental, founded on a single principle: AI is the medium, direction is the craft.
+        Method, not tooling. Taste, not tutorials.
       </p>
 
-      <SectionLabel>What to Expect</SectionLabel>
+      <SectionLabel>What the Cohort Develops</SectionLabel>
       <ul className="space-y-2 text-soft text-sm leading-relaxed max-w-2xl">
-        <li>• AI character design and visual consistency</li>
-        <li>• Fashion editorial direction with AI tools</li>
-        <li>• Cinematic video production pipelines</li>
-        <li>• Prompt engineering for creative professionals</li>
-        <li>• Post-production and color grading workflows</li>
+        <li>• A director's vocabulary — 8 cinematic pillars applied to AI work</li>
+        <li>• Consistency methods — characters, skin, motion, light across scenes</li>
+        <li>• Direction through compression — prompts as condensed creative decisions</li>
+        <li>• A complete cinematic pipeline — from concept to final cut</li>
+        <li>• Editorial sensibility — restraint, intention, taste</li>
       </ul>
 
       <div className="mt-12 max-w-md">
-        <SectionLabel>Join the Waitlist</SectionLabel>
+        <SectionLabel>Early Access</SectionLabel>
         <p className="text-soft text-sm mb-6">
-          Be the first to know when enrollment opens. Leave your email and we will notify you.
+          Cohort one is being shaped. Early access opens first; enrollment follows. Join the list and you will be the first to know.
         </p>
 
-        {submitted ? (
-          <div className="p-6 border border-border bg-accent-surface text-center">
-            <p className="text-foreground font-medium mb-1">You are on the list.</p>
-            <p className="text-soft text-sm">We will reach out when the first cohort is ready.</p>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="flex gap-3">
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              className="flex-1 bg-transparent border-b border-border px-2 py-3 text-sm text-foreground placeholder:text-dim focus:outline-none focus:border-foreground transition-colors"
-            />
-            <button
-              type="submit"
-              className="px-6 py-3 text-sm font-medium text-primary-foreground bg-foreground hover:bg-foreground/90 transition-colors whitespace-nowrap"
-            >
-              Notify Me
-            </button>
-          </form>
-        )}
+        <a
+          href="https://lolalab-atelier.beehiiv.com/subscribe"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block px-6 py-3 text-sm font-medium text-primary-foreground bg-foreground hover:bg-foreground/90 transition-colors"
+        >
+          Join the Early Access list →
+        </a>
       </div>
 
       <ModalCTA />

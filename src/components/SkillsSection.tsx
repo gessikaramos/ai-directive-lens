@@ -11,7 +11,7 @@ import {
   UGCContent,
   SoundtrackContent,
   VoiceDesignContent,
-  CoursesContent,
+  AtelierContent,
 } from './SkillModalContents';
 
 type SkillCategory = 'all' | 'character' | 'fashion' | 'video' | 'more';
@@ -84,10 +84,10 @@ const skills: SkillCard[] = [
     category: ['more'],
   },
   {
-    slug: 'courses',
-    label: 'Courses',
-    titleKey: 'skill.courses.title',
-    tagline: 'Learn AI creative direction from the source.',
+    slug: 'atelier',
+    label: 'Atelier',
+    titleKey: 'skill.atelier.title',
+    tagline: 'Cohort-based formation for AI cinema directors.',
     thumbnail: '/images/luma.png',
     category: ['more'],
   },
@@ -108,7 +108,7 @@ const modalContent: Record<string, React.FC> = {
   ugc: UGCContent,
   soundtrack: SoundtrackContent,
   voice: VoiceDesignContent,
-  courses: CoursesContent,
+  atelier: AtelierContent,
 };
 
 const SkillsSection = () => {
