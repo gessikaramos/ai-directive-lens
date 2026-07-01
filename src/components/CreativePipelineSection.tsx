@@ -1,54 +1,60 @@
-import { useEffect } from "react";
+import { useLanguage } from '@/hooks/use-language';
+import { t } from '@/lib/i18n';
 
-const CreativePipelineSection = () => {
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.id = "EmbedSocialHashtagScript";
-    script.src = "https://embedsocial.com/cdn/ht.js";
-
-    if (!document.getElementById("EmbedSocialHashtagScript")) {
-      document.head.appendChild(script);
-    }
-  }, []);
+const SelectedWorkSection = () => {
+  const { lang } = useLanguage();
 
   return (
-    <section className="section-spacing">
-      <div className="px-6 md:px-12 lg:px-20">
-        <p className="label-style text-champagne mb-4">STUDIO FEED</p>
-        <p className="text-soft text-lg md:text-xl mb-10">
-          From concept to screen — what's moving through the studio right now.
-        </p>
-      </div>
+    <section id="selected" className="section-spacing px-6 md:px-12 lg:px-20 bg-background">
+      <div className="max-w-[1200px] mx-auto">
+        <span className="label-style block mb-16">{t('selected.label', lang)}</span>
 
-      <div className="px-6 md:px-12 lg:px-20">
-        <div className="overflow-hidden">
-          <div className="embedsocial-hashtag" data-ref="cfbc2fcc7de86a91675a9e1906653c7eec3c0fa0">
-            <a
-              className="feed-powered-by-es feed-powered-by-es-feed-img es-widget-branding"
-              href="https://embedsocial.com/instagram-widget/"
-              target="_blank"
-              title="Instagram widget"
-              rel="noopener noreferrer"
-            >
-              <img src="https://embedsocial.com/cdn/icon/embedsocial-logo.webp" alt="EmbedSocial" />
-              <div className="es-widget-branding-text">Instagram widget</div>
-            </a>
+        {/* MasterChef */}
+        <article data-anim="skill-card" className="mb-24 md:mb-32">
+          <div className="aspect-video w-full bg-card mb-8 overflow-hidden">
+            <iframe
+              className="w-full h-full"
+              src="https://www.youtube.com/embed/MlNSjBN3xbc?rel=0"
+              title="MasterChef — LolaLab"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
           </div>
-        </div>
-      </div>
+          <div className="max-w-[820px]">
+            <h3
+              className="text-2xl md:text-4xl text-ink mb-3 tracking-tight"
+              style={{ fontWeight: 500 }}
+            >
+              {t('selected.masterchef.title', lang)}
+            </h3>
+            <p className="label-style mb-5">{t('selected.masterchef.client', lang)}</p>
+            <p className="text-base md:text-lg text-ink-soft leading-relaxed">
+              {t('selected.masterchef.desc', lang)}
+            </p>
+          </div>
+        </article>
 
-      <div className="px-6 md:px-12 lg:px-20 mt-8">
-        <a
-          href="https://www.instagram.com/lolalabstudio/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="label-style text-champagne transition-opacity hover:opacity-80"
-        >
-          Follow @lolalabstudio
-        </a>
+        {/* PIETRA */}
+        <article data-anim="skill-card">
+          <div className="max-w-[820px]">
+            <h3
+              className="text-2xl md:text-4xl text-ink mb-5 tracking-tight"
+              style={{ fontWeight: 500 }}
+            >
+              {t('selected.pietra.title', lang)}
+            </h3>
+            <p className="text-base md:text-lg text-ink-soft leading-relaxed mb-6">
+              {t('selected.pietra.desc', lang)}
+            </p>
+            <p className="text-xs text-ink-soft/70 italic leading-relaxed">
+              {t('selected.pietra.legal', lang)}
+            </p>
+          </div>
+        </article>
       </div>
     </section>
   );
 };
 
-export default CreativePipelineSection;
+export default SelectedWorkSection;

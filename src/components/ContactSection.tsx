@@ -1,129 +1,47 @@
-import { useState, FormEvent } from 'react';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
-import { toast } from 'sonner';
 
 export default function ContactSection() {
   const { lang } = useLanguage();
-  const [sent, setSent] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [error, setError] = useState(false);
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSending(true);
-    setError(false);
-
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
-    const payload = {
-      access_key: 'f1a2b3c4-placeholder',
-      name: formData.get('name'),
-      email: formData.get('email'),
-      message: formData.get('message'),
-      to: 'hello@lolalabstudio.com',
-      subject: `New message from ${formData.get('name')} via LolaLab website`,
-    };
-
-    try {
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setSent(true);
-        toast.success(lang === 'en' ? 'Message sent successfully!' : 'Mensagem enviada com sucesso!');
-      } else {
-        setError(true);
-        toast.error(lang === 'en' ? 'Failed to send message.' : 'Falha ao enviar mensagem.');
-      }
-    } catch {
-      setError(true);
-      toast.error(lang === 'en' ? 'Something went wrong.' : 'Algo deu errado.');
-    } finally {
-      setSending(false);
-    }
-  };
 
   const socials = [
     { label: 'LINKEDIN', href: 'https://www.linkedin.com/in/gessikaolivieri/' },
     { label: 'INSTAGRAM', href: 'https://www.instagram.com/lolalabstudio/' },
+    { label: 'YOUTUBE', href: 'https://www.youtube.com/@lolalabstudio' },
     { label: 'UPWORK', href: 'https://www.upwork.com/freelancers/lolalabstudio?mp_source=share' },
-    { label: 'CONTRA', href: 'https://contra.com/gessika_olivieri_doyc6cg0' },
   ];
 
   return (
     <section id="contact" className="section-spacing px-6 md:px-10 bg-background">
-      <div data-anim="contact" className="max-w-[700px] mx-auto">
-        <h2 className="text-3xl md:text-5xl font-light tracking-tight text-foreground mb-4">
+      <div data-anim="contact" className="max-w-[820px] mx-auto">
+        <span className="label-style block mb-10">CONTACT</span>
+
+        <h2
+          className="text-3xl md:text-5xl tracking-tight text-ink mb-6"
+          style={{ fontWeight: 300 }}
+        >
           {t('contact.headline', lang)}
         </h2>
-        <p className="text-base md:text-lg font-light text-soft mb-14">
+        <p className="text-base md:text-lg text-ink-soft mb-10">
           {t('contact.subtitle', lang)}
         </p>
 
-        {sent ? (
-          <p className="text-lg text-foreground font-light">{t('contact.sent', lang)}</p>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <input
-              type="text"
-              name="name"
-              required
-              placeholder={t('contact.name', lang)}
-              className="w-full bg-transparent border-b border-border pb-3 text-foreground placeholder:text-dim focus:outline-none focus:border-foreground transition-colors duration-300 font-light"
-            />
-            <input
-              type="email"
-              name="email"
-              required
-              placeholder={t('contact.email', lang)}
-              className="w-full bg-transparent border-b border-border pb-3 text-foreground placeholder:text-dim focus:outline-none focus:border-foreground transition-colors duration-300 font-light"
-            />
-            <textarea
-              name="message"
-              required
-              rows={4}
-              placeholder={t('contact.message', lang)}
-              className="w-full bg-transparent border-b border-border pb-3 text-foreground placeholder:text-dim focus:outline-none focus:border-foreground transition-colors duration-300 font-light resize-none"
-            />
-            {error && (
-              <p className="text-red-400 text-sm font-light">
-                {lang === 'en' ? 'Something went wrong. Please try again or email directly.' : 'Algo deu errado. Tente novamente ou envie um email diretamente.'}
-              </p>
-            )}
-            <button
-              type="submit"
-              disabled={sending}
-              className="label-style border border-foreground/30 px-8 py-3 hover:bg-foreground hover:text-background transition-all duration-500 tracking-[0.2em] hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-wait"
-            >
-              {sending
-                ? (lang === 'en' ? 'Sending...' : 'Enviando...')
-                : t('contact.send', lang)}
-            </button>
-          </form>
-        )}
-
-        {/* Email */}
         <a
           href="mailto:hello@lolalabstudio.com"
-          className="block mt-14 text-soft hover:text-foreground underline-offset-4 hover:underline transition-colors duration-300 font-light"
+          className="inline-block text-xl md:text-2xl text-bronze hover:text-bronze-soft transition-colors duration-300"
+          style={{ fontWeight: 500 }}
         >
           hello@lolalabstudio.com
         </a>
 
-        {/* Social links */}
-        <div className="flex flex-wrap gap-6 md:gap-10 mt-8">
+        <div className="flex flex-wrap gap-6 md:gap-10 mt-16">
           {socials.map(s => (
             <a
               key={s.label}
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="label-style underline-offset-4 hover:underline hover:text-foreground transition-colors duration-300"
+              className="label-style underline-offset-4 hover:underline hover:text-ink transition-colors duration-300"
             >
               {s.label}
             </a>
