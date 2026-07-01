@@ -9,15 +9,15 @@ export default function StatementSection() {
       <div className="max-w-[1200px] w-full overflow-visible text-center">
         <p
           data-anim="statement-line1"
-          className="text-[clamp(1.5rem,4vw,3.5rem)] font-extralight leading-relaxed tracking-tight mb-4 md:mb-6 overflow-visible"
-          style={{ color: 'hsla(60, 33%, 97.5%, 0.7)' }}
+          className="text-[clamp(1.5rem,4vw,3.5rem)] leading-relaxed tracking-tight mb-4 md:mb-6 text-ink"
+          style={{ fontWeight: 300 }}
         >
           {t('statement.line1', lang)}
         </p>
         <p
           data-anim="statement-line2"
-          className="text-[clamp(1.5rem,4vw,3.5rem)] font-extralight leading-relaxed tracking-tight overflow-visible"
-          style={{ color: 'hsla(60, 33%, 97.5%, 0.7)' }}
+          className="text-[clamp(1.5rem,4vw,3.5rem)] leading-relaxed tracking-tight text-ink"
+          style={{ fontWeight: 300 }}
         >
           {t('statement.line2', lang)}
         </p>

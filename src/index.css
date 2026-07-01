@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import 'lenis/dist/lenis.css';
 
 @tailwind base;
@@ -7,53 +7,56 @@
 
 @layer base {
   :root {
-    --background: 0 0% 4.3%;
-    --foreground: 60 33% 97.5%;
+    /* LolaLab canon palette */
+    /* Cream #F4EFE6 */
+    --background: 38 33% 93%;
+    /* Ink #2A2520 */
+    --foreground: 30 14% 15%;
 
-    --card: 0 0% 6%;
-    --card-foreground: 60 33% 97.5%;
+    /* Paper #FAF7F1 */
+    --card: 40 43% 97%;
+    --card-foreground: 30 14% 15%;
 
-    --popover: 0 0% 6%;
-    --popover-foreground: 60 33% 97.5%;
+    --popover: 40 43% 97%;
+    --popover-foreground: 30 14% 15%;
 
-    --primary: 60 33% 97.5%;
-    --primary-foreground: 0 0% 4.3%;
+    /* Bronze #9C6B3A */
+    --primary: 28 46% 42%;
+    --primary-foreground: 40 43% 97%;
 
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 60 33% 97.5%;
+    --secondary: 40 43% 97%;
+    --secondary-foreground: 30 14% 15%;
 
-    --muted: 0 0% 10%;
-    --muted-foreground: 60 5.6% 70.6%;
+    --muted: 40 43% 97%;
+    /* Ink-soft #5A4F44 */
+    --muted-foreground: 30 14% 31%;
 
-    --accent: 60 33% 97.5%;
-    --accent-foreground: 0 0% 4.3%;
+    --accent: 28 46% 42%;
+    --accent-foreground: 40 43% 97%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 60 33% 97.5%;
+    --destructive: 0 55% 45%;
+    --destructive-foreground: 40 43% 97%;
 
-    --border: 0 0% 14%;
-    --input: 0 0% 14%;
-    --ring: 60 33% 97.5%;
+    --border: 30 14% 82%;
+    --input: 30 14% 82%;
+    --ring: 28 46% 42%;
 
     --radius: 0rem;
 
-    /* Custom Lola Lab tokens */
-    --dim: 60 33% 97.5%;
-    --soft: 60 33% 97.5%;
-    --gray: 60 5.6% 70.6%;
-    --accent-bg: 60 33% 97.5%;
-    --champagne: 39 43% 61%;
-    --pipeline-card: 0 0% 7.8%;
-    --pipeline-card-lift: 0 0% 11%;
+    /* Custom LolaLab tokens */
+    --bronze: 28 46% 42%;
+    --bronze-soft: 25 47% 60%;
+    --ink: 30 14% 15%;
+    --ink-soft: 30 14% 31%;
 
-    --sidebar-background: 0 0% 4.3%;
-    --sidebar-foreground: 60 33% 97.5%;
-    --sidebar-primary: 60 33% 97.5%;
-    --sidebar-primary-foreground: 0 0% 4.3%;
-    --sidebar-accent: 0 0% 10%;
-    --sidebar-accent-foreground: 60 33% 97.5%;
-    --sidebar-border: 0 0% 14%;
-    --sidebar-ring: 60 33% 97.5%;
+    --sidebar-background: 38 33% 93%;
+    --sidebar-foreground: 30 14% 15%;
+    --sidebar-primary: 28 46% 42%;
+    --sidebar-primary-foreground: 40 43% 97%;
+    --sidebar-accent: 40 43% 97%;
+    --sidebar-accent-foreground: 30 14% 15%;
+    --sidebar-border: 30 14% 82%;
+    --sidebar-ring: 28 46% 42%;
   }
 }
 
@@ -69,6 +72,7 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', sans-serif;
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -76,32 +80,52 @@
 
 @layer utilities {
   .text-dim {
-    color: hsla(60, 33%, 97.5%, 0.35);
+    color: hsla(30, 14%, 31%, 0.55);
   }
 
   .text-soft {
-    color: hsla(60, 33%, 97.5%, 0.6);
+    color: hsl(30, 14%, 31%);
   }
 
   .text-gray {
-    color: hsl(60, 5.6%, 70.6%);
+    color: hsl(30, 14%, 31%);
+  }
+
+  .text-ink {
+    color: hsl(var(--ink));
+  }
+
+  .text-ink-soft {
+    color: hsl(var(--ink-soft));
+  }
+
+  .text-bronze {
+    color: hsl(var(--bronze));
+  }
+
+  .hover\:text-bronze-soft:hover {
+    color: hsl(var(--bronze-soft));
+  }
+
+  .bg-paper {
+    background-color: hsl(var(--card));
   }
 
   .bg-accent-surface {
-    background-color: hsla(60, 33%, 97.5%, 0.06);
+    background-color: hsl(40, 43%, 97%);
   }
 
   .label-style {
     @apply uppercase tracking-[0.2em] text-[10px] font-medium;
-    color: hsla(60, 33%, 97.5%, 0.35);
+    color: hsla(30, 14%, 31%, 0.7);
   }
 
   .text-champagne {
-    color: hsl(var(--champagne));
+    color: hsl(var(--bronze));
   }
 
   .pipeline-card-surface {
-    background: linear-gradient(145deg, hsl(var(--pipeline-card)), hsl(var(--pipeline-card-lift)));
+    background: hsl(var(--card));
   }
 
   .scrollbar-none {
@@ -111,61 +135,6 @@
 
   .scrollbar-none::-webkit-scrollbar {
     display: none;
-  }
-
-  .embedsocial-hashtag,
-  .embedsocial-hashtag * {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .embedsocial-hashtag {
-    overflow: hidden !important;
-  }
-
-  iframe[src*="embedsocial"] {
-    overflow: hidden !important;
-  }
-
-  .embedsocial-hashtag > div,
-  .embedsocial-hashtag > div > div {
-    overflow: hidden !important;
-    scrollbar-width: none !important;
-  }
-
-  .embedsocial-hashtag ::-webkit-scrollbar {
-    display: none;
-  }
-
-  .embedsocial-hashtag > div::-webkit-scrollbar,
-  .embedsocial-hashtag > div > div::-webkit-scrollbar {
-    display: none !important;
-  }
-
-  .es-widget-branding,
-  .feed-powered-by-es {
-    display: none !important;
-  }
-
-  /* Hide EmbedSocial widget header/hero section */
-  .embedsocial-hashtag .es-widget-header,
-  .embedsocial-hashtag .es-header,
-  .embedsocial-hashtag .es-hero,
-  .embedsocial-hashtag .es-hero-section,
-  .embedsocial-hashtag [class*="hero"],
-  .embedsocial-hashtag [class*="header"],
-  .embedsocial-hashtag [class*="Header"],
-  .embedsocial-hashtag [class*="cta-button"],
-  .embedsocial-hashtag [class*="CTA"],
-  .embedsocial-hashtag [class*="badge"] {
-    display: none !important;
-  }
-
-  /* Make widget background transparent/dark */
-  .embedsocial-hashtag,
-  .embedsocial-hashtag > div {
-    background: transparent !important;
-    background-color: transparent !important;
   }
 
   .section-spacing {
@@ -181,7 +150,6 @@
     animation: subtle-bounce 2s ease-in-out infinite;
   }
 
-  /* GPU-accelerated scroll animations */
   [data-anim] {
     will-change: transform, opacity;
     backface-visibility: hidden;

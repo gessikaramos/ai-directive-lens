@@ -5,8 +5,8 @@ import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import StatementSection from '@/components/StatementSection';
 import SkillsSection from '@/components/SkillsSection';
+import SelectedWorkSection from '@/components/CreativePipelineSection';
 import AboutSection from '@/components/AboutSection';
-import CreativePipelineSection from '@/components/CreativePipelineSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 
@@ -21,7 +21,7 @@ const IndexContent = () => {
         <HeroSection />
         <StatementSection />
         <SkillsSection />
-        <CreativePipelineSection />
+        <SelectedWorkSection />
         <AboutSection />
         <ContactSection />
       </main>
@@ -30,12 +30,10 @@ const IndexContent = () => {
   );
 };
 
-const Index = () => {
-  return (
-    <LanguageProvider>
-      <IndexContent />
-    </LanguageProvider>
-  );
-};
+const Index = () => (
+  <LanguageProvider>
+    <IndexContent />
+  </LanguageProvider>
+);
 
 export default Index;
