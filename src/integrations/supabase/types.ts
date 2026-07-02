@@ -14,7 +14,167 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      collective_applications: {
+        Row: {
+          created_at: string | null
+          expertise: string[]
+          favorite_project: string
+          id: string
+          ip_hash: string | null
+          linkedin_url: string | null
+          location: string
+          name: string
+          notes: string | null
+          portfolio_url: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string | null
+          website_url: string | null
+          why_lolalab: string
+        }
+        Insert: {
+          created_at?: string | null
+          expertise: string[]
+          favorite_project: string
+          id?: string
+          ip_hash?: string | null
+          linkedin_url?: string | null
+          location: string
+          name: string
+          notes?: string | null
+          portfolio_url: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          website_url?: string | null
+          why_lolalab: string
+        }
+        Update: {
+          created_at?: string | null
+          expertise?: string[]
+          favorite_project?: string
+          id?: string
+          ip_hash?: string | null
+          linkedin_url?: string | null
+          location?: string
+          name?: string
+          notes?: string | null
+          portfolio_url?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string | null
+          website_url?: string | null
+          why_lolalab?: string
+        }
+        Relationships: []
+      }
+      hit_conversations: {
+        Row: {
+          ai_response: string | null
+          created_at: string | null
+          filter_applied: boolean | null
+          id: string
+          ip_hash: string | null
+          latency_ms: number | null
+          message_index: number | null
+          model_used: string | null
+          session_id: string
+          user_message: string | null
+        }
+        Insert: {
+          ai_response?: string | null
+          created_at?: string | null
+          filter_applied?: boolean | null
+          id?: string
+          ip_hash?: string | null
+          latency_ms?: number | null
+          message_index?: number | null
+          model_used?: string | null
+          session_id: string
+          user_message?: string | null
+        }
+        Update: {
+          ai_response?: string | null
+          created_at?: string | null
+          filter_applied?: boolean | null
+          id?: string
+          ip_hash?: string | null
+          latency_ms?: number | null
+          message_index?: number | null
+          model_used?: string | null
+          session_id?: string
+          user_message?: string | null
+        }
+        Relationships: []
+      }
+      hit_feedback: {
+        Row: {
+          comment: string | null
+          created_at: string | null
+          feedback_type: string | null
+          id: string
+          message_id: string | null
+          session_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string | null
+          feedback_type?: string | null
+          id?: string
+          message_id?: string | null
+          session_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string | null
+          feedback_type?: string | null
+          id?: string
+          message_id?: string | null
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hit_feedback_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "hit_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      signal_opt_in: {
+        Row: {
+          confirmation_token: string | null
+          confirmed: boolean | null
+          confirmed_at: string | null
+          created_at: string | null
+          email: string
+          id: string
+          ip_hash: string | null
+          source: string | null
+        }
+        Insert: {
+          confirmation_token?: string | null
+          confirmed?: boolean | null
+          confirmed_at?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          ip_hash?: string | null
+          source?: string | null
+        }
+        Update: {
+          confirmation_token?: string | null
+          confirmed?: boolean | null
+          confirmed_at?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          ip_hash?: string | null
+          source?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
