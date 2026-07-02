@@ -9,6 +9,7 @@ import SelectedWorkSection from '@/components/CreativePipelineSection';
 import AboutSection from '@/components/AboutSection';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
+import LabEntry from '@/components/lab/LabEntry';
 
 const IndexContent = () => {
   useLenis();
@@ -20,6 +21,7 @@ const IndexContent = () => {
       <main>
         <HeroSection />
         <StatementSection />
+        <LabEntry />
         <SkillsSection />
         <SelectedWorkSection />
         <AboutSection />
