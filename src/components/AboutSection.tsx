@@ -19,9 +19,6 @@ export default function AboutSection() {
           <p className="text-base md:text-lg leading-relaxed text-ink-soft">
             {t('about.p2', lang)}
           </p>
-          <p className="text-base md:text-lg leading-relaxed text-ink-soft">
-            {t('about.p3', lang)}
-          </p>
           <p
             className="text-lg md:text-xl leading-relaxed text-ink pt-6"
             style={{ fontWeight: 500 }}

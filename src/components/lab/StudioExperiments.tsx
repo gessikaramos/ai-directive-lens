@@ -91,10 +91,10 @@ const StudioExperiments = () => {
                 <h3 className="text-xl md:text-2xl text-ink mb-2" style={{ fontWeight: 500 }}>
                   {t.title}
                 </h3>
-                <span className="label-style block">{t.date}</span>
-                <p className="mt-4 text-sm text-ink-soft opacity-0 group-hover:opacity-100 transition-opacity" style={{ fontWeight: 300 }}>
+                <p className="text-sm text-ink-soft leading-relaxed mb-4" style={{ fontWeight: 300 }}>
                   {t.caption}
                 </p>
+                <span className="label-style block">{t.date}</span>
               </div>
             </button>
           ))}

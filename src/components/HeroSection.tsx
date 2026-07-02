@@ -61,6 +61,30 @@ export default function HeroSection() {
         <p className="text-sm md:text-base text-ink-soft" style={{ fontWeight: 400 }}>
           {t('hero.body', lang)}
         </p>
+
+        {/* Editorial CTAs — canon Fred: discreto, sem botão vulgar */}
+        <div className="mt-10 flex items-center justify-center gap-8 md:gap-10">
+          <a
+            href="#selected"
+            onClick={(e) => {
+              e.preventDefault();
+              const target = document.querySelector('#selected');
+              if (target) target.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="label-style underline-offset-4 hover:underline transition-colors"
+            style={{ color: 'hsl(var(--bronze))' }}
+          >
+            {t('hero.cta.selected', lang)}
+          </a>
+          <span className="label-style text-ink-soft" aria-hidden="true">·</span>
+          <a
+            href="/lab"
+            className="label-style underline-offset-4 hover:underline transition-colors"
+            style={{ color: 'hsl(var(--bronze))' }}
+          >
+            {t('hero.cta.lab', lang)}
+          </a>
+        </div>
       </div>
 
       <div data-anim="scroll-indicator" className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">

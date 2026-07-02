@@ -22,6 +22,9 @@ const SelectedWorkSection = () => {
             />
           </div>
           <div className="max-w-[820px]">
+            <span className="label-style block mb-4" style={{ color: 'hsl(var(--bronze))' }}>
+              {t('selected.masterchef.tag', lang)}
+            </span>
             <h3
               className="text-2xl md:text-4xl text-ink mb-3 tracking-tight"
               style={{ fontWeight: 500 }}
@@ -29,8 +32,12 @@ const SelectedWorkSection = () => {
               {t('selected.masterchef.title', lang)}
             </h3>
             <p className="label-style mb-5">{t('selected.masterchef.client', lang)}</p>
-            <p className="text-base md:text-lg text-ink-soft leading-relaxed">
+            <p className="text-base md:text-lg text-ink-soft leading-relaxed mb-8">
               {t('selected.masterchef.desc', lang)}
+            </p>
+            {/* Ponte comercial · canon Fred */}
+            <p className="text-base md:text-lg text-ink leading-relaxed border-t border-ink-soft/20 pt-8 italic" style={{ fontWeight: 300 }}>
+              {t('selected.masterchef.bridge', lang)}
             </p>
           </div>
         </article>
@@ -38,6 +45,9 @@ const SelectedWorkSection = () => {
         {/* PIETRA */}
         <article data-anim="skill-card">
           <div className="max-w-[820px]">
+            <span className="label-style block mb-4" style={{ color: 'hsl(var(--bronze))' }}>
+              {t('selected.pietra.tag', lang)}
+            </span>
             <h3
               className="text-2xl md:text-4xl text-ink mb-5 tracking-tight"
               style={{ fontWeight: 500 }}

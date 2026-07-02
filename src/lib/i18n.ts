@@ -19,6 +19,8 @@ export const translations: Record<string, Record<Lang, string>> = {
     pt: 'Estúdio de cinema editorial AI-native. A direção é o ofício.',
   },
   'hero.scroll': { en: 'SCROLL', pt: 'SCROLL' },
+  'hero.cta.selected': { en: 'View selected work', pt: 'Ver trabalhos selecionados' },
+  'hero.cta.lab': { en: 'Enter the Lab', pt: 'Entrar no Lab' },
 
   // Statement
   'statement.line1': {
@@ -77,6 +79,12 @@ export const translations: Record<string, Record<Lang, string>> = {
     en: 'A 54-second editorial commercial film. Six locked shots. Character consistency across scenes. Nordic Practical aesthetic. Fully AI-native from prompt to grade.',
     pt: 'Um filme comercial editorial de 54 segundos. Seis planos fixos. Consistência de personagem entre cenas. Estética Nordic Practical. Inteiramente AI-native, do prompt à gradação.',
   },
+  'selected.masterchef.tag': { en: 'COMMERCIAL CASE', pt: 'CASE COMERCIAL' },
+  'selected.masterchef.bridge': {
+    en: 'For brand films, launch campaigns and AI-native visual systems, write to the studio.',
+    pt: 'Para filmes de marca, campanhas de lançamento e sistemas visuais AI-native, escreva ao estúdio.',
+  },
+  'selected.pietra.tag': { en: 'EDITORIAL STUDY · SPECULATIVE LUXURY SYSTEM', pt: 'ESTUDO EDITORIAL · SISTEMA DE LUXO ESPECULATIVO' },
   'selected.pietra.title': { en: 'PIETRA', pt: 'PIETRA' },
   'selected.pietra.desc': {
     en: 'A 24-piece editorial fashion collection featuring Bottega Veneta pieces. Full character and costume consistency, cinematic video, original soundtrack, voice cloning.',
@@ -94,8 +102,8 @@ export const translations: Record<string, Record<Lang, string>> = {
     pt: 'A LolaLab é um estúdio de cinema editorial AI-native fundado por Gessika Olivieri em Lisboa.',
   },
   'about.p2': {
-    en: 'We work at the intersection of cinema, editorial photography, and applied AI — but our real interest is direction. The craft calls that shape a film, not the tools that produce it.',
-    pt: 'Trabalhamos na interseção entre cinema, fotografia editorial e IA aplicada — mas o nosso interesse real é a direção. As decisões de ofício que dão forma a um filme, não as ferramentas que o produzem.',
+    en: 'We work at the intersection of cinema, editorial photography, and applied AI. Our craft is direction — not tools.',
+    pt: 'Trabalhamos na interseção entre cinema, fotografia editorial e IA aplicada. O nosso ofício é a direção — não as ferramentas.',
   },
   'about.p3': {
     en: 'Every project begins with a question, not a prompt. We build character bibles before shots. We design lighting before we render. We choose pipelines per shot, not per project.',
