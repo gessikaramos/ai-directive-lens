@@ -3,6 +3,7 @@ export type Lang = 'en' | 'pt';
 export const translations: Record<string, Record<Lang, string>> = {
   // Nav
   'nav.work': { en: 'WORK', pt: 'TRABALHO' },
+  'nav.lab': { en: 'LAB', pt: 'LAB' },
   'nav.selected': { en: 'SELECTED', pt: 'SELECIONADOS' },
   'nav.about': { en: 'ABOUT', pt: 'SOBRE' },
   'nav.contact': { en: 'CONTACT', pt: 'CONTATO' },
