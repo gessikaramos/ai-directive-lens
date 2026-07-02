@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import HunterRedirect from "./pages/HunterRedirect.tsx";
+import Lab from "./pages/Lab.tsx";
 
 const queryClient = new QueryClient();
 
