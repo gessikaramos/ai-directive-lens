@@ -1,15 +1,38 @@
+import { useState } from 'react';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
+import SkillModal from './SkillModal';
+import {
+  CharacterContent,
+  FashionContent,
+  CostumeContent,
+  VideoContent,
+} from './SkillModalContents';
 
+/* Canon Fred 3/jul + Ge 4/jul · 4 servicos canon
+   Mapeamento canon-visual pros modais orfaos reativados:
+   films      -> VideoContent      (3 videos motion)
+   characters -> CharacterContent  (5 imgs Kris + 360 video)
+   systems    -> CostumeContent    (4 stills + 7 lookbook)
+   fashion    -> FashionContent    (14 imgs Hollis campaign)
+*/
 const services = [
-  { titleKey: 'service.films.title', descKey: 'service.films.desc' },
-  { titleKey: 'service.characters.title', descKey: 'service.characters.desc' },
-  { titleKey: 'service.systems.title', descKey: 'service.systems.desc' },
-  { titleKey: 'service.fashion.title', descKey: 'service.fashion.desc' },
+  { slug: 'films',      titleKey: 'service.films.title',      descKey: 'service.films.desc' },
+  { slug: 'characters', titleKey: 'service.characters.title', descKey: 'service.characters.desc' },
+  { slug: 'systems',    titleKey: 'service.systems.title',    descKey: 'service.systems.desc' },
+  { slug: 'fashion',    titleKey: 'service.fashion.title',    descKey: 'service.fashion.desc' },
 ];
+
+const contentBySlug: Record<string, JSX.Element> = {
+  films:      <VideoContent />,
+  characters: <CharacterContent />,
+  systems:    <CostumeContent />,
+  fashion:    <FashionContent />,
+};
 
 const SkillsSection = () => {
   const { lang } = useLanguage();
+  const [activeSlug, setActiveSlug] = useState<string | null>(null);
 
   return (
     <section id="work" className="section-spacing px-6 md:px-12 lg:px-20 bg-background">
@@ -24,10 +47,13 @@ const SkillsSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border">
           {services.map((s, i) => (
-            <div
-              key={i}
+            <button
+              key={s.slug}
+              type="button"
               data-anim="skill-card"
-              className="bg-card p-8 md:p-12 flex flex-col justify-between min-h-[220px]"
+              onClick={() => setActiveSlug(s.slug)}
+              className="text-left bg-card p-8 md:p-12 flex flex-col justify-between min-h-[220px] transition-colors duration-300 hover:bg-secondary/40 focus:outline-none focus:bg-secondary/40 cursor-pointer"
+              aria-label={`Open ${t(s.titleKey, lang)} details`}
             >
               <span
                 className="label-style mb-6"
@@ -46,10 +72,18 @@ const SkillsSection = () => {
                   {t(s.descKey, lang)}
                 </p>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>
+
+      <SkillModal
+        open={activeSlug !== null}
+        skillSlug={activeSlug ?? ''}
+        onClose={() => setActiveSlug(null)}
+      >
+        {activeSlug ? contentBySlug[activeSlug] : null}
+      </SkillModal>
     </section>
   );
 };
