@@ -31,8 +31,9 @@ export default function ContactSection() {
           className="inline-block text-xl md:text-2xl text-bronze hover:text-bronze-soft transition-colors duration-300"
           style={{ fontWeight: 500 }}
         >
-          hello@lolalabstudio.com
+          {t('contact.cta', lang)}
         </a>
+        <p className="text-sm text-ink-soft mt-3">hello@lolalabstudio.com</p>
 
         <div className="flex flex-wrap gap-6 md:gap-10 mt-16">
           {socials.map(s => (

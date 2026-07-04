@@ -117,8 +117,12 @@ export const translations: Record<string, Record<Lang, string>> = {
   // Contact
   'contact.headline': { en: 'Get in touch', pt: 'Entre em contacto' },
   'contact.subtitle': {
-    en: 'Happy to answer any questions by email.',
-    pt: 'Terei todo o gosto em responder por email.',
+    en: 'For collaborations, commissions and thoughtful questions.',
+    pt: 'Para colaborações, comissões e perguntas com intenção.',
+  },
+  'contact.cta': {
+    en: 'Write to the studio',
+    pt: 'Escreva ao estúdio',
   },
 
   // Footer

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
 
@@ -43,7 +44,7 @@ export default function HeroSection() {
       </video>
 
       {/* Cream veil for legibility */}
-      <div className="absolute inset-0 bg-background/65" />
+      <div className="absolute inset-0 bg-background/55" />
 
       <div data-anim="hero-content" className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <h1
@@ -77,13 +78,13 @@ export default function HeroSection() {
             {t('hero.cta.selected', lang)}
           </a>
           <span className="label-style text-ink-soft" aria-hidden="true">·</span>
-          <a
-            href="/lab"
+          <Link
+            to="/lab"
             className="label-style underline-offset-4 hover:underline transition-colors"
             style={{ color: 'hsl(var(--bronze))' }}
           >
             {t('hero.cta.lab', lang)}
-          </a>
+          </Link>
         </div>
       </div>
 
