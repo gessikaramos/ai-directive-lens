@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
 import SkillModal from './SkillModal';
@@ -9,12 +10,13 @@ import {
   VideoContent,
 } from './SkillModalContents';
 
-/* Canon Fred 3/jul + Ge 4/jul · 4 servicos canon
-   Mapeamento canon-visual pros modais orfaos reativados:
-   films      -> VideoContent      (3 videos motion)
-   characters -> CharacterContent  (5 imgs Kris + 360 video)
-   systems    -> CostumeContent    (4 stills + 7 lookbook)
-   fashion    -> FashionContent    (14 imgs Hollis campaign)
+/* Canon Wave 4A · Fred+Gé 5/jul
+   Tiles editoriais canon-Apple/archive · sem sensação SaaS
+   - remover bg-card sólido · deixar cream de fundo
+   - border-b sutil (ink/10) como divider editorial
+   - arrow bronze discreta superior direita · translate-x on hover
+   - number bronze maior + tracking editorial
+   - hover bg-secondary/20 (subtle warmth)
 */
 const services = [
   { slug: 'films',      titleKey: 'service.films.title',      descKey: 'service.films.desc' },
@@ -40,35 +42,43 @@ const SkillsSection = () => {
         <span className="label-style block mb-6">{t('services.label', lang)}</span>
         <h2
           className="text-3xl md:text-5xl tracking-tight text-ink mb-16 md:mb-24"
-          style={{ fontWeight: 300 }}
+          style={{ fontWeight: 300, color: 'hsl(30 25% 10%)' }}
         >
           {t('services.heading', lang)}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border">
+        <div className="grid grid-cols-1 md:grid-cols-2 border-t border-ink/10">
           {services.map((s, i) => (
             <button
               key={s.slug}
               type="button"
               data-anim="skill-card"
               onClick={() => setActiveSlug(s.slug)}
-              className="text-left bg-card p-8 md:p-12 flex flex-col justify-between min-h-[220px] transition-colors duration-300 hover:bg-secondary/40 focus:outline-none focus:bg-secondary/40 cursor-pointer"
+              className="group text-left relative border-b border-ink/10 md:border-r p-10 md:p-14 flex flex-col justify-between min-h-[280px] transition-colors duration-500 hover:bg-secondary/20 focus:outline-none focus:bg-secondary/20 cursor-pointer"
               aria-label={`Open ${t(s.titleKey, lang)} details`}
             >
               <span
-                className="label-style mb-6"
+                className="absolute top-6 right-6 md:top-8 md:right-8 opacity-40 group-hover:opacity-100 transition-all duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
                 style={{ color: 'hsl(var(--bronze))' }}
+                aria-hidden="true"
+              >
+                <ArrowUpRight strokeWidth={1.5} className="w-4 h-4 md:w-5 md:h-5" />
+              </span>
+
+              <span
+                className="text-xs md:text-sm tracking-[0.2em] mb-8"
+                style={{ color: 'hsl(var(--bronze))', fontWeight: 500 }}
               >
                 {String(i + 1).padStart(2, '0')}
               </span>
               <div>
                 <h3
-                  className="text-xl md:text-2xl text-ink mb-4 leading-tight"
-                  style={{ fontWeight: 500 }}
+                  className="text-xl md:text-2xl mb-4 leading-tight"
+                  style={{ fontWeight: 400, color: 'hsl(30 25% 10%)' }}
                 >
                   {t(s.titleKey, lang)}
                 </h3>
-                <p className="text-sm md:text-base text-ink-soft leading-relaxed">
+                <p className="text-sm md:text-base text-ink-soft leading-relaxed max-w-[38ch]">
                   {t(s.descKey, lang)}
                 </p>
               </div>

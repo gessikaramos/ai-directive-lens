@@ -46,6 +46,9 @@ export default function HeroSection() {
       {/* Cream veil for legibility */}
       <div className="absolute inset-0 bg-background/55" />
 
+      {/* Canon Wave 4A · Gradient fade suave pro Statement · Fred+Gé 5/jul */}
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background pointer-events-none" />
+
       <div data-anim="hero-content" className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <h1
           className="text-4xl md:text-6xl lg:text-7xl tracking-tight leading-[1.05] text-ink mb-8"
