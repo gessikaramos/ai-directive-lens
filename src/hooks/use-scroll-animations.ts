@@ -47,10 +47,9 @@ export function useScrollAnimations() {
 
       if (statementLine1) {
         gsap.fromTo(statementLine1,
-          { x: -150, opacity: 0 },
+          { x: -150 },
           {
             x: 0,
-            opacity: 1,
             force3D: true,
             ease: 'none',
             scrollTrigger: {
@@ -65,10 +64,9 @@ export function useScrollAnimations() {
 
       if (statementLine2) {
         gsap.fromTo(statementLine2,
-          { x: 150, opacity: 0 },
+          { x: 150 },
           {
             x: 0,
-            opacity: 1,
             force3D: true,
             ease: 'none',
             scrollTrigger: {
