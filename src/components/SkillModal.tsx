@@ -50,6 +50,14 @@ const SkillModal = ({ open, skillSlug, onClose, children }: SkillModalProps) => 
     } else {
       setVisible(false);
       resumeScroll();
+      // Canon Wave 3.5 Fred 5/jul · limpar hash #skill/... ao fechar modal
+      if (window.location.hash.startsWith('#skill/')) {
+        window.history.replaceState(
+          null,
+          '',
+          window.location.pathname + window.location.search
+        );
+      }
     }
 
     // Always restore scroll if the component unmounts while open

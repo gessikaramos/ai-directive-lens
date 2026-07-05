@@ -62,7 +62,7 @@ interface VideoThumbnailProps {
 
 const VideoThumbnail = ({ src, onOpen, className = '' }: VideoThumbnailProps) => (
   <div
-    className={`relative cursor-pointer group ${className}`}
+    className={`relative cursor-pointer group bg-secondary/40 ${className}`}
     onClick={() => onOpen(src)}
   >
     <video
@@ -71,6 +71,7 @@ const VideoThumbnail = ({ src, onOpen, className = '' }: VideoThumbnailProps) =>
       muted
       loop
       playsInline
+      preload="metadata"
       className="w-full aspect-video object-cover"
     />
     <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-colors duration-300">

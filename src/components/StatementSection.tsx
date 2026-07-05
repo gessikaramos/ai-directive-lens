@@ -10,14 +10,14 @@ export default function StatementSection() {
         <p
           data-anim="statement-line1"
           className="text-[clamp(1.5rem,4vw,3.5rem)] leading-relaxed tracking-tight mb-4 md:mb-6 text-ink"
-          style={{ fontWeight: 400 }}
+          style={{ fontWeight: 500 }}
         >
           {t('statement.line1', lang)}
         </p>
         <p
           data-anim="statement-line2"
           className="text-[clamp(1.5rem,4vw,3.5rem)] leading-relaxed tracking-tight text-ink"
-          style={{ fontWeight: 400 }}
+          style={{ fontWeight: 500 }}
         >
           {t('statement.line2', lang)}
         </p>
