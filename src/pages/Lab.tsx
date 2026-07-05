@@ -23,7 +23,7 @@ const LabContent = () => {
       <Navbar />
       <main className="pt-32">
         {/* Manifesto */}
-        <section className="px-6 md:px-12 py-24 md:py-40 bg-background">
+        <section className="px-6 md:px-12 py-24 md:py-32 bg-background border-b border-ink/5">
           <div className="max-w-[900px] mx-auto text-center">
             <span className="label-style block mb-10" style={{ color: 'hsl(var(--bronze))' }}>
               LAB
@@ -37,7 +37,7 @@ const LabContent = () => {
         </section>
 
         {/* Human Intent Translator */}
-        <section className="px-6 md:px-12 py-16 md:py-24 bg-background">
+        <section className="px-6 md:px-12 py-16 md:py-20 bg-background border-b border-ink/5">
           <HumanIntentTranslator initialIntent={intent} />
         </section>
 
@@ -46,7 +46,7 @@ const LabContent = () => {
         <CollectiveForm />
         <SignalReads />
 
-        <section className="px-6 md:px-12 py-32 bg-background">
+        <section className="px-6 md:px-12 py-24 bg-background border-t border-ink/5">
           <div className="max-w-[720px] mx-auto text-center">
             <p className="text-ink italic text-lg md:text-xl" style={{ fontWeight: 300 }}>
               The lab keeps growing. Not on a schedule.

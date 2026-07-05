@@ -71,30 +71,38 @@ const StudioExperiments = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-t border-ink/10">
           {visible.map((t, i) => (
             <button
               key={i}
               onClick={() => setOpen(t)}
-              className="group relative text-left bg-card p-8 min-h-[260px] flex flex-col justify-between transition-colors hover:bg-paper"
+              className="group relative text-left border-b border-ink/10 md:border-r p-10 md:p-12 min-h-[280px] flex flex-col justify-between transition-colors duration-500 hover:bg-secondary/20"
             >
+              <span
+                className="absolute top-6 right-6 opacity-30 group-hover:opacity-100 transition-all duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
+                style={{ color: 'hsl(var(--bronze))' }}
+                aria-hidden="true"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg>
+              </span>
+
               <div className="flex items-start justify-between gap-4">
                 <span
-                  className="label-style"
-                  style={{ color: 'hsl(var(--bronze))' }}
+                  className="text-xs tracking-[0.2em]"
+                  style={{ color: 'hsl(var(--bronze))', fontWeight: 500 }}
                 >
                   {t.cats.join(' · ')}
                 </span>
-                <span className="label-style text-ink-soft">{t.status}</span>
+                <span className="text-xs tracking-[0.15em] text-ink-soft">{t.status}</span>
               </div>
               <div>
-                <h3 className="text-xl md:text-2xl text-ink mb-2" style={{ fontWeight: 500 }}>
+                <h3 className="text-xl md:text-2xl mb-3 leading-tight" style={{ fontWeight: 400, color: 'hsl(30 25% 10%)' }}>
                   {t.title}
                 </h3>
-                <p className="text-sm text-ink-soft leading-relaxed mb-4" style={{ fontWeight: 300 }}>
+                <p className="text-sm text-ink-soft leading-relaxed mb-6 max-w-[42ch]" style={{ fontWeight: 300 }}>
                   {t.caption}
                 </p>
-                <span className="label-style block">{t.date}</span>
+                <span className="text-xs tracking-[0.15em] text-ink-soft block">{t.date}</span>
               </div>
             </button>
           ))}
@@ -103,36 +111,37 @@ const StudioExperiments = () => {
 
       {open && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-6 md:p-12"
-          style={{ backgroundColor: 'hsla(30, 14%, 15%, 0.92)' }}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-6 md:p-12 animate-in fade-in duration-300"
+          style={{ backgroundColor: 'hsla(30, 20%, 10%, 0.94)' }}
           onClick={() => setOpen(null)}
         >
           <button
             onClick={() => setOpen(null)}
-            className="absolute top-6 right-6 text-background/80 hover:text-background transition"
+            className="absolute top-8 right-8 text-background/60 hover:text-background transition-colors"
             aria-label="Close"
           >
-            <X className="w-6 h-6" />
+            <X className="w-6 h-6" strokeWidth={1.5} />
           </button>
           <div
-            className="max-w-[720px] w-full bg-card p-10 md:p-14"
+            className="max-w-[920px] w-full bg-background p-12 md:p-20 relative"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-start justify-between gap-6 mb-6">
-              <span className="label-style" style={{ color: 'hsl(var(--bronze))' }}>
+            <div className="flex items-start justify-between gap-6 mb-16">
+              <span className="text-xs tracking-[0.2em]" style={{ color: 'hsl(var(--bronze))', fontWeight: 500 }}>
                 {open.cats.join(' · ')}
               </span>
-              <span className="label-style text-ink-soft">{open.status}</span>
+              <span className="text-xs tracking-[0.15em] text-ink-soft">
+                {open.status} · {open.date}
+              </span>
             </div>
-            <h3 className="text-3xl md:text-4xl text-ink mb-4" style={{ fontWeight: 300 }}>
+            <h3 className="text-4xl md:text-6xl mb-10 leading-[1.1] tracking-tight" style={{ fontWeight: 400, color: 'hsl(30 25% 10%)' }}>
               {open.title}
             </h3>
-            <span className="label-style block mb-6">{open.date}</span>
-            <p className="text-ink-soft leading-relaxed" style={{ fontWeight: 300 }}>
+            <p className="text-lg md:text-xl text-ink-soft leading-relaxed max-w-[62ch]" style={{ fontWeight: 300 }}>
               {open.caption}
             </p>
             {open.designerRef && (
-              <p className="mt-8 text-xs italic text-ink-soft/70" style={{ fontWeight: 300 }}>
+              <p className="mt-16 pt-8 border-t border-ink/10 text-xs italic text-ink-soft/70 max-w-[62ch]" style={{ fontWeight: 300 }}>
                 Designer references shown for creative demonstration purposes only. No brand affiliation or endorsement implied.
               </p>
             )}
