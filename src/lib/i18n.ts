@@ -13,6 +13,12 @@ export const translations: Record<string, Record<Lang, string>> = {
 
   // Hero
   'hero.headline': { en: 'Direction Makes It Matter.', pt: 'A Direção Faz a Diferença.' },
+  // Wave 1.1 · Fred v1 canon · Hero support único (substitui tagline+body legacy)
+  'hero.support': {
+    en: 'AI can generate. LolaLab directs.',
+    pt: 'A IA pode gerar. A LolaLab dirige.',
+  },
+  // Legacy keys mantidas por retrocompatibilidade — não usadas mais no Hero
   'hero.tagline': {
     en: 'Translating human intention into form.',
     pt: 'Traduzindo intenção humana em forma.',
@@ -24,6 +30,8 @@ export const translations: Record<string, Record<Lang, string>> = {
   'hero.scroll': { en: 'SCROLL', pt: 'SCROLL' },
   'hero.cta.selected': { en: 'View selected work', pt: 'Ver trabalhos selecionados' },
   'hero.cta.lab': { en: 'Enter the Lab', pt: 'Entrar no Lab' },
+  // Wave 1.1 · Fred v1 canon · CTA secondary Explore the Library
+  'hero.cta.library': { en: 'Explore the Library', pt: 'Explorar a Library' },
 
   // Statement
   'statement.line1': {
@@ -74,9 +82,11 @@ export const translations: Record<string, Record<Lang, string>> = {
   // Selected work
   'selected.label': { en: 'SELECTED WORK', pt: 'TRABALHO SELECIONADO' },
   'selected.masterchef.title': { en: 'MasterChef', pt: 'MasterChef' },
+  // Wave 1.1 · Emenda 5 canon cross-site · Confidential · retail tech client
+  // NÃO expor Retailgrid Oy publicamente até Fred/Gé validarem permissão.
   'selected.masterchef.client': {
-    en: 'Retailgrid Oy — Finnish B2B brand',
-    pt: 'Retailgrid Oy — marca B2B finlandesa',
+    en: 'Confidential · retail tech client',
+    pt: 'Confidencial · cliente de retail tech',
   },
   'selected.masterchef.desc': {
     en: 'A 54-second editorial commercial film. Six locked shots. Character consistency across scenes. Nordic Practical aesthetic. Fully AI-native from prompt to grade.',

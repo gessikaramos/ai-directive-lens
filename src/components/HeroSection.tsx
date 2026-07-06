@@ -56,37 +56,30 @@ export default function HeroSection() {
         >
           {t('hero.headline', lang)}
         </h1>
+        {/* Wave 1.1 · Fred v1 canon · Hero support único · substitui tagline+body legacy */}
         <p
-          className="text-lg md:text-2xl tracking-tight text-ink mb-4"
+          className="text-lg md:text-2xl tracking-tight text-ink"
           style={{ fontWeight: 500 }}
         >
-          {t('hero.tagline', lang)}
-        </p>
-        <p className="text-sm md:text-base text-ink-soft" style={{ fontWeight: 400 }}>
-          {t('hero.body', lang)}
+          {t('hero.support', lang)}
         </p>
 
-        {/* Editorial CTAs — canon Fred: discreto, sem botão vulgar */}
+        {/* Wave 1.1 · CTA primary Enter the Lab · CTA secondary Explore the Library */}
         <div className="mt-10 flex items-center justify-center gap-8 md:gap-10">
-          <a
-            href="#selected"
-            onClick={(e) => {
-              e.preventDefault();
-              const target = document.querySelector('#selected');
-              if (target) target.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="label-style underline-offset-4 hover:underline transition-colors"
-            style={{ color: 'hsl(var(--bronze))' }}
-          >
-            {t('hero.cta.selected', lang)}
-          </a>
-          <span className="label-style text-ink-soft" aria-hidden="true">·</span>
           <Link
             to="/lab"
             className="label-style underline-offset-4 hover:underline transition-colors"
             style={{ color: 'hsl(var(--bronze))' }}
           >
             {t('hero.cta.lab', lang)}
+          </Link>
+          <span className="label-style text-ink-soft" aria-hidden="true">·</span>
+          <Link
+            to="/library"
+            className="label-style underline-offset-4 hover:underline transition-colors"
+            style={{ color: 'hsl(var(--bronze))' }}
+          >
+            {t('hero.cta.library', lang)}
           </Link>
         </div>
       </div>
