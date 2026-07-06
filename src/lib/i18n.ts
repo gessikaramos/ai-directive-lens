@@ -1,12 +1,15 @@
 export type Lang = 'en' | 'pt';
 
 export const translations: Record<string, Record<Lang, string>> = {
-  // Nav
-  'nav.work': { en: 'WORK', pt: 'TRABALHO' },
+  // Nav · canon Fred v1 Wave 1 · Lab · Library · Studio · About · Contact
   'nav.lab': { en: 'LAB', pt: 'LAB' },
-  'nav.selected': { en: 'SELECTED', pt: 'SELECIONADOS' },
+  'nav.library': { en: 'LIBRARY', pt: 'LIBRARY' },
+  'nav.studio': { en: 'STUDIO', pt: 'STUDIO' },
   'nav.about': { en: 'ABOUT', pt: 'SOBRE' },
   'nav.contact': { en: 'CONTACT', pt: 'CONTATO' },
+  // Legacy keys · kept for backwards compat during migration
+  'nav.work': { en: 'WORK', pt: 'TRABALHO' },
+  'nav.selected': { en: 'SELECTED', pt: 'SELECIONADOS' },
 
   // Hero
   'hero.headline': { en: 'Direction Makes It Matter.', pt: 'A Direção Faz a Diferença.' },
@@ -128,6 +131,92 @@ export const translations: Record<string, Record<Lang, string>> = {
   // Footer
   'footer.rights': { en: '© 2026 LolaLab. All rights reserved.', pt: '© 2026 LolaLab. Todos os direitos reservados.' },
   'footer.credit': { en: 'Direction — Gessika Olivieri', pt: 'Direção — Gessika Olivieri' },
+  'footer.line': { en: 'Lab guides. Library teaches. Studio makes.', pt: 'Lab guides. Library teaches. Studio makes.' },
+
+  // Wave 1 · Home Choose your path · canon Fred v1
+  'home.choose.label': { en: 'CHOOSE YOUR PATH', pt: 'ESCOLHA O SEU CAMINHO' },
+  'home.path.lab.name': { en: 'Lab', pt: 'Lab' },
+  'home.path.lab.desc': {
+    en: 'For shaping loose ideas into clear creative direction.',
+    pt: 'Para dar forma a ideias soltas transformando-as em direção criativa clara.',
+  },
+  'home.path.lab.cta': { en: 'Enter the Lab', pt: 'Entrar no Lab' },
+  'home.path.library.name': { en: 'Library', pt: 'Library' },
+  'home.path.library.desc': {
+    en: 'For learning the method behind the work.',
+    pt: 'Para aprender o método por trás do trabalho.',
+  },
+  'home.path.library.cta': { en: 'Explore the Library', pt: 'Explorar a Library' },
+  'home.path.studio.name': { en: 'Studio', pt: 'Studio' },
+  'home.path.studio.desc': {
+    en: 'For brands, films, campaigns and visual systems.',
+    pt: 'Para marcas, filmes, campanhas e sistemas visuais.',
+  },
+  'home.path.studio.cta': { en: 'Work with the studio', pt: 'Trabalhar com o estúdio' },
+
+  // Wave 1 · Home About preview · canon Fred v1
+  'home.about.preview': {
+    en: 'LolaLab is an AI-native creative direction studio translating human intention into visual systems, films and creative tools.',
+    pt: 'A LolaLab é um estúdio de direção criativa AI-native que traduz intenção humana em sistemas visuais, filmes e ferramentas criativas.',
+  },
+  'home.about.cta': { en: 'Learn more', pt: 'Saiba mais' },
+
+  // Wave 1 · Home Contact preview · canon Fred v1
+  'home.contact.preview': {
+    en: 'For collaborations, commissions and thoughtful questions.',
+    pt: 'Para colaborações, comissões e perguntas com intenção.',
+  },
+  'home.contact.cta': { en: 'Write to the studio', pt: 'Escreva ao estúdio' },
+
+  // Wave 1 · Library page skeleton · canon Fred v1
+  'library.label': { en: 'LIBRARY', pt: 'LIBRARY' },
+  'library.hero.headline': {
+    en: 'Practical knowledge for creative minds.',
+    pt: 'Conhecimento prático para mentes criativas.',
+  },
+  'library.hero.sub': {
+    en: 'Guides, prompts and frameworks to help you think, create and lead with intention.',
+    pt: 'Guias, prompts e frameworks para pensar, criar e liderar com intenção.',
+  },
+  'library.footer.line': {
+    en: 'Learn the method. Shape the idea. Build the work.',
+    pt: 'Learn the method. Shape the idea. Build the work.',
+  },
+
+  // Wave 1 · Studio page skeleton · canon Fred v1
+  'studio.label': { en: 'STUDIO', pt: 'STUDIO' },
+  'studio.hero.headline': {
+    en: 'We make the work that moves culture.',
+    pt: 'Fazemos o trabalho que move a cultura.',
+  },
+  'studio.hero.sub': {
+    en: 'Strategic creative direction and AI-accelerated production for brands, launches and visual systems.',
+    pt: 'Direção criativa estratégica e produção acelerada por IA para marcas, lançamentos e sistemas visuais.',
+  },
+  'studio.cta.inquiry': {
+    en: 'Start a project inquiry',
+    pt: 'Iniciar uma proposta de projeto',
+  },
+
+  // Wave 1 · About page skeleton · canon Fred v1
+  'about.hero.headline': {
+    en: 'LolaLab translates human intention into form.',
+    pt: 'A LolaLab traduz intenção humana em forma.',
+  },
+  'about.hero.sub': {
+    en: 'An AI-native creative direction studio founded by Gessika Olivieri.',
+    pt: 'Um estúdio de direção criativa AI-native fundado por Gessika Olivieri.',
+  },
+
+  // Wave 1 · Contact page skeleton · canon Fred v1
+  'contact.hero.headline': {
+    en: 'Write to the studio.',
+    pt: 'Escreva ao estúdio.',
+  },
+  'contact.hero.sub': {
+    en: 'For collaborations, commissions and thoughtful questions.',
+    pt: 'Para colaborações, comissões e perguntas com intenção.',
+  },
 };
 
 export function t(key: string, lang: Lang): string {

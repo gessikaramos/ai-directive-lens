@@ -20,12 +20,13 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Wave 1 · Fred v1 canon · 5 rotas reais · Lab · Library · Studio · About · Contact
   const navLinks: NavItem[] = [
-    { key: 'nav.work', href: '#work', type: 'anchor' },
     { key: 'nav.lab', href: '/lab', type: 'route' },
-    { key: 'nav.selected', href: '#selected', type: 'anchor' },
-    { key: 'nav.about', href: '#about', type: 'anchor' },
-    { key: 'nav.contact', href: '#contact', type: 'anchor' },
+    { key: 'nav.library', href: '/library', type: 'route' },
+    { key: 'nav.studio', href: '/studio', type: 'route' },
+    { key: 'nav.about', href: '/about', type: 'route' },
+    { key: 'nav.contact', href: '/contact', type: 'route' },
   ];
 
   const handleAnchor = useCallback(

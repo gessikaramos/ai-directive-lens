@@ -36,6 +36,60 @@ const LabContent = () => {
           </div>
         </section>
 
+        {/* Instruments · canon Fred/Gé 5/jul · STUDIO·LAB·LIBRARY arquitetura */}
+        <section className="px-6 md:px-12 py-16 md:py-20 bg-background border-b border-ink/5">
+          <div className="max-w-[900px] mx-auto">
+            <span className="label-style block mb-8" style={{ color: 'hsl(var(--bronze))' }}>
+              INSTRUMENTS
+            </span>
+            <div className="space-y-5 max-w-[720px]">
+              <p className="text-lg md:text-xl leading-relaxed" style={{ fontWeight: 300, color: 'hsl(30 25% 10%)' }}>
+                The Lab is a growing set of instruments for AI-native creative direction.
+              </p>
+              <p className="text-base text-ink-soft leading-relaxed" style={{ fontWeight: 300 }}>
+                Start with the Human Intent Translator. Bring a loose idea. The Lab helps you find its shape.
+              </p>
+              <p className="text-base text-ink-soft leading-relaxed" style={{ fontWeight: 300 }}>
+                Future instruments will help with image direction, video direction, characters, brand worlds and creative systems.
+              </p>
+            </div>
+            <ul className="mt-14 max-w-[540px]">
+              <li className="flex justify-between items-baseline border-t border-b border-ink/10 py-4">
+                <span className="text-base md:text-lg" style={{ fontWeight: 400, color: 'hsl(30 25% 10%)' }}>
+                  Human Intent Translator
+                </span>
+                <span className="text-xs tracking-[0.2em]" style={{ color: 'hsl(var(--bronze))', fontWeight: 500 }}>
+                  ACTIVE
+                </span>
+              </li>
+              <li className="flex justify-between items-baseline border-b border-ink/10 py-4">
+                <span className="text-base md:text-lg text-ink-soft" style={{ fontWeight: 400 }}>
+                  Image Director
+                </span>
+                <span className="text-xs tracking-[0.15em] text-ink-soft">COMING SOON</span>
+              </li>
+              <li className="flex justify-between items-baseline border-b border-ink/10 py-4">
+                <span className="text-base md:text-lg text-ink-soft" style={{ fontWeight: 400 }}>
+                  Video Director
+                </span>
+                <span className="text-xs tracking-[0.15em] text-ink-soft">COMING SOON</span>
+              </li>
+              <li className="flex justify-between items-baseline border-b border-ink/10 py-4">
+                <span className="text-base md:text-lg text-ink-soft" style={{ fontWeight: 400 }}>
+                  Character Builder
+                </span>
+                <span className="text-xs tracking-[0.15em] text-ink-soft">COMING SOON</span>
+              </li>
+              <li className="flex justify-between items-baseline border-b border-ink/10 py-4">
+                <span className="text-base md:text-lg text-ink-soft" style={{ fontWeight: 400 }}>
+                  Brand World Builder
+                </span>
+                <span className="text-xs tracking-[0.15em] text-ink-soft">COMING SOON</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
         {/* Human Intent Translator */}
         <section className="px-6 md:px-12 py-16 md:py-20 bg-background border-b border-ink/5">
           <HumanIntentTranslator initialIntent={intent} />

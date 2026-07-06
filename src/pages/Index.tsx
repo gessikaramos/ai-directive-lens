@@ -1,15 +1,28 @@
+/**
+ * Home · v3.2 · Wave 1 canon Fred v1
+ *
+ * Estrutura canon-Fred:
+ *   Hero → Statement → Choose your path → Selected Work → About preview → Contact preview → Footer line
+ *
+ * Regras aplicadas:
+ *   - HIT mini removida da Home (LabEntry) · HIT vive só em /lab
+ *   - "What we do" 4 tiles removida da Home (SkillsSection) · vai pra /studio em Wave 5
+ *   - About preview curto · full em /about
+ *   - Contact preview curto · full em /contact
+ *   - Footer line canon: "Lab guides. Library teaches. Studio makes."
+ */
 import { LanguageProvider } from '@/hooks/use-language';
 import { useLenis } from '@/hooks/use-lenis';
 import { useScrollAnimations } from '@/hooks/use-scroll-animations';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import StatementSection from '@/components/StatementSection';
-import SkillsSection from '@/components/SkillsSection';
+import ChoosePathSection from '@/components/ChoosePathSection';
 import SelectedWorkSection from '@/components/CreativePipelineSection';
-import AboutSection from '@/components/AboutSection';
-import ContactSection from '@/components/ContactSection';
+import HomeAboutPreview from '@/components/HomeAboutPreview';
+import HomeContactPreview from '@/components/HomeContactPreview';
+import FooterLine from '@/components/FooterLine';
 import Footer from '@/components/Footer';
-import LabEntry from '@/components/lab/LabEntry';
 
 const IndexContent = () => {
   useLenis();
@@ -21,11 +34,11 @@ const IndexContent = () => {
       <main>
         <HeroSection />
         <StatementSection />
-        <LabEntry />
-        <SkillsSection />
+        <ChoosePathSection />
         <SelectedWorkSection />
-        <AboutSection />
-        <ContactSection />
+        <HomeAboutPreview />
+        <HomeContactPreview />
+        <FooterLine />
       </main>
       <Footer />
     </>
