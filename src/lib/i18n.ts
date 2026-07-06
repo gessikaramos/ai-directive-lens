@@ -142,6 +142,11 @@ export const translations: Record<string, Record<Lang, string>> = {
   'footer.rights': { en: '© 2026 LolaLab. All rights reserved.', pt: '© 2026 LolaLab. Todos os direitos reservados.' },
   'footer.credit': { en: 'Direction — Gessika Olivieri', pt: 'Direção — Gessika Olivieri' },
   'footer.line': { en: 'Lab guides. Library teaches. Studio makes.', pt: 'Lab guides. Library teaches. Studio makes.' },
+  // Wave 1.2 · Fred v1 canon · Library page footer específico
+  'footer.line.library': {
+    en: 'Learn the method. Shape the idea. Build the work.',
+    pt: 'Learn the method. Shape the idea. Build the work.',
+  },
 
   // Wave 1 · Home Choose your path · canon Fred v1
   'home.choose.label': { en: 'CHOOSE YOUR PATH', pt: 'ESCOLHA O SEU CAMINHO' },

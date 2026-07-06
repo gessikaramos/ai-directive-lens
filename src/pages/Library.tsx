@@ -46,7 +46,8 @@ const LibraryContent = () => {
           </div>
         </section>
 
-        <FooterLine />
+        {/* Wave 1.2 · Fred v1 canon · footer line específico da Library */}
+        <FooterLine translationKey="footer.line.library" />
       </main>
       <Footer />
     </>

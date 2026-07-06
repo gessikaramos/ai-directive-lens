@@ -28,10 +28,9 @@ const LabContent = () => {
             <span className="label-style block mb-10" style={{ color: 'hsl(var(--bronze))' }}>
               LAB
             </span>
-            <div className="space-y-6 text-ink text-2xl md:text-4xl leading-snug" style={{ fontWeight: 300 }}>
+            {/* Wave 1.2 · Fred/Gé 6/jul · wireframe aprovado pede uma linha só */}
+            <div className="text-ink text-2xl md:text-4xl leading-snug" style={{ fontWeight: 300 }}>
               <p>The lab is where we investigate before we produce.</p>
-              <p>Some ideas ship. Some stay here on purpose.</p>
-              <p>Direction is decided in the studio, not in the prompt.</p>
             </div>
           </div>
         </section>
@@ -66,25 +65,25 @@ const LabContent = () => {
                 <span className="text-base md:text-lg text-ink-soft" style={{ fontWeight: 400 }}>
                   Image Director
                 </span>
-                <span className="text-xs tracking-[0.15em] text-ink-soft">COMING SOON</span>
+                <span className="text-xs tracking-[0.15em] text-ink-soft">IN DEVELOPMENT</span>
               </li>
               <li className="flex justify-between items-baseline border-b border-ink/10 py-4">
                 <span className="text-base md:text-lg text-ink-soft" style={{ fontWeight: 400 }}>
                   Video Director
                 </span>
-                <span className="text-xs tracking-[0.15em] text-ink-soft">COMING SOON</span>
+                <span className="text-xs tracking-[0.15em] text-ink-soft">IN DEVELOPMENT</span>
               </li>
               <li className="flex justify-between items-baseline border-b border-ink/10 py-4">
                 <span className="text-base md:text-lg text-ink-soft" style={{ fontWeight: 400 }}>
                   Character Builder
                 </span>
-                <span className="text-xs tracking-[0.15em] text-ink-soft">COMING SOON</span>
+                <span className="text-xs tracking-[0.15em] text-ink-soft">IN DEVELOPMENT</span>
               </li>
               <li className="flex justify-between items-baseline border-b border-ink/10 py-4">
                 <span className="text-base md:text-lg text-ink-soft" style={{ fontWeight: 400 }}>
                   Brand World Builder
                 </span>
-                <span className="text-xs tracking-[0.15em] text-ink-soft">COMING SOON</span>
+                <span className="text-xs tracking-[0.15em] text-ink-soft">IN DEVELOPMENT</span>
               </li>
             </ul>
           </div>
