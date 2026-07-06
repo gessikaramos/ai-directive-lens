@@ -64,20 +64,34 @@ export default function HeroSection() {
           {t('hero.support', lang)}
         </p>
 
-        {/* Wave 1.1 · CTA primary Enter the Lab · CTA secondary Explore the Library */}
-        <div className="mt-10 flex items-center justify-center gap-8 md:gap-10">
+        {/* Wave 1.1 hotfix · Fred/Gé 6/jul · Enter the Lab = botão primário sólido · Explore the Library = CTA secundário visível (canon Steve Jobs Lens: ação óbvia, contraste alto) */}
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-8">
           <Link
             to="/lab"
-            className="label-style underline-offset-4 hover:underline transition-colors"
-            style={{ color: 'hsl(var(--bronze))' }}
+            className="label-style inline-flex items-center justify-center px-8 py-3.5 transition-colors duration-300"
+            style={{
+              backgroundColor: 'hsl(var(--ink))',
+              color: 'hsl(var(--background))',
+              fontWeight: 500,
+              letterSpacing: '0.18em',
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.backgroundColor = 'hsl(var(--bronze))';
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.backgroundColor = 'hsl(var(--ink))';
+            }}
           >
             {t('hero.cta.lab', lang)}
           </Link>
-          <span className="label-style text-ink-soft" aria-hidden="true">·</span>
           <Link
             to="/library"
-            className="label-style underline-offset-4 hover:underline transition-colors"
-            style={{ color: 'hsl(var(--bronze))' }}
+            className="label-style underline underline-offset-4 decoration-1 hover:decoration-2 transition-all duration-300"
+            style={{
+              color: 'hsl(var(--ink))',
+              fontWeight: 500,
+              letterSpacing: '0.18em',
+            }}
           >
             {t('hero.cta.library', lang)}
           </Link>
