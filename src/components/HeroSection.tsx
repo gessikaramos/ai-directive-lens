@@ -92,7 +92,7 @@ export default function HeroSection() {
             fontWeight: 400,
             letterSpacing: '-0.02em',
             lineHeight: 1.05,
-            color: 'hsl(var(--background))',
+            color: '#FFFFFF',
           }}
         >
           {t('hero.headline', lang)}
@@ -115,7 +115,7 @@ export default function HeroSection() {
             to="/lab"
             className="transition-opacity duration-500 hover:opacity-60"
             style={{
-              color: 'hsl(var(--background))',
+              color: '#FFFFFF',
               fontSize: '0.75rem',
               fontWeight: 500,
               letterSpacing: '0.2em',

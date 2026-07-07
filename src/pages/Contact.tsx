@@ -1,6 +1,8 @@
 /**
- * Contact · Wave 1 skeleton · canon Fred v1
- * Hero + Inquiry paths placeholder + Connect. Copy expandido virá em Wave 6.
+ * Contact · Wave 3.1 · canon Mary Editorial Dark Fred+Gé 7/jul
+ *
+ * Atmosfera canon Mary: escrever ao estúdio.
+ * Fundo #0B0B0C · email principal branco puro grande · social discreto → hover branco.
  */
 import { useEffect } from 'react';
 import { LanguageProvider, useLanguage } from '@/hooks/use-language';
@@ -9,7 +11,13 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/PageHero';
 import FooterLine from '@/components/FooterLine';
-import SectionLabel from '@/components/SectionLabel';
+
+const SOCIALS = [
+  { label: 'LINKEDIN', href: 'https://www.linkedin.com/in/gessikaolivieri/' },
+  { label: 'INSTAGRAM', href: 'https://www.instagram.com/lolalabstudio/' },
+  { label: 'YOUTUBE', href: 'https://www.youtube.com/@lolalabstudio' },
+  { label: 'UPWORK', href: 'https://www.upwork.com/freelancers/lolalabstudio?mp_source=share' },
+];
 
 const ContactContent = () => {
   const { lang } = useLanguage();
@@ -21,17 +29,10 @@ const ContactContent = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const socials = [
-    { label: 'LINKEDIN', href: 'https://www.linkedin.com/in/gessikaolivieri/' },
-    { label: 'INSTAGRAM', href: 'https://www.instagram.com/lolalabstudio/' },
-    { label: 'YOUTUBE', href: 'https://www.youtube.com/@lolalabstudio' },
-    { label: 'UPWORK', href: 'https://www.upwork.com/freelancers/lolalabstudio?mp_source=share' },
-  ];
-
   return (
     <>
       <Navbar />
-      <main>
+      <main style={{ backgroundColor: 'hsl(var(--ink))' }}>
         <PageHero
           label={t('nav.contact', lang)}
           headline={t('contact.hero.headline', lang)}
@@ -39,38 +40,99 @@ const ContactContent = () => {
         >
           <a
             href="mailto:hello@lolalabstudio.com"
-            className="inline-block text-lg md:text-xl"
-            style={{ color: 'hsl(var(--bronze))', fontWeight: 500 }}
+            className="inline-block transition-opacity hover:opacity-70"
+            style={{
+              color: '#FFFFFF',
+              fontSize: 'clamp(1.5rem, 2.6vw, 2.25rem)',
+              fontWeight: 300,
+              letterSpacing: '-0.015em',
+              borderBottom: '1px solid #FFFFFF',
+              paddingBottom: '6px',
+            }}
           >
             hello@lolalabstudio.com
           </a>
         </PageHero>
 
-        {/* Wave 6 placeholder · Inquiry paths (Project · Collaboration · Press · General) */}
-        <section className="px-6 md:px-12 py-24 md:py-32 bg-background border-t border-ink/5">
-          <div className="max-w-[900px] mx-auto">
-            <div className="mb-8">
-              <SectionLabel>Inquiry paths</SectionLabel>
-            </div>
-            <p
-              className="text-base text-ink-soft leading-relaxed max-w-[620px] mb-16"
-              style={{ fontWeight: 300 }}
+        {/* Inquiry paths · texto editorial dark */}
+        <section className="px-6 md:px-12 py-24 md:py-32">
+          <div className="max-w-[820px] mx-auto">
+            <span
+              className="block mb-10"
+              style={{
+                color: 'hsl(var(--bronze-soft))',
+                fontSize: '0.7rem',
+                fontWeight: 500,
+                letterSpacing: '0.24em',
+                textTransform: 'uppercase',
+              }}
             >
-              Project inquiry · Collaboration · Press / research · General note · full paths in Wave 6.
+              How to write
+            </span>
+            <p
+              className="mb-8"
+              style={{
+                fontSize: 'clamp(1.125rem, 1.8vw, 1.5rem)',
+                fontWeight: 300,
+                letterSpacing: '-0.01em',
+                lineHeight: 1.5,
+                color: 'hsl(var(--cool-gray-tertiary))',
+              }}
+            >
+              For projects, tell us the intent and the constraints. Deadline, budget shape,
+              creative reference. We reply within two working days.
             </p>
+            <p
+              style={{
+                fontSize: 'clamp(1.125rem, 1.8vw, 1.5rem)',
+                fontWeight: 300,
+                letterSpacing: '-0.01em',
+                lineHeight: 1.5,
+                color: 'hsl(var(--cool-gray-secondary))',
+              }}
+            >
+              For collaboration, press, or research, a paragraph is enough. We prefer
+              specific to polite.
+            </p>
+          </div>
+        </section>
 
-            <div className="mb-8">
-              <SectionLabel>Connect</SectionLabel>
-            </div>
-            <div className="flex flex-wrap gap-6 md:gap-10">
-              {socials.map((s) => (
+        {/* Connect · social links discretos hover branco */}
+        <section className="px-6 md:px-12 py-16 md:py-24">
+          <div className="max-w-[820px] mx-auto">
+            <span
+              className="block mb-10"
+              style={{
+                color: 'hsl(var(--bronze-soft))',
+                fontSize: '0.7rem',
+                fontWeight: 500,
+                letterSpacing: '0.24em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Connect
+            </span>
+            <div className="flex flex-wrap gap-8 md:gap-12">
+              {SOCIALS.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs tracking-[0.15em] uppercase text-ink-soft hover:text-ink transition-colors duration-300"
-                  style={{ fontWeight: 500 }}
+                  className="transition-colors duration-500"
+                  style={{
+                    color: '#2C2C2E',
+                    fontSize: '0.7rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.color = '#FFFFFF';
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.color = '#2C2C2E';
+                  }}
                 >
                   {s.label}
                 </a>
