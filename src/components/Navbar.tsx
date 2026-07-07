@@ -87,18 +87,21 @@ export default function Navbar() {
     );
   };
 
-  // Wave 3.0-A · canon Mary Fred+Gé 7/jul · contraste dinâmico
-  // - Topo (Hero dark): texto cream · logo cream · backdrop transparente
-  // - Scrolled (resto cream/paper): texto ink · logo ink · backdrop cream blur
-  const navTextColor = scrolled ? 'hsl(var(--ink))' : 'hsl(var(--background))';
-  const logoFilter = scrolled ? 'none' : 'brightness(0) invert(1)';
+  // Wave 3.0-B · canon Apple/Mary Fred+Gé 7/jul
+  // Home é toda dark ink · navbar cream sempre · backdrop ink sutil quando scrolled
+  const navTextColor = 'hsl(var(--background))';
+  const logoFilter = 'brightness(0) invert(1)';
+  const navBg = scrolled
+    ? { backgroundColor: 'hsl(var(--ink) / 0.85)', backdropFilter: 'blur(12px)' }
+    : { backgroundColor: 'transparent' };
 
   return (
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? 'py-3 bg-background/85 backdrop-blur-md' : 'py-6 bg-transparent'
+          scrolled ? 'py-3' : 'py-6'
         }`}
+        style={navBg}
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 flex items-center justify-between">
           <Link
@@ -112,7 +115,7 @@ export default function Navbar() {
             <img
               src="/images/logos/logo-horizontal.svg"
               alt="Lola Lab"
-              className="h-8 md:h-10 transition-all duration-500"
+              className="h-8 md:h-10"
               style={{ filter: logoFilter, opacity: 0.95 }}
             />
           </Link>
@@ -122,14 +125,27 @@ export default function Navbar() {
               renderLink(
                 link,
                 undefined,
-                'label-style underline-offset-4 hover:underline transition-all duration-300',
-                { color: navTextColor },
+                'transition-opacity duration-300 hover:opacity-70',
+                {
+                  color: navTextColor,
+                  fontSize: '0.7rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                },
               ),
             )}
             {SHOW_LANG_TOGGLE && (
               <button
                 onClick={toggleLang}
-                className="label-style border border-border px-3 py-1.5 hover:bg-accent-surface transition-all duration-300 flex items-center gap-1.5"
+                className="border border-border px-3 py-1.5 hover:bg-accent-surface transition-all duration-300 flex items-center gap-1.5"
+                style={{
+                  color: navTextColor,
+                  fontSize: '0.7rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                }}
                 aria-label={lang === 'en' ? 'Mudar para Português' : 'Switch to English'}
               >
                 <Globe className="w-3.5 h-3.5" />
@@ -139,7 +155,7 @@ export default function Navbar() {
           </div>
 
           <button
-            className="md:hidden transition-colors duration-500"
+            className="md:hidden"
             style={{ color: navTextColor }}
             onClick={() => setMobileOpen(true)}
           >
@@ -149,9 +165,13 @@ export default function Navbar() {
       </nav>
 
       {mobileOpen && (
-        <div className="fixed inset-0 z-[60] bg-background flex flex-col items-center justify-center gap-10 animate-in fade-in duration-300">
+        <div
+          className="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-10 animate-in fade-in duration-300"
+          style={{ backgroundColor: 'hsl(var(--ink))' }}
+        >
           <button
-            className="absolute top-6 right-6 text-foreground"
+            className="absolute top-6 right-6"
+            style={{ color: 'hsl(var(--background))' }}
             onClick={() => setMobileOpen(false)}
           >
             <X className="w-6 h-6" />
@@ -160,7 +180,13 @@ export default function Navbar() {
             renderLink(
               link,
               () => setMobileOpen(false),
-              'text-2xl font-light tracking-[0.15em] text-soft underline-offset-4 hover:underline hover:text-foreground transition-all duration-300',
+              'transition-opacity duration-300 hover:opacity-70',
+              {
+                color: 'hsl(var(--background))',
+                fontSize: '1.5rem',
+                fontWeight: 300,
+                letterSpacing: '0.05em',
+              },
             ),
           )}
           {SHOW_LANG_TOGGLE && (
@@ -169,7 +195,15 @@ export default function Navbar() {
                 toggleLang();
                 setMobileOpen(false);
               }}
-              className="label-style border border-border px-5 py-2.5 mt-4 flex items-center gap-2"
+              className="border px-5 py-2.5 mt-4 flex items-center gap-2"
+              style={{
+                borderColor: 'hsl(var(--background) / 0.3)',
+                color: 'hsl(var(--background))',
+                fontSize: '0.7rem',
+                fontWeight: 500,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+              }}
             >
               <Globe className="w-4 h-4" />
               {lang === 'en' ? 'Português' : 'English'}

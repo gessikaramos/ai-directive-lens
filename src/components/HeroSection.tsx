@@ -1,21 +1,14 @@
 /**
- * HeroSection · Wave 3.0-A · canon Mary Fred+Gé 7/jul
+ * HeroSection · Wave 3.0-B · canon Apple/Mary Fred+Gé 7/jul
  *
- * Upgrade sobre Wave 2.1:
- *   - Base dark premium (bg-ink) · vídeo protagonista sem cream veil
- *   - Tipografia MONUMENTAL cream/off-white sobre dark
- *   - Letter-spacing negativo canon Mary (-0.035em display)
- *   - Line-height cinemático 1.02-1.05
- *   - CTAs redesenhados: cream underline editorial · sem botão preto genérico
- *   - Scroll indicator cream discreto
- *   - Gradient fade cinemático dark → cream (transição pra Statement dark)
- *   - Grain overlay sutil (film noise 3%)
- *
- * Regras canon:
- *   - Copy Hero mantido: hero.headline + hero.support
- *   - Fallback autoplay policy mantido (touchstart/click)
- *   - Zero bounce, zero glow, zero SaaS
- *   - Rotas /lab e /library mantidas
+ * Refinos sobre 3.0-A:
+ *   - Veil dark 20% (antes 35%) · vídeo respira mais
+ *   - Tipografia refinada Apple: weight 400 (não 500), letter-spacing -0.02em (não -0.035em)
+ *   - Escala moderada: clamp(3rem, 7.5vw, 7rem) em vez de 9vw/9rem
+ *   - Support cream 65% opacity · line-height 1.4
+ *   - CTAs com fadeup suave · label-style clean
+ *   - Sem grain overlay (era ruído desnecessário)
+ *   - Fade final transparente para dark ink continuar
  */
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
@@ -50,7 +43,6 @@ export default function HeroSection() {
       className="relative h-screen w-full overflow-hidden flex items-center justify-center"
       style={{ backgroundColor: 'hsl(var(--ink))' }}
     >
-      {/* Vídeo full-bleed sem veil · canon Mary */}
       <video
         ref={videoRef}
         autoPlay
@@ -66,24 +58,15 @@ export default function HeroSection() {
         <source src="/videos/hero-loop.mp4" type="video/mp4" />
       </video>
 
-      {/* Veil dark cinemático leve pra dar respiro à tipografia sem cobrir o vídeo */}
+      {/* Veil dark leve (20%) · deixa o vídeo respirar */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ backgroundColor: 'hsl(var(--ink) / 0.35)' }}
+        style={{ backgroundColor: 'hsl(var(--ink) / 0.2)' }}
       />
 
-      {/* Grain overlay cinemático · SVG noise 3% */}
+      {/* Gradient bottom para continuar dark ink */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.06] mix-blend-overlay"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-        }}
-      />
-
-      {/* Gradient fade sutil pro Statement (dark → dark suave) */}
-      <div
-        className="absolute inset-x-0 bottom-0 h-40 pointer-events-none"
+        className="absolute inset-x-0 bottom-0 h-48 pointer-events-none"
         style={{
           backgroundImage: `linear-gradient(to bottom, transparent, hsl(var(--ink)))`,
         }}
@@ -91,42 +74,44 @@ export default function HeroSection() {
 
       <div
         data-anim="hero-content"
-        className="relative z-10 text-center px-6 max-w-6xl mx-auto"
+        className="relative z-10 text-center px-6 max-w-5xl mx-auto"
       >
         <h1
-          className="mb-8 leading-[1.02]"
+          className="mb-6"
           style={{
-            fontSize: 'clamp(3.5rem, 9vw, 9rem)',
-            fontWeight: 500,
-            letterSpacing: '-0.035em',
+            fontSize: 'clamp(3rem, 7.5vw, 7rem)',
+            fontWeight: 400,
+            letterSpacing: '-0.02em',
+            lineHeight: 1.05,
             color: 'hsl(var(--background))',
           }}
         >
           {t('hero.headline', lang)}
         </h1>
         <p
-          className="max-w-2xl mx-auto"
+          className="max-w-xl mx-auto"
           style={{
-            fontSize: 'clamp(1.125rem, 1.6vw, 1.5rem)',
-            fontWeight: 400,
-            letterSpacing: '-0.005em',
-            color: 'hsl(var(--background) / 0.7)',
-            lineHeight: 1.4,
+            fontSize: 'clamp(1rem, 1.3vw, 1.25rem)',
+            fontWeight: 300,
+            letterSpacing: '0',
+            color: 'hsl(var(--background) / 0.65)',
+            lineHeight: 1.5,
           }}
         >
           {t('hero.support', lang)}
         </p>
 
-        {/* CTAs canon Mary · underline editorial cream · sem botão preto genérico */}
-        <div className="mt-14 md:mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12">
+        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-10">
           <Link
             to="/lab"
-            className="label-style transition-opacity duration-300 hover:opacity-70"
+            className="transition-opacity duration-500 hover:opacity-60"
             style={{
               color: 'hsl(var(--background))',
+              fontSize: '0.75rem',
               fontWeight: 500,
-              letterSpacing: '0.18em',
-              borderBottom: '1px solid hsl(var(--background))',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              borderBottom: '1px solid hsl(var(--background) / 0.6)',
               paddingBottom: '4px',
             }}
           >
@@ -134,11 +119,13 @@ export default function HeroSection() {
           </Link>
           <Link
             to="/library"
-            className="label-style transition-opacity duration-300 hover:opacity-70"
+            className="transition-opacity duration-500 hover:opacity-100"
             style={{
-              color: 'hsl(var(--background) / 0.6)',
+              color: 'hsl(var(--background) / 0.5)',
+              fontSize: '0.75rem',
               fontWeight: 500,
-              letterSpacing: '0.18em',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
             }}
           >
             {t('hero.cta.library', lang)}
@@ -146,20 +133,25 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll indicator cream discreto */}
+      {/* Scroll indicator refinado */}
       <div
         data-anim="scroll-indicator"
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
       >
         <span
-          className="label-style"
-          style={{ color: 'hsl(var(--background) / 0.5)', fontWeight: 500 }}
+          style={{
+            color: 'hsl(var(--background) / 0.4)',
+            fontSize: '0.65rem',
+            fontWeight: 500,
+            letterSpacing: '0.24em',
+            textTransform: 'uppercase',
+          }}
         >
           {t('hero.scroll', lang)}
         </span>
         <div
-          className="w-px h-10"
-          style={{ backgroundColor: 'hsl(var(--background) / 0.3)' }}
+          className="w-px h-12"
+          style={{ backgroundColor: 'hsl(var(--background) / 0.25)' }}
         />
       </div>
     </section>

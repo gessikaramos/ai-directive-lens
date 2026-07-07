@@ -40,43 +40,23 @@ export function useScrollAnimations() {
         });
       }
 
-      // ── Statement: horizontal parallax ──
-      const statementLine1 = document.querySelector('[data-anim="statement-line1"]');
-      const statementLine2 = document.querySelector('[data-anim="statement-line2"]');
-      const statementParent = statementLine1?.closest('section');
-
-      if (statementLine1) {
-        gsap.fromTo(statementLine1,
-          { x: -150 },
-          {
-            x: 0,
-            force3D: true,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: statementParent,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: true,
-            },
-          }
-        );
-      }
-
-      if (statementLine2) {
-        gsap.fromTo(statementLine2,
-          { x: 150 },
-          {
-            x: 0,
-            force3D: true,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: statementParent,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: true,
-            },
-          }
-        );
+      // Wave 3.0-B · canon Apple/Mary Fred+Gé 7/jul
+      // Statement · fade + translateY único (sem parallax horizontal esquisito)
+      const statementBlock = document.querySelector('[data-anim="statement-block"]');
+      if (statementBlock) {
+        gsap.from(statementBlock, {
+          opacity: 0,
+          y: 40,
+          duration: 1.2,
+          force3D: true,
+          ease: 'power2.out',
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: statementBlock,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        });
       }
 
       // ── Skills: stagger cards ──
@@ -207,21 +187,18 @@ export function useScrollAnimations() {
         });
       }
 
-      // ── Manifesto Slice reveal · Wave 2.1 · canon Fred+Gé 7/jul ──
-      // Motion lento editorial · sem parallax pesado · sem scroll hijacking
-      // Cadência lenta (duration 1.4 + stagger 0.35) pra respiro cinematográfico
-      const manifestoLines = document.querySelectorAll('[data-anim="manifesto-reveal"]');
-      if (manifestoLines.length) {
-        gsap.from(manifestoLines, {
+      // Wave 3.0-B · Manifesto reveal · fade+translateY único (sem stagger palavra-a-palavra esquisito)
+      const manifestoBlock = document.querySelector('[data-anim="manifesto-block"]');
+      if (manifestoBlock) {
+        gsap.from(manifestoBlock, {
           opacity: 0,
-          y: 30,
+          y: 40,
           duration: 1.4,
           force3D: true,
-          stagger: 0.35,
           ease: 'power2.out',
           immediateRender: false,
           scrollTrigger: {
-            trigger: manifestoLines[0].parentElement,
+            trigger: manifestoBlock,
             start: 'top 80%',
             toggleActions: 'play none none none',
           },

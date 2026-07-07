@@ -97,13 +97,30 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
     }
   };
 
+  // Wave 3.0-B · canon Apple/Mary Fred+Gé 7/jul · dark base coeso · tipografia refinada
   return (
-    <div className="w-full max-w-[700px] mx-auto">
-      <div className="mb-4">
-        <span className="label-style block mb-3" style={{ color: 'hsl(var(--bronze))' }}>
+    <div className="w-full max-w-[720px] mx-auto">
+      <div className="mb-6">
+        <span
+          className="block mb-4"
+          style={{
+            color: 'hsl(var(--bronze-soft))',
+            fontSize: '0.7rem',
+            fontWeight: 500,
+            letterSpacing: '0.24em',
+            textTransform: 'uppercase',
+          }}
+        >
           HUMAN INTENT TRANSLATOR · OPEN BETA
         </span>
-        <p className="text-ink-soft leading-relaxed" style={{ fontWeight: 300 }}>
+        <p
+          style={{
+            fontSize: '0.9375rem',
+            fontWeight: 300,
+            lineHeight: 1.65,
+            color: 'hsl(var(--background) / 0.7)',
+          }}
+        >
           An investigation into how humans talk to AI.
           <br />
           Free during beta. Your conversations help us translate intention into form.
@@ -112,10 +129,17 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
 
       <div
         ref={scrollRef}
-        className="min-h-[280px] max-h-[520px] overflow-y-auto py-8 space-y-6 scrollbar-none"
+        className="min-h-[240px] max-h-[520px] overflow-y-auto py-6 space-y-5 scrollbar-none"
       >
         {messages.length === 0 && !loading && (
-          <p className="text-ink-soft/60 italic text-sm" style={{ fontWeight: 300 }}>
+          <p
+            className="italic"
+            style={{
+              fontSize: '0.9375rem',
+              fontWeight: 300,
+              color: 'hsl(var(--background) / 0.4)',
+            }}
+          >
             Write below to begin.
           </p>
         )}
@@ -125,14 +149,20 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
             <div
               className={
                 m.role === 'user'
-                  ? 'max-w-[80%] px-5 py-3 text-ink'
-                  : 'max-w-[85%] px-5 py-3 text-ink'
+                  ? 'max-w-[80%] px-5 py-3.5'
+                  : 'max-w-[88%] px-5 py-3.5'
               }
               style={{
                 backgroundColor:
-                  m.role === 'user' ? 'hsl(38, 33%, 93%)' : 'hsl(40, 43%, 97%)',
-                fontWeight: 400,
-                lineHeight: 1.6,
+                  m.role === 'user'
+                    ? 'hsl(var(--background) / 0.08)'
+                    : 'hsl(var(--background) / 0.04)',
+                color: 'hsl(var(--background))',
+                fontSize: '0.9375rem',
+                fontWeight: 300,
+                lineHeight: 1.65,
+                borderRadius: '2px',
+                border: '1px solid hsl(var(--background) / 0.08)',
               }}
             >
               {m.text.split('\n').map((line, j) => (
@@ -142,7 +172,7 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
               ))}
             </div>
             {m.role === 'lab' && m.message_id && (
-              <div className="flex gap-4 mt-2 pl-1">
+              <div className="flex gap-5 mt-3 pl-1">
                 {FEEDBACK.map((f) => {
                   const chosen = m.feedback === f.key;
                   const anyChosen = !!m.feedback;
@@ -151,11 +181,14 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
                       key={f.key}
                       onClick={() => rate(i, f.key!)}
                       disabled={anyChosen}
-                      className="text-[11px] tracking-wider transition-opacity"
+                      className="transition-opacity"
                       style={{
-                        color: 'hsl(var(--bronze))',
-                        opacity: chosen ? 1 : anyChosen ? 0.35 : 0.85,
+                        color: 'hsl(var(--bronze-soft))',
+                        fontSize: '0.65rem',
                         fontWeight: chosen ? 500 : 400,
+                        letterSpacing: '0.2em',
+                        textTransform: 'uppercase',
+                        opacity: chosen ? 1 : anyChosen ? 0.3 : 0.75,
                         cursor: anyChosen ? 'default' : 'pointer',
                       }}
                     >
@@ -170,14 +203,23 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
 
         {loading && (
           <div className="flex items-center gap-1.5 pl-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-ink-soft/60 animate-pulse" />
             <span
-              className="w-1.5 h-1.5 rounded-full bg-ink-soft/60 animate-pulse"
-              style={{ animationDelay: '150ms' }}
+              className="w-1.5 h-1.5 rounded-full animate-pulse"
+              style={{ backgroundColor: 'hsl(var(--background) / 0.5)' }}
             />
             <span
-              className="w-1.5 h-1.5 rounded-full bg-ink-soft/60 animate-pulse"
-              style={{ animationDelay: '300ms' }}
+              className="w-1.5 h-1.5 rounded-full animate-pulse"
+              style={{
+                backgroundColor: 'hsl(var(--background) / 0.5)',
+                animationDelay: '150ms',
+              }}
+            />
+            <span
+              className="w-1.5 h-1.5 rounded-full animate-pulse"
+              style={{
+                backgroundColor: 'hsl(var(--background) / 0.5)',
+                animationDelay: '300ms',
+              }}
             />
           </div>
         )}
@@ -190,15 +232,22 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
           onKeyDown={onKey}
           rows={1}
           placeholder="Write to the Lab."
-          className="w-full resize-none bg-background text-ink placeholder:text-ink-soft/50 border border-ink-soft/40 focus:border-bronze focus:outline-none focus:ring-1 focus:ring-bronze/40 py-3 pl-4 pr-12 text-base transition-colors"
-          style={{ fontWeight: 400, minHeight: 48 }}
+          className="w-full resize-none focus:outline-none py-3 pl-4 pr-12 transition-colors"
+          style={{
+            backgroundColor: 'transparent',
+            color: 'hsl(var(--background))',
+            border: '1px solid hsl(var(--background) / 0.2)',
+            fontSize: '0.9375rem',
+            fontWeight: 400,
+            minHeight: 48,
+          }}
         />
         <button
           onClick={() => void send(input)}
           disabled={loading || !input.trim()}
           aria-label="Send"
           className="absolute right-3 top-1/2 -translate-y-1/2 disabled:opacity-30 transition-opacity"
-          style={{ color: 'hsl(var(--bronze))' }}
+          style={{ color: 'hsl(var(--bronze-soft))' }}
         >
           <ArrowRight className="w-5 h-5" />
         </button>
