@@ -142,27 +142,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll indicator refinado */}
-      <div
-        data-anim="scroll-indicator"
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
-      >
-        <span
-          style={{
-            color: 'hsl(var(--background) / 0.4)',
-            fontSize: '0.65rem',
-            fontWeight: 500,
-            letterSpacing: '0.24em',
-            textTransform: 'uppercase',
-          }}
-        >
-          {t('hero.scroll', lang)}
-        </span>
-        <div
-          className="w-px h-12"
-          style={{ backgroundColor: 'hsl(var(--background) / 0.25)' }}
-        />
-      </div>
+      {/* Wave 3.1.1 · canon Mary QA · SCROLL indicator removido · deixar layout induzir orgânico A24 */}
     </section>
   );
 }

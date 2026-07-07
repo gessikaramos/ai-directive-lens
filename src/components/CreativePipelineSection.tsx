@@ -145,7 +145,7 @@ const SelectedWorkSection = () => {
             {t('selected.masterchef.desc', lang)}
           </p>
           <p
-            className="italic pt-6"
+            className="italic pt-6 mb-8"
             style={{
               fontSize: '1rem',
               fontWeight: 300,
@@ -156,6 +156,21 @@ const SelectedWorkSection = () => {
           >
             {t('selected.masterchef.bridge', lang)}
           </p>
+
+          {/* Wave 3.1.1 · canon Mary QA · Read Volume in the Library · funil Director's Cut */}
+          <a
+            href="/library"
+            className="inline-flex items-center gap-2 hover:gap-3 transition-all duration-500"
+            style={{
+              color: 'hsl(var(--bronze-soft))',
+              fontSize: '0.7rem',
+              fontWeight: 500,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+            }}
+          >
+            Read Volume in the Library <span aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
 
@@ -213,13 +228,34 @@ const SelectedWorkSection = () => {
           >
             {t('selected.pietra.desc', lang)}
           </p>
+          {/* Wave 3.1.1 · canon Mary QA · Read Volume in the Library funil Director's Cut */}
+          <div className="mb-8">
+            <a
+              href="/library"
+              className="inline-flex items-center gap-2 hover:gap-3 transition-all duration-500"
+              style={{
+                color: 'hsl(var(--bronze-soft))',
+                fontSize: '0.7rem',
+                fontWeight: 500,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Read Volume in the Library <span aria-hidden="true">→</span>
+            </a>
+          </div>
+
+          {/* Wave 3.1.1 · canon Mary QA · disclaimer monospace opacity 0.4 · letras miúdas técnicas cinema */}
           <p
-            className="italic"
             style={{
-              fontSize: '0.75rem',
-              fontWeight: 300,
-              lineHeight: 1.6,
-              color: 'hsl(var(--cool-gray-secondary))',
+              fontFamily:
+                'ui-monospace, "SF Mono", Menlo, Monaco, "Cascadia Mono", "Roboto Mono", Consolas, monospace',
+              fontSize: '0.6875rem',
+              fontWeight: 400,
+              lineHeight: 1.5,
+              letterSpacing: '0.01em',
+              color: '#FFFFFF',
+              opacity: 0.4,
             }}
           >
             {t('selected.pietra.legal', lang)}

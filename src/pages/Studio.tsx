@@ -99,8 +99,14 @@ const StudioContent = () => {
               {SERVICES.map((service) => (
                 <div
                   key={service.number}
-                  className="py-10 md:py-14 pr-0 md:pr-12"
+                  className="py-10 md:py-14 px-4 md:px-8 transition-colors duration-500 cursor-default"
                   style={{ borderTop: '1px solid #1C1C1E' }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.backgroundColor = '#121214';
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent';
+                  }}
                 >
                   <span
                     className="block mb-4"
