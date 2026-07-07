@@ -1,22 +1,3 @@
-/**
- * HeroSection · Wave 3.0-A · canon Mary Fred+Gé 7/jul
- *
- * Upgrade sobre Wave 2.1:
- *   - Base dark premium (bg-ink) · vídeo protagonista sem cream veil
- *   - Tipografia MONUMENTAL cream/off-white sobre dark
- *   - Letter-spacing negativo canon Mary (-0.035em display)
- *   - Line-height cinemático 1.02-1.05
- *   - CTAs redesenhados: cream underline editorial · sem botão preto genérico
- *   - Scroll indicator cream discreto
- *   - Gradient fade cinemático dark → cream (transição pra Statement dark)
- *   - Grain overlay sutil (film noise 3%)
- *
- * Regras canon:
- *   - Copy Hero mantido: hero.headline + hero.support
- *   - Fallback autoplay policy mantido (touchstart/click)
- *   - Zero bounce, zero glow, zero SaaS
- *   - Rotas /lab e /library mantidas
- */
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/hooks/use-language';
@@ -46,11 +27,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section
-      className="relative h-screen w-full overflow-hidden flex items-center justify-center"
-      style={{ backgroundColor: 'hsl(var(--ink))' }}
-    >
-      {/* Vídeo full-bleed sem veil · canon Mary */}
+    <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-background">
       <video
         ref={videoRef}
         autoPlay
@@ -59,84 +36,59 @@ export default function HeroSection() {
         playsInline
         preload="auto"
         onCanPlay={() => setVideoReady(true)}
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
           videoReady ? 'opacity-100' : 'opacity-0'
         }`}
       >
         <source src="/videos/hero-loop.mp4" type="video/mp4" />
       </video>
 
-      {/* Veil dark cinemático leve pra dar respiro à tipografia sem cobrir o vídeo */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ backgroundColor: 'hsl(var(--ink) / 0.35)' }}
-      />
+      {/* Cream veil for legibility */}
+      <div className="absolute inset-0 bg-background/55" />
 
-      {/* Grain overlay cinemático · SVG noise 3% */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.06] mix-blend-overlay"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-        }}
-      />
+      {/* Canon Wave 4A · Gradient fade suave pro Statement · Fred+Gé 5/jul */}
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-background pointer-events-none" />
 
-      {/* Gradient fade sutil pro Statement (dark → dark suave) */}
-      <div
-        className="absolute inset-x-0 bottom-0 h-40 pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(to bottom, transparent, hsl(var(--ink)))`,
-        }}
-      />
-
-      <div
-        data-anim="hero-content"
-        className="relative z-10 text-center px-6 max-w-6xl mx-auto"
-      >
+      <div data-anim="hero-content" className="relative z-10 text-center px-6 max-w-4xl mx-auto">
         <h1
-          className="mb-8 leading-[1.02]"
-          style={{
-            fontSize: 'clamp(3.5rem, 9vw, 9rem)',
-            fontWeight: 500,
-            letterSpacing: '-0.035em',
-            color: 'hsl(var(--background))',
-          }}
+          className="text-4xl md:text-6xl lg:text-7xl tracking-tight leading-[1.05] text-ink mb-8"
+          style={{ fontWeight: 600 }}
         >
           {t('hero.headline', lang)}
         </h1>
+        {/* Wave 1.1 · Fred v1 canon · Hero support único · substitui tagline+body legacy */}
         <p
-          className="max-w-2xl mx-auto"
-          style={{
-            fontSize: 'clamp(1.125rem, 1.6vw, 1.5rem)',
-            fontWeight: 400,
-            letterSpacing: '-0.005em',
-            color: 'hsl(var(--background) / 0.7)',
-            lineHeight: 1.4,
-          }}
+          className="text-lg md:text-2xl tracking-tight text-ink"
+          style={{ fontWeight: 500 }}
         >
           {t('hero.support', lang)}
         </p>
 
-        {/* CTAs canon Mary · underline editorial cream · sem botão preto genérico */}
-        <div className="mt-14 md:mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12">
+        {/* Wave 1.1 hotfix · Fred/Gé 6/jul · Enter the Lab = botão primário sólido · Explore the Library = CTA secundário visível (canon Steve Jobs Lens: ação óbvia, contraste alto) */}
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-8">
           <Link
             to="/lab"
-            className="label-style transition-opacity duration-300 hover:opacity-70"
+            className="label-style inline-flex items-center justify-center px-8 py-3.5 transition-colors duration-300"
             style={{
+              backgroundColor: 'hsl(var(--ink))',
               color: 'hsl(var(--background))',
               fontWeight: 500,
               letterSpacing: '0.18em',
-              borderBottom: '1px solid hsl(var(--background))',
-              paddingBottom: '4px',
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.backgroundColor = 'hsl(var(--bronze))';
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.backgroundColor = 'hsl(var(--ink))';
             }}
           >
             {t('hero.cta.lab', lang)}
           </Link>
           <Link
             to="/library"
-            className="label-style transition-opacity duration-300 hover:opacity-70"
+            className="label-style underline underline-offset-4 decoration-1 hover:decoration-2 transition-all duration-300"
             style={{
-              color: 'hsl(var(--background) / 0.6)',
+              color: 'hsl(var(--ink))',
               fontWeight: 500,
               letterSpacing: '0.18em',
             }}
@@ -146,21 +98,9 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll indicator cream discreto */}
-      <div
-        data-anim="scroll-indicator"
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
-      >
-        <span
-          className="label-style"
-          style={{ color: 'hsl(var(--background) / 0.5)', fontWeight: 500 }}
-        >
-          {t('hero.scroll', lang)}
-        </span>
-        <div
-          className="w-px h-10"
-          style={{ backgroundColor: 'hsl(var(--background) / 0.3)' }}
-        />
+      <div data-anim="scroll-indicator" className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+        <span className="label-style animate-subtle-bounce">{t('hero.scroll', lang)}</span>
+        <div className="w-px h-8" style={{ backgroundColor: 'hsl(var(--ink) / 0.25)' }} />
       </div>
     </section>
   );

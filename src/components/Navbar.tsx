@@ -52,12 +52,7 @@ export default function Navbar() {
     [location.pathname, navigate],
   );
 
-  const renderLink = (
-    link: NavItem,
-    onClick?: () => void,
-    className = '',
-    style?: React.CSSProperties,
-  ) => {
+  const renderLink = (link: NavItem, onClick?: () => void, className = '') => {
     if (link.type === 'route') {
       return (
         <Link
@@ -65,7 +60,6 @@ export default function Navbar() {
           to={link.href}
           onClick={onClick}
           className={className}
-          style={style}
         >
           {t(link.key, lang)}
         </Link>
@@ -80,24 +74,17 @@ export default function Navbar() {
           onClick?.();
         }}
         className={className}
-        style={style}
       >
         {t(link.key, lang)}
       </a>
     );
   };
 
-  // Wave 3.0-A · canon Mary Fred+Gé 7/jul · contraste dinâmico
-  // - Topo (Hero dark): texto cream · logo cream · backdrop transparente
-  // - Scrolled (resto cream/paper): texto ink · logo ink · backdrop cream blur
-  const navTextColor = scrolled ? 'hsl(var(--ink))' : 'hsl(var(--background))';
-  const logoFilter = scrolled ? 'none' : 'brightness(0) invert(1)';
-
   return (
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? 'py-3 bg-background/85 backdrop-blur-md' : 'py-6 bg-transparent'
+          scrolled ? 'py-3 bg-background/80 backdrop-blur-md' : 'py-6 bg-transparent'
         }`}
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 flex items-center justify-between">
@@ -112,8 +99,7 @@ export default function Navbar() {
             <img
               src="/images/logos/logo-horizontal.svg"
               alt="Lola Lab"
-              className="h-8 md:h-10 transition-all duration-500"
-              style={{ filter: logoFilter, opacity: 0.95 }}
+              className="h-8 md:h-10 opacity-90"
             />
           </Link>
 
@@ -122,8 +108,7 @@ export default function Navbar() {
               renderLink(
                 link,
                 undefined,
-                'label-style underline-offset-4 hover:underline transition-all duration-300',
-                { color: navTextColor },
+                'label-style underline-offset-4 hover:underline hover:text-foreground transition-all duration-300',
               ),
             )}
             {SHOW_LANG_TOGGLE && (
@@ -139,8 +124,7 @@ export default function Navbar() {
           </div>
 
           <button
-            className="md:hidden transition-colors duration-500"
-            style={{ color: navTextColor }}
+            className="md:hidden text-foreground"
             onClick={() => setMobileOpen(true)}
           >
             <Menu className="w-6 h-6" />
