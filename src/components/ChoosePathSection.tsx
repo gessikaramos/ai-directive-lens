@@ -1,7 +1,8 @@
 /**
- * ChoosePathSection · Wave 1 · canon Fred v1
- * Home block: Choose your path · Lab · Library · Studio (nessa ordem).
- * Copy canon Fred v1 completa via i18n.
+ * ChoosePathSection · Wave 2.0 · canon-mestre navigation Fred+Gé 7/jul
+ * Home block: Choose your path · Studio · Lab · Library (nessa ordem).
+ * Steve Jobs Lens: quero contratar → Studio · quero explorar ideia → Lab · quero aprender → Library.
+ * Copy canon completa via i18n.
  */
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
@@ -18,6 +19,12 @@ export default function ChoosePathSection() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           <PathCard
+            name={t('home.path.studio.name', lang)}
+            desc={t('home.path.studio.desc', lang)}
+            cta={t('home.path.studio.cta', lang)}
+            to="/studio"
+          />
+          <PathCard
             name={t('home.path.lab.name', lang)}
             desc={t('home.path.lab.desc', lang)}
             cta={t('home.path.lab.cta', lang)}
@@ -28,12 +35,6 @@ export default function ChoosePathSection() {
             desc={t('home.path.library.desc', lang)}
             cta={t('home.path.library.cta', lang)}
             to="/library"
-          />
-          <PathCard
-            name={t('home.path.studio.name', lang)}
-            desc={t('home.path.studio.desc', lang)}
-            cta={t('home.path.studio.cta', lang)}
-            to="/studio"
           />
         </div>
       </div>

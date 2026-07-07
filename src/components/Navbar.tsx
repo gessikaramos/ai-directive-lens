@@ -25,11 +25,12 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Wave 1 · Fred v1 canon · 5 rotas reais · Lab · Library · Studio · About · Contact
+  // Wave 2.0 · canon-mestre navigation Fred+Gé 7/jul · Studio · Lab · Library · About · Contact
+  // Steve Jobs Lens: quero contratar → Studio · quero explorar ideia → Lab · quero aprender → Library
   const navLinks: NavItem[] = [
+    { key: 'nav.studio', href: '/studio', type: 'route' },
     { key: 'nav.lab', href: '/lab', type: 'route' },
     { key: 'nav.library', href: '/library', type: 'route' },
-    { key: 'nav.studio', href: '/studio', type: 'route' },
     { key: 'nav.about', href: '/about', type: 'route' },
     { key: 'nav.contact', href: '/contact', type: 'route' },
   ];

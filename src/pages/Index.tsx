@@ -1,5 +1,5 @@
 /**
- * Home · v3.2 · Wave 1 canon Fred v1
+ * Home · v3.2 · Wave 1 canon Fred v1 · Wave 2.0 canon-mestre navigation aplicado
  *
  * Estrutura canon-Fred:
  *   Hero → Statement → Choose your path → Selected Work → About preview → Contact preview → Footer line
@@ -9,7 +9,8 @@
  *   - "What we do" 4 tiles removida da Home (SkillsSection) · vai pra /studio em Wave 5
  *   - About preview curto · full em /about
  *   - Contact preview curto · full em /contact
- *   - Footer line canon: "Lab guides. Library teaches. Studio makes."
+ *   - Wave 2.0 · Choose your path canon-mestre: Studio → Lab → Library
+ *   - Wave 2.0 · Footer line canon: "Learn the method. Shape the idea. Build the work."
  */
 import { LanguageProvider } from '@/hooks/use-language';
 import { useLenis } from '@/hooks/use-lenis';

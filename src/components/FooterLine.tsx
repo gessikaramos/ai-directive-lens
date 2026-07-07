@@ -1,6 +1,7 @@
 /**
- * FooterLine · Wave 1 canon Fred v1 · Wave 1.2 canon accept override
- * Default: "Lab guides. Library teaches. Studio makes."
+ * FooterLine · Wave 2.0 · canon-mestre navigation Fred+Gé 7/jul
+ * Default (footer.line): "Learn the method. Shape the idea. Build the work."
+ * Frase antiga "Lab guides. Library teaches. Studio makes." arquivada como canon histórico Wave 1.
  * Override via prop `translationKey` para páginas com footer específico.
  * Assinatura editorial mínima. Nunca marketing.
  */
