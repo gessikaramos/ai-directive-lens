@@ -207,6 +207,27 @@ export function useScrollAnimations() {
         });
       }
 
+      // ── Manifesto Slice reveal · Wave 2.1 · canon Fred+Gé 7/jul ──
+      // Motion lento editorial · sem parallax pesado · sem scroll hijacking
+      // Cadência lenta (duration 1.4 + stagger 0.35) pra respiro cinematográfico
+      const manifestoLines = document.querySelectorAll('[data-anim="manifesto-reveal"]');
+      if (manifestoLines.length) {
+        gsap.from(manifestoLines, {
+          opacity: 0,
+          y: 30,
+          duration: 1.4,
+          force3D: true,
+          stagger: 0.35,
+          ease: 'power2.out',
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: manifestoLines[0].parentElement,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        });
+      }
+
       // ── Fullscreen video cards ──
       document.querySelectorAll('[data-anim="video-card"]').forEach((el) => {
         gsap.from(el.querySelector('[data-anim="video-card-content"]'), {

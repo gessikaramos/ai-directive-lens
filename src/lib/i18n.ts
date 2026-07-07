@@ -108,6 +108,16 @@ export const translations: Record<string, Record<Lang, string>> = {
     pt: 'Referências de designers apresentadas apenas para fins de demonstração criativa. Nenhuma afiliação ou endosso de marca implícito.',
   },
 
+  // Manifesto Slice · Wave 2.1 · canon Fred+Gé 7/jul · dark ink section
+  'manifesto.line1': {
+    en: 'The machine can produce. But it cannot know what is yours. That is where direction begins.',
+    pt: 'The machine can produce. But it cannot know what is yours. That is where direction begins.',
+  },
+  'manifesto.line2': {
+    en: 'LolaLab translates human intention into form — until the machine disappears and only what you meant to say remains.',
+    pt: 'LolaLab translates human intention into form — until the machine disappears and only what you meant to say remains.',
+  },
+
   // About
   'about.label': { en: 'ABOUT', pt: 'SOBRE' },
   'about.p1': {
