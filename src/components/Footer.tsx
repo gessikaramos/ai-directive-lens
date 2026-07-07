@@ -26,7 +26,7 @@ export default function Footer() {
         </p>
         <p
           style={{
-            color: 'hsl(var(--background) / 0.35)',
+            color: 'hsl(var(--cool-gray-secondary))',
             fontSize: '0.7rem',
             fontWeight: 400,
             letterSpacing: '0.08em',
@@ -36,7 +36,7 @@ export default function Footer() {
         </p>
         <p
           style={{
-            color: 'hsl(var(--background) / 0.35)',
+            color: 'hsl(var(--cool-gray-secondary))',
             fontSize: '0.7rem',
             fontWeight: 400,
             letterSpacing: '0.08em',

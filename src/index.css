@@ -46,8 +46,16 @@
     /* Custom LolaLab tokens */
     --bronze: 28 46% 42%;
     --bronze-soft: 25 47% 60%;
-    --ink: 30 20% 10%;
-    --ink-soft: 30 18% 25%;
+
+    /* Wave 3.0-C · canon Mary bíblia FULL · preto Apple + cinzas Apple */
+    /* Ink Apple #0B0B0C (near-black cinema) · era warm 30 20% 10% */
+    --ink: 240 5% 4.7%;
+    /* Ink soft para superfícies levemente elevadas #1C1C1E */
+    --ink-soft: 240 5% 11%;
+    /* Cinza secundário Apple #86868B para body text sobre dark */
+    --cool-gray-secondary: 240 3% 55%;
+    /* Cinza terciário Apple #A1A1A6 para hierarquia mais leve */
+    --cool-gray-tertiary: 240 4% 65%;
 
     --sidebar-background: 38 33% 93%;
     --sidebar-foreground: 30 14% 15%;

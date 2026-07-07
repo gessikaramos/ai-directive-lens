@@ -33,7 +33,7 @@ export default function HomeContactPreview() {
             fontWeight: 300,
             letterSpacing: '-0.01em',
             lineHeight: 1.5,
-            color: 'hsl(var(--background) / 0.85)',
+            color: 'hsl(var(--cool-gray-tertiary))',
           }}
         >
           {t('home.contact.preview', lang)}
@@ -44,7 +44,7 @@ export default function HomeContactPreview() {
           style={{
             fontSize: '1rem',
             fontWeight: 300,
-            color: 'hsl(var(--background) / 0.6)',
+            color: 'hsl(var(--cool-gray-secondary))',
           }}
         >
           hello@lolalabstudio.com

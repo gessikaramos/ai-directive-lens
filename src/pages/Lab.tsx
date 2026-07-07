@@ -105,7 +105,7 @@ const LabContent = () => {
                   fontSize: '0.9375rem',
                   fontWeight: 300,
                   lineHeight: 1.65,
-                  color: 'hsl(var(--background) / 0.55)',
+                  color: 'hsl(var(--cool-gray-secondary))',
                 }}
               >
                 Start with the Human Intent Translator. Bring a loose idea. The Lab helps you find its shape.
@@ -168,7 +168,7 @@ const LabContent = () => {
                 fontSize: '1.125rem',
                 fontWeight: 300,
                 lineHeight: 1.5,
-                color: 'hsl(var(--background) / 0.6)',
+                color: 'hsl(var(--cool-gray-secondary))',
               }}
             >
               The lab keeps growing. Not on a schedule.

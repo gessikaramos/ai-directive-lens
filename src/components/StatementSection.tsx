@@ -43,7 +43,7 @@ export default function StatementSection() {
             fontWeight: 300,
             letterSpacing: '-0.018em',
             lineHeight: 1.25,
-            color: 'hsl(var(--background) / 0.55)',
+            color: 'hsl(var(--cool-gray-secondary))',
           }}
         >
           {t('statement.line2', lang)}

@@ -118,7 +118,7 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
             fontSize: '0.9375rem',
             fontWeight: 300,
             lineHeight: 1.65,
-            color: 'hsl(var(--background) / 0.7)',
+            color: 'hsl(var(--cool-gray-tertiary))',
           }}
         >
           An investigation into how humans talk to AI.
@@ -137,7 +137,7 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
             style={{
               fontSize: '0.9375rem',
               fontWeight: 300,
-              color: 'hsl(var(--background) / 0.4)',
+              color: 'hsl(var(--cool-gray-secondary))',
             }}
           >
             Write below to begin.

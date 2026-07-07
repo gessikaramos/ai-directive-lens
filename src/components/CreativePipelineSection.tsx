@@ -128,7 +128,7 @@ const SelectedWorkSection = () => {
               fontWeight: 500,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
-              color: 'hsl(var(--background) / 0.5)',
+              color: 'hsl(var(--cool-gray-secondary))',
             }}
           >
             {t('selected.masterchef.client', lang)}
@@ -139,7 +139,7 @@ const SelectedWorkSection = () => {
               fontSize: '1rem',
               fontWeight: 300,
               lineHeight: 1.65,
-              color: 'hsl(var(--background) / 0.75)',
+              color: 'hsl(var(--cool-gray-tertiary))',
             }}
           >
             {t('selected.masterchef.desc', lang)}
@@ -150,7 +150,7 @@ const SelectedWorkSection = () => {
               fontSize: '1rem',
               fontWeight: 300,
               lineHeight: 1.65,
-              color: 'hsl(var(--background) / 0.6)',
+              color: 'hsl(var(--cool-gray-secondary))',
               borderTop: '1px solid hsl(var(--background) / 0.12)',
             }}
           >
@@ -208,7 +208,7 @@ const SelectedWorkSection = () => {
               fontSize: '1rem',
               fontWeight: 300,
               lineHeight: 1.65,
-              color: 'hsl(var(--background) / 0.75)',
+              color: 'hsl(var(--cool-gray-tertiary))',
             }}
           >
             {t('selected.pietra.desc', lang)}
@@ -219,7 +219,7 @@ const SelectedWorkSection = () => {
               fontSize: '0.75rem',
               fontWeight: 300,
               lineHeight: 1.6,
-              color: 'hsl(var(--background) / 0.4)',
+              color: 'hsl(var(--cool-gray-secondary))',
             }}
           >
             {t('selected.pietra.legal', lang)}

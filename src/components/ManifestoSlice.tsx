@@ -45,7 +45,7 @@ export default function ManifestoSlice() {
             fontWeight: 300,
             letterSpacing: '-0.012em',
             lineHeight: 1.5,
-            color: 'hsl(var(--background) / 0.55)',
+            color: 'hsl(var(--cool-gray-secondary))',
           }}
         >
           {t('manifesto.line2', lang)}

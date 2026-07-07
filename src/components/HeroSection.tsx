@@ -58,10 +58,19 @@ export default function HeroSection() {
         <source src="/videos/hero-loop.mp4" type="video/mp4" />
       </video>
 
-      {/* Veil dark leve (20%) · deixa o vídeo respirar */}
+      {/* Wave 3.0-C · canon Mary · veil dark 22% · film grain 4% cinema · gradient bottom */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ backgroundColor: 'hsl(var(--ink) / 0.2)' }}
+        style={{ backgroundColor: 'hsl(var(--ink) / 0.22)' }}
+      />
+
+      {/* Film grain SVG noise 4% · afasta cliché tecnológico · canon Mary */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.04] mix-blend-overlay"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+        }}
       />
 
       {/* Gradient bottom para continuar dark ink */}
@@ -94,7 +103,7 @@ export default function HeroSection() {
             fontSize: 'clamp(1rem, 1.3vw, 1.25rem)',
             fontWeight: 300,
             letterSpacing: '0',
-            color: 'hsl(var(--background) / 0.65)',
+            color: 'hsl(var(--cool-gray-tertiary))',
             lineHeight: 1.5,
           }}
         >

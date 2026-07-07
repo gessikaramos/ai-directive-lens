@@ -33,7 +33,7 @@ export default function HomeAboutPreview() {
             fontWeight: 300,
             letterSpacing: '-0.01em',
             lineHeight: 1.5,
-            color: 'hsl(var(--background) / 0.85)',
+            color: 'hsl(var(--cool-gray-tertiary))',
           }}
         >
           {t('home.about.preview', lang)}

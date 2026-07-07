@@ -44,7 +44,7 @@ export default function PathCard({ name, desc, cta, to }: Props) {
             fontSize: '0.9375rem',
             fontWeight: 300,
             lineHeight: 1.6,
-            color: 'hsl(var(--background) / 0.55)',
+            color: 'hsl(var(--cool-gray-secondary))',
           }}
         >
           {desc}
