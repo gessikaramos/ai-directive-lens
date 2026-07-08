@@ -65,7 +65,7 @@ const SelectedHighlight = () => {
             color: '#FFFFFF',
           }}
         >
-          Three signals from Studio, Lab, and Library.
+          A selected case, a working instrument, a printed method.
         </h2>
       </div>
 
@@ -181,7 +181,7 @@ const SelectedHighlight = () => {
                   color: '#FFFFFF',
                 }}
               >
-                HIT — Human Intention Translator
+                Human Intention Translator
               </h3>
               <p
                 className="max-w-[46ch]"

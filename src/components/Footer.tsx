@@ -128,8 +128,8 @@ export default function Footer() {
             <img
               src="/images/logos/logo-stacked.svg"
               alt="LolaLab"
-              className="h-16 md:h-20"
-              style={{ opacity: 0.95 }}
+              className="h-14 md:h-16"
+              style={{ opacity: 0.95, width: 'auto' }}
             />
           </div>
 

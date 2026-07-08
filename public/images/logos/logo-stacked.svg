@@ -1,30 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 180">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120">
   <defs>
     <style>
-      .logo-text {
-        fill: #fff;
-        font-family: Inter, sans-serif;
-        font-weight: 700;
-        letter-spacing: 0.05em;
+      .lolalab-word {
+        fill: #ffffff;
+        font-family: Inter, 'Helvetica Neue', Arial, sans-serif;
+        font-weight: 400;
+        letter-spacing: -0.02em;
       }
-      .logo-shape {
-        fill: none;
-        stroke: #fff;
-        stroke-width: 3.5;
-      }
-      .logo-dot {
-        fill: #fff;
+      .lolalab-dot {
+        fill: #ffffff;
       }
     </style>
   </defs>
-  <!-- Circle drawing -->
-  <circle class="logo-shape" cx="70" cy="42" r="28"/>
-  <!-- Small dot above circle -->
-  <circle class="logo-dot" cx="70" cy="8" r="4"/>
-  <!-- Text -->
-  <text class="logo-text" x="70" y="110" text-anchor="middle" font-size="42">Lola</text>
-  <text class="logo-text" x="60" y="148" text-anchor="middle" font-size="36">Lab</text>
-  <!-- Period dot -->
-  <circle class="logo-dot" cx="100" cy="142" r="5"/>
+  <text class="lolalab-word" x="0" y="52" font-size="52">Lola</text>
+  <text class="lolalab-word" x="0" y="104" font-size="52">Lab</text>
+  <circle class="lolalab-dot" cx="103" cy="102" r="3.2"/>
 </svg>

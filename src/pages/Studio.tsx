@@ -20,6 +20,7 @@ import FooterLine from '@/components/FooterLine';
 import StudioExperiments from '@/components/lab/StudioExperiments';
 import { CollectiveForm } from '@/components/lab/LabExtras';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const SERVICES = [
   {
@@ -44,12 +45,7 @@ const SERVICES = [
   },
 ];
 
-const CLIENTS = [
-  'Confidential · Retail Tech',
-  'Pietra · Editorial Study',
-  'BeWe · Fashion',
-  'Bloom · Beauty',
-];
+// Selected Clients section removida (canon Gé 8/jul · não inflar sem clientes reais nomeáveis)
 
 const labelStyle = {
   color: 'hsl(var(--bronze-soft))',
@@ -110,8 +106,8 @@ const StudioContent = () => {
           headline={t('studio.hero.headline', lang)}
           sub={t('studio.hero.sub', lang)}
         >
-          <a
-            href="mailto:hello@lolalabstudio.com"
+          <Link
+            to="/contact"
             className="inline-flex items-center gap-3 hover:gap-4 transition-all duration-500"
             style={{
               color: '#FFFFFF',
@@ -124,7 +120,7 @@ const StudioContent = () => {
             }}
           >
             {t('studio.cta.inquiry', lang)} <span aria-hidden="true">→</span>
-          </a>
+          </Link>
         </PageHero>
 
         {/* What we make · grid tipográfico Apple / Collins */}
@@ -141,7 +137,7 @@ const StudioContent = () => {
                   className="py-10 md:py-14 px-4 md:px-8 transition-colors duration-500 cursor-default"
                   style={{ borderTop: '1px solid #1C1C1E' }}
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.backgroundColor = '#121214';
+                    (e.currentTarget as HTMLElement).style.backgroundColor = '#1A1A1D';
                   }}
                   onMouseLeave={(e) => {
                     (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent';
@@ -176,7 +172,7 @@ const StudioContent = () => {
                       fontSize: '0.9375rem',
                       fontWeight: 300,
                       lineHeight: 1.65,
-                      color: 'hsl(var(--cool-gray-secondary))',
+                      color: 'hsl(var(--cool-gray-tertiary))',
                     }}
                   >
                     {service.desc}
@@ -187,38 +183,7 @@ const StudioContent = () => {
           </div>
         </section>
 
-        {/* Clients */}
-        <section className="px-6 md:px-12 py-20 md:py-24">
-          <div className="max-w-[1200px] mx-auto">
-            <span className="block mb-10" style={labelStyle}>
-              Selected Clients
-            </span>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-12">
-              {CLIENTS.map((client) => (
-                <div
-                  key={client}
-                  className="transition-colors duration-500 py-5"
-                  style={{
-                    borderTop: '1px solid #1C1C1E',
-                    color: '#2C2C2E',
-                    fontSize: 'clamp(1.125rem, 1.6vw, 1.5rem)',
-                    fontWeight: 400,
-                    letterSpacing: '-0.015em',
-                    cursor: 'default',
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.color = '#FFFFFF';
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.color = '#2C2C2E';
-                  }}
-                >
-                  {client}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Selected Clients removida (canon Gé 8/jul) */}
 
         {/* Studio Experiments · MIGRADO do Lab · 15 tiles editorial */}
         <StudioExperiments />

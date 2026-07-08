@@ -20,7 +20,7 @@ import HumanIntentTranslator from '@/components/lab/HumanIntentTranslator';
 import { CastTeaser } from '@/components/lab/LabExtras';
 
 const INSTRUMENTS = [
-  { name: 'Human Intent Translator', status: 'ACTIVE', active: true },
+  { name: 'Human Intention Translator', status: 'ACTIVE', active: true },
   { name: 'Image Director', status: 'IN DEVELOPMENT', active: false },
   { name: 'Video Director', status: 'IN DEVELOPMENT', active: false },
   { name: 'Character Builder', status: 'IN DEVELOPMENT', active: false },

@@ -111,7 +111,7 @@ const StudioExperiments = () => {
                 borderRight: '1px solid #1C1C1E',
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.backgroundColor = '#121214';
+                (e.currentTarget as HTMLElement).style.backgroundColor = '#1A1A1D';
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent';
@@ -165,7 +165,7 @@ const StudioExperiments = () => {
                     fontSize: '0.875rem',
                     fontWeight: 300,
                     lineHeight: 1.65,
-                    color: 'hsl(var(--cool-gray-secondary))',
+                    color: 'hsl(var(--cool-gray-tertiary))',
                   }}
                 >
                   {t.caption}
