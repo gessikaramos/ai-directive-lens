@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 132">
   <defs>
     <style>
       .lolalab-word {
@@ -8,12 +8,8 @@
         font-weight: 400;
         letter-spacing: -0.02em;
       }
-      .lolalab-dot {
-        fill: #ffffff;
-      }
     </style>
   </defs>
-  <text class="lolalab-word" x="0" y="52" font-size="52">Lola</text>
-  <text class="lolalab-word" x="0" y="104" font-size="52">Lab</text>
-  <circle class="lolalab-dot" cx="103" cy="102" r="3.2"/>
+  <text class="lolalab-word" x="0" y="56" font-size="56">Lola</text>
+  <text class="lolalab-word" x="0" y="118" font-size="56">Lab.</text>
 </svg>
