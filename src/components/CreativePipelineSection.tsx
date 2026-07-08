@@ -22,7 +22,8 @@ import { t } from '@/lib/i18n';
 
 const MASTERCHEF_YT_ID = 'MlNSjBN3xbc';
 const MASTERCHEF_POSTER = `https://img.youtube.com/vi/${MASTERCHEF_YT_ID}/maxresdefault.jpg`;
-const MASTERCHEF_URL = `https://www.youtube.com/watch?v=${MASTERCHEF_YT_ID}`;
+// Embed URL canon Mary · autoplay + sem sugestões YouTube + modest branding + rel=0 (só do canal)
+const MASTERCHEF_EMBED = `https://www.youtube-nocookie.com/embed/${MASTERCHEF_YT_ID}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
 
 const labelStyle = {
   color: 'hsl(var(--bronze-soft))',
@@ -43,6 +44,7 @@ const ctaStyle = {
 const SelectedHighlight = () => {
   const { lang } = useLanguage();
   const [hoverPlay, setHoverPlay] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   return (
     <section
@@ -69,43 +71,58 @@ const SelectedHighlight = () => {
         </h2>
       </div>
 
-      {/* 1 · MasterChef · destaque Studio grande */}
+      {/* 1 · MasterChef · destaque Studio grande · player inline canon (não sai do site) */}
       <div className="px-6 md:px-12 max-w-[1200px] mx-auto mb-24 md:mb-32">
-        <a
-          href={MASTERCHEF_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block relative w-full mb-8 md:mb-10 overflow-hidden group cursor-pointer"
+        <div
+          className="relative w-full mb-8 md:mb-10 overflow-hidden"
           style={{ aspectRatio: '16 / 9', backgroundColor: 'hsl(var(--ink-soft))' }}
-          onMouseEnter={() => setHoverPlay(true)}
-          onMouseLeave={() => setHoverPlay(false)}
         >
-          <img
-            src={MASTERCHEF_POSTER}
-            alt="MasterChef · LolaLab AI-Directed Cinematic Film"
-            loading="lazy"
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-          />
-          <div
-            className="absolute inset-0 pointer-events-none transition-opacity duration-500"
-            style={{ backgroundColor: 'hsl(var(--ink) / 0.15)', opacity: hoverPlay ? 0.05 : 0.15 }}
-          />
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div
-              className="rounded-full flex items-center justify-center transition-all duration-500"
-              style={{
-                width: hoverPlay ? '84px' : '72px',
-                height: hoverPlay ? '84px' : '72px',
-                backgroundColor: 'hsl(var(--background) / 0.95)',
-                backdropFilter: 'blur(8px)',
-              }}
+          {videoPlaying ? (
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src={MASTERCHEF_EMBED}
+              title="MasterChef · LolaLab AI-Directed Cinematic Film"
+              allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+              allowFullScreen
+              style={{ border: 0 }}
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={() => setVideoPlaying(true)}
+              className="block relative w-full h-full overflow-hidden group cursor-pointer"
+              onMouseEnter={() => setHoverPlay(true)}
+              onMouseLeave={() => setHoverPlay(false)}
+              aria-label="Play MasterChef film"
             >
-              <svg width="20" height="22" viewBox="0 0 20 22" fill="none" style={{ marginLeft: '3px' }}>
-                <path d="M0 0 L20 11 L0 22 Z" fill="hsl(var(--ink))" />
-              </svg>
-            </div>
-          </div>
-        </a>
+              <img
+                src={MASTERCHEF_POSTER}
+                alt="MasterChef · LolaLab AI-Directed Cinematic Film"
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div
+                className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+                style={{ backgroundColor: 'hsl(var(--ink) / 0.15)', opacity: hoverPlay ? 0.05 : 0.15 }}
+              />
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div
+                  className="rounded-full flex items-center justify-center transition-all duration-500"
+                  style={{
+                    width: hoverPlay ? '84px' : '72px',
+                    height: hoverPlay ? '84px' : '72px',
+                    backgroundColor: 'hsl(var(--background) / 0.95)',
+                    backdropFilter: 'blur(8px)',
+                  }}
+                >
+                  <svg width="20" height="22" viewBox="0 0 20 22" fill="none" style={{ marginLeft: '3px' }}>
+                    <path d="M0 0 L20 11 L0 22 Z" fill="hsl(var(--ink))" />
+                  </svg>
+                </div>
+              </div>
+            </button>
+          )}
+        </div>
 
         <div className="max-w-[720px]">
           <span className="block mb-3" style={{ ...labelStyle, letterSpacing: '0.2em', fontSize: '0.65rem' }}>

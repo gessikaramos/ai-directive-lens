@@ -3,7 +3,7 @@
  *
  * Atmosfera canon Mary: créditos finais + tese de bastidores.
  * Fundo #0B0B0C · espaço negativo radical · line-height respirado.
- * Retrato B&W Gé chiaroscuro (asset em public/images/about/gessika-portrait.jpg).
+ * Retrato Gé (asset em public/images/about/gessika-portrait.png · profilepicture canon 8/jul).
  * Manifesto em 4 blocos escalonados · primeiro branco puro · demais cinza secondary.
  */
 import { useEffect } from 'react';
@@ -61,7 +61,7 @@ const AboutContent = () => {
               }}
             >
               <img
-                src="/images/about/gessika-portrait.jpg"
+                src="/images/about/gessika-portrait.png"
                 alt="Gessika Olivieri · Director of LolaLab Studio"
                 loading="lazy"
                 className="absolute inset-0 w-full h-full object-cover"
