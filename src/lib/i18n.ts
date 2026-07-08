@@ -92,7 +92,10 @@ export const translations: Record<string, Record<Lang, string>> = {
     en: 'A 54-second editorial commercial film. Six locked shots. Character consistency across scenes. Nordic Practical aesthetic. Fully AI-native from prompt to grade.',
     pt: 'Um filme comercial editorial de 54 segundos. Seis planos fixos. Consistência de personagem entre cenas. Estética Nordic Practical. Inteiramente AI-native, do prompt à gradação.',
   },
-  'selected.masterchef.tag': { en: 'COMMERCIAL CASE', pt: 'CASE COMERCIAL' },
+  'selected.masterchef.tag': {
+    en: 'INVESTOR PITCH · CINEMATIC PRODUCT REEL',
+    pt: 'PITCH INVESTIDORES · REEL CINEMATOGRÁFICO DE PRODUTO',
+  },
   'selected.masterchef.bridge': {
     en: 'For brand films, launch campaigns and AI-native visual systems, write to the studio.',
     pt: 'Para filmes de marca, campanhas de lançamento e sistemas visuais AI-native, escreva ao estúdio.',

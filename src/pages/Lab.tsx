@@ -1,22 +1,23 @@
 /**
- * Lab · Wave 3.0-B · canon Apple/Mary Fred+Gé 7/jul
+ * Lab · Wave 3.2 · canon Cláudio+Mary Fred+Gé 8/jul
  *
- * Refactor site-wide:
- *   - Dark ink base coeso (não intercalar cream)
- *   - Manifesto Lab · tipografia refinada Apple
- *   - Instruments grid limpo (não lista bullets)
- *   - HIT container refinado (sem caixa quadrada com espaço gigante)
- *   - Espaçamento controlado 8px system
- *   - Copy canon mantida
+ * Reorganização canon Gé QA:
+ *   - HIT PRIMEIRO (o instrumento ativo lidera a página)
+ *   - Instruments grid (roadmap)
+ *   - Cast · notify-me (fica no Lab)
+ *   - Signal Archive (accordion pequeno · newsletter opt-in agora vive global no Footer)
+ *   - StudioExperiments MIGRADO pro Studio
+ *   - CollectiveForm MIGRADO pro Studio (retrátil)
+ *   - Manifesto Lab dark canon mantido
+ *   - Aproximar internamente label→title→sub
  */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { LanguageProvider } from '@/hooks/use-language';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HumanIntentTranslator from '@/components/lab/HumanIntentTranslator';
-import StudioExperiments from '@/components/lab/StudioExperiments';
-import { CastTeaser, CollectiveForm, SignalReads } from '@/components/lab/LabExtras';
+import { CastTeaser } from '@/components/lab/LabExtras';
 
 const INSTRUMENTS = [
   { name: 'Human Intent Translator', status: 'ACTIVE', active: true },
@@ -25,6 +26,93 @@ const INSTRUMENTS = [
   { name: 'Character Builder', status: 'IN DEVELOPMENT', active: false },
   { name: 'Brand World Builder', status: 'IN DEVELOPMENT', active: false },
 ];
+
+const SIGNAL_POSTS = [
+  {
+    date: 'JUN 2026',
+    title: 'Ben Affleck on AI Infrastructure',
+    preview:
+      'Reading the Sam Altman forum speech. Where cinema keeps misreading the moment — and what an AI-native studio actually looks like.',
+  },
+];
+
+const labelStyle = {
+  color: 'hsl(var(--bronze-soft))',
+  fontSize: '0.7rem',
+  fontWeight: 500,
+  letterSpacing: '0.24em',
+  textTransform: 'uppercase' as const,
+};
+
+const SignalArchive = () => {
+  const [open, setOpen] = useState(false);
+  return (
+    <section className="px-6 md:px-12 py-20 md:py-24" style={{ backgroundColor: 'hsl(var(--ink))' }}>
+      <div className="max-w-[900px] mx-auto">
+        <button
+          onClick={() => setOpen((o) => !o)}
+          className="w-full flex items-baseline justify-between py-5 transition-opacity duration-500 hover:opacity-80"
+          style={{ borderTop: '1px solid #1C1C1E', borderBottom: '1px solid #1C1C1E' }}
+        >
+          <span style={labelStyle}>Signal · Reads Archive</span>
+          <span
+            style={{
+              color: 'hsl(var(--cool-gray-secondary))',
+              fontSize: '0.65rem',
+              fontWeight: 500,
+              letterSpacing: '0.16em',
+            }}
+          >
+            {open ? '— HIDE' : '+ OPEN'}
+          </span>
+        </button>
+        {open && (
+          <div className="pt-8 pb-2">
+            {SIGNAL_POSTS.map((p, i) => (
+              <article key={i} className="py-6" style={{ borderBottom: '1px solid #1C1C1E' }}>
+                <span className="block mb-2" style={labelStyle}>
+                  {p.date}
+                </span>
+                <h3
+                  className="mb-2"
+                  style={{
+                    fontSize: '1.125rem',
+                    fontWeight: 400,
+                    letterSpacing: '-0.015em',
+                    color: '#FFFFFF',
+                  }}
+                >
+                  {p.title}
+                </h3>
+                <p
+                  className="max-w-[62ch]"
+                  style={{
+                    fontSize: '0.875rem',
+                    fontWeight: 300,
+                    lineHeight: 1.65,
+                    color: 'hsl(var(--cool-gray-secondary))',
+                  }}
+                >
+                  {p.preview}
+                </p>
+              </article>
+            ))}
+            <p
+              className="mt-6"
+              style={{
+                fontSize: '0.8125rem',
+                fontWeight: 300,
+                color: 'hsl(var(--cool-gray-secondary))',
+              }}
+            >
+              Subscribe in the footer to get new reads by email.
+            </p>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
 
 const LabContent = () => {
   const [params] = useSearchParams();
@@ -40,23 +128,11 @@ const LabContent = () => {
   return (
     <>
       <Navbar />
-      <main
-        className="pt-32"
-        style={{ backgroundColor: 'hsl(var(--ink))' }}
-      >
-        {/* Manifesto Lab · refinado Apple */}
-        <section className="px-6 md:px-12 py-24 md:py-32">
+      <main className="pt-32" style={{ backgroundColor: 'hsl(var(--ink))' }}>
+        {/* Manifesto Lab · canon Mary aproximado */}
+        <section className="px-6 md:px-12 pt-16 md:pt-24 pb-16 md:pb-20">
           <div className="max-w-[900px] mx-auto text-center">
-            <span
-              className="block mb-10"
-              style={{
-                color: 'hsl(var(--bronze-soft))',
-                fontSize: '0.7rem',
-                fontWeight: 500,
-                letterSpacing: '0.24em',
-                textTransform: 'uppercase',
-              }}
-            >
+            <span className="block mb-6" style={labelStyle}>
               LAB
             </span>
             <p
@@ -65,7 +141,7 @@ const LabContent = () => {
                 fontWeight: 300,
                 letterSpacing: '-0.018em',
                 lineHeight: 1.3,
-                color: 'hsl(var(--background))',
+                color: '#FFFFFF',
               }}
             >
               The lab is where we investigate before we produce.
@@ -73,61 +149,43 @@ const LabContent = () => {
           </div>
         </section>
 
-        {/* Instruments · grid limpo */}
-        <section className="px-6 md:px-12 py-16 md:py-24">
+        {/* HIT · protagonista · vem PRIMEIRO */}
+        <section className="px-6 md:px-12 pb-16 md:pb-20">
+          <HumanIntentTranslator initialIntent={intent} />
+        </section>
+
+        {/* Instruments · roadmap */}
+        <section className="px-6 md:px-12 py-20 md:py-28">
           <div className="max-w-[1000px] mx-auto">
-            <span
-              className="block mb-10"
+            <span className="block mb-6" style={labelStyle}>
+              INSTRUMENTS · ROADMAP
+            </span>
+            <p
+              className="max-w-[520px] mb-12"
               style={{
-                color: 'hsl(var(--bronze-soft))',
-                fontSize: '0.7rem',
-                fontWeight: 500,
-                letterSpacing: '0.24em',
-                textTransform: 'uppercase',
+                fontSize: '0.9375rem',
+                fontWeight: 300,
+                lineHeight: 1.65,
+                color: 'hsl(var(--cool-gray-tertiary))',
               }}
             >
-              INSTRUMENTS
-            </span>
-            <div className="max-w-[720px] mb-16">
-              <p
-                className="mb-4"
-                style={{
-                  fontSize: 'clamp(1rem, 1.3vw, 1.25rem)',
-                  fontWeight: 300,
-                  lineHeight: 1.5,
-                  color: 'hsl(var(--background))',
-                }}
-              >
-                The Lab is a growing set of instruments for AI-native creative direction.
-              </p>
-              <p
-                style={{
-                  fontSize: '0.9375rem',
-                  fontWeight: 300,
-                  lineHeight: 1.65,
-                  color: 'hsl(var(--cool-gray-secondary))',
-                }}
-              >
-                Start with the Human Intent Translator. Bring a loose idea. The Lab helps you find its shape.
-              </p>
-            </div>
+              A growing set of instruments for AI-native creative direction.
+              One is live. The rest are being written.
+            </p>
 
-            {/* Grid limpo · não lista bullets · uma linha por instrument */}
-            <div style={{ borderTop: '1px solid hsl(var(--background) / 0.1)' }}>
+            <div style={{ borderTop: '1px solid #1C1C1E' }}>
               {INSTRUMENTS.map((inst) => (
                 <div
                   key={inst.name}
                   className="flex justify-between items-baseline py-5"
-                  style={{ borderBottom: '1px solid hsl(var(--background) / 0.1)' }}
+                  style={{ borderBottom: '1px solid #1C1C1E' }}
                 >
                   <span
                     style={{
                       fontSize: '1rem',
                       fontWeight: 400,
                       letterSpacing: '-0.005em',
-                      color: inst.active
-                        ? 'hsl(var(--background))'
-                        : 'hsl(var(--background) / 0.4)',
+                      color: inst.active ? '#FFFFFF' : 'hsl(var(--cool-gray-tertiary) / 0.5)',
                     }}
                   >
                     {inst.name}
@@ -139,7 +197,7 @@ const LabContent = () => {
                       letterSpacing: '0.2em',
                       color: inst.active
                         ? 'hsl(var(--bronze-soft))'
-                        : 'hsl(var(--background) / 0.35)',
+                        : 'hsl(var(--cool-gray-secondary) / 0.5)',
                     }}
                   >
                     {inst.status}
@@ -150,22 +208,19 @@ const LabContent = () => {
           </div>
         </section>
 
-        {/* HIT · Human Intent Translator */}
-        <section className="px-6 md:px-12 py-20 md:py-28">
-          <HumanIntentTranslator initialIntent={intent} />
-        </section>
-
-        <StudioExperiments />
+        {/* Cast · notify me · fica no Lab */}
         <CastTeaser />
-        <CollectiveForm />
-        <SignalReads />
 
-        <section className="px-6 md:px-12 py-24 md:py-32">
+        {/* Signal Archive · accordion posts históricos (newsletter foi pro Footer global) */}
+        <SignalArchive />
+
+        {/* Back CTA */}
+        <section className="px-6 md:px-12 py-20 md:py-28">
           <div className="max-w-[720px] mx-auto text-center">
             <p
-              className="italic mb-10"
+              className="italic mb-8"
               style={{
-                fontSize: '1.125rem',
+                fontSize: '1.0625rem',
                 fontWeight: 300,
                 lineHeight: 1.5,
                 color: 'hsl(var(--cool-gray-secondary))',
@@ -176,13 +231,7 @@ const LabContent = () => {
             <Link
               to="/"
               className="inline-flex items-center gap-2 hover:gap-3 transition-all duration-500"
-              style={{
-                color: 'hsl(var(--bronze-soft))',
-                fontSize: '0.7rem',
-                fontWeight: 500,
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-              }}
+              style={labelStyle}
             >
               <span aria-hidden="true">←</span> BACK TO STUDIO
             </Link>

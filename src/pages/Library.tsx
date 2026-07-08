@@ -21,38 +21,43 @@ const VOLUMES = [
     subtitle: 'LolaLab Studio Notes',
     desc: 'The framework we use to translate intention into cinematic syntax. Prompt architecture, character consistency, iteration control.',
     status: 'AVAILABLE',
+    eta: '',
     active: true,
   },
   {
     number: 'VOL. 02',
     title: 'Character Consistency',
     subtitle: 'Persistent People, Persistent Worlds',
-    desc: 'The method for keeping a character identical across scenes, seasons, and campaigns without breaking realism.',
+    desc: 'The method for keeping a character identical across scenes, seasons, and campaigns without breaking realism. Where identity actually lives — face, gesture, light, edit — and how to hold it steady across a whole campaign.',
     status: 'IN DEVELOPMENT',
+    eta: 'Coming Q3 2026',
     active: false,
   },
   {
     number: 'VOL. 03',
     title: 'Cinematic Syntax',
     subtitle: 'The Grammar of Direction',
-    desc: 'Lens choice, film stock, lighting signature, aspect ratio — the technical vocabulary that separates cinema from generation.',
+    desc: 'Lens choice, film stock, lighting signature, aspect ratio — the technical vocabulary that separates cinema from generation. A working reference, not a glossary.',
     status: 'IN DEVELOPMENT',
+    eta: 'Coming Q3 2026',
     active: false,
   },
   {
     number: 'VOL. 04',
     title: 'AI Pipeline Architecture',
     subtitle: 'Midjourney · Veo · Higgsfield · ElevenLabs',
-    desc: 'How we chain best-in-class models per shot, not per project. Cost, speed, control tradeoffs.',
+    desc: 'How we chain best-in-class models per shot, not per project. Cost, speed, and control tradeoffs. Why a pipeline is a decision, not a tool stack.',
     status: 'IN DEVELOPMENT',
+    eta: 'Coming Q4 2026',
     active: false,
   },
   {
     number: 'VOL. 05',
     title: 'Post-Production Grade',
     subtitle: 'Color, Sound, Finishing',
-    desc: 'What happens after generation. Color pipeline, sound design, delivery specs for premium clients.',
+    desc: 'What happens after generation. Color pipeline, sound design, delivery specs for premium clients — the last twenty percent that separates a demo from a film.',
     status: 'IN DEVELOPMENT',
+    eta: 'Coming Q4 2026',
     active: false,
   },
 ];
@@ -160,13 +165,12 @@ const LibraryContent = () => {
                     </p>
                   </div>
 
-                  {/* Coluna 3 · status (3/12) */}
+                  {/* Coluna 3 · status + eta (3/12) */}
                   <div className="md:col-span-3 md:text-right">
                     <span
+                      className="block"
                       style={{
-                        color: v.active
-                          ? 'hsl(var(--bronze-soft))'
-                          : '#2C2C2E',
+                        color: v.active ? 'hsl(var(--bronze-soft))' : '#2C2C2E',
                         fontSize: '0.65rem',
                         fontWeight: 500,
                         letterSpacing: '0.2em',
@@ -174,6 +178,20 @@ const LibraryContent = () => {
                     >
                       {v.status}
                     </span>
+                    {v.eta && (
+                      <span
+                        className="block mt-2"
+                        style={{
+                          color: '#2C2C2E',
+                          fontSize: '0.65rem',
+                          fontWeight: 500,
+                          letterSpacing: '0.16em',
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        {v.eta}
+                      </span>
+                    )}
                   </div>
                 </article>
               ))}

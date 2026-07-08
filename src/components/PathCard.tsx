@@ -22,29 +22,29 @@ export default function PathCard({ name, desc, cta, to }: Props) {
   return (
     <Link
       to={to}
-      className="group block relative py-10 md:py-14 transition-all duration-500 hover:opacity-80"
-      style={{ borderTop: '1px solid hsl(var(--background) / 0.15)' }}
+      className="group block relative py-8 md:py-10 transition-all duration-500 hover:opacity-80"
+      style={{ borderTop: '1px solid #1C1C1E' }}
     >
       <div className="flex flex-col h-full min-h-[200px]">
         <h3
-          className="mb-4"
+          className="mb-3"
           style={{
             fontSize: 'clamp(1.25rem, 2vw, 1.75rem)',
             fontWeight: 400,
             letterSpacing: '-0.015em',
             lineHeight: 1.15,
-            color: 'hsl(var(--background))',
+            color: '#FFFFFF',
           }}
         >
           {name}
         </h3>
         <p
-          className="mb-10 flex-grow max-w-[32ch]"
+          className="mb-6 flex-grow max-w-[32ch]"
           style={{
             fontSize: '0.9375rem',
             fontWeight: 300,
             lineHeight: 1.6,
-            color: 'hsl(var(--cool-gray-secondary))',
+            color: 'hsl(var(--cool-gray-tertiary))',
           }}
         >
           {desc}

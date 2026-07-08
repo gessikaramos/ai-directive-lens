@@ -1,22 +1,22 @@
 /**
- * SelectedWorkSection · Wave 3.0-B · canon Apple/Mary Fred+Gé 7/jul
+ * SelectedHighlight · Wave 3.2 · canon Cláudio+Mary Fred+Gé 8/jul
  *
- * Refactor:
- *   - Base dark ink (coerência global · não intervalar cores sem lógica)
- *   - MasterChef: POSTER FRAME custom + play button Apple-style (não iframe YouTube feio)
- *   - Clique abre YouTube em nova aba (sem controles quebrando premium)
- *   - Pietra: FULL-BLEED viewport-width (100vw) · sem box com margem
- *   - Aspect cinemascope 21:9
- *   - Tipografia refinada Apple weight 400 · letter-spacing -0.02em
- *   - Espaçamento controlado (proximidade dentro do bloco · respiro entre blocos)
- *   - Cream sobre dark
+ * Reformulação canon Gé QA:
+ *   - Home tem 3 DESTAQUES: 1 Studio (MasterChef) · 1 Lab (HIT) · 1 Library (Director's Prompt)
+ *   - Pietra SAI da Home (fica no Studio · StudioExperiments · tile Hollis Pietra)
+ *   - MasterChef categoria: INVESTOR PITCH · CINEMATIC PRODUCT REEL
+ *   - MasterChef · destaque grande com poster + play Apple + Read Volume in Library CTA
+ *   - HIT · card médio texto + Enter the Lab CTA
+ *   - Director's Prompt · card médio texto + Read Volume CTA
+ *   - Base dark ink coeso · aproximar internamente label→title→sub→CTA
  *
- * Canon Fred travado:
+ * Canon travado:
  *   - Retailgrid Oy não aparece publicamente
- *   - MasterChef como nome público OK
- *   - Pietra disclaimer canon mantido
+ *   - Walter interno = pública = HIT (nome do assistente WalterLab não é dado)
+ *   - Director's Prompt = Vol 01 available (canon Library)
  */
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
 
@@ -24,38 +24,58 @@ const MASTERCHEF_YT_ID = 'MlNSjBN3xbc';
 const MASTERCHEF_POSTER = `https://img.youtube.com/vi/${MASTERCHEF_YT_ID}/maxresdefault.jpg`;
 const MASTERCHEF_URL = `https://www.youtube.com/watch?v=${MASTERCHEF_YT_ID}`;
 
-const SelectedWorkSection = () => {
+const labelStyle = {
+  color: 'hsl(var(--bronze-soft))',
+  fontSize: '0.7rem',
+  fontWeight: 500,
+  letterSpacing: '0.24em',
+  textTransform: 'uppercase' as const,
+};
+
+const ctaStyle = {
+  color: 'hsl(var(--bronze-soft))',
+  fontSize: '0.7rem',
+  fontWeight: 500,
+  letterSpacing: '0.2em',
+  textTransform: 'uppercase' as const,
+};
+
+const SelectedHighlight = () => {
   const { lang } = useLanguage();
   const [hoverPlay, setHoverPlay] = useState(false);
 
   return (
     <section
       id="selected"
-      className="pt-32 md:pt-44 pb-32 md:pb-44"
+      className="pt-28 md:pt-36 pb-28 md:pb-36"
       style={{ backgroundColor: 'hsl(var(--ink))' }}
     >
-      {/* Label · centralizado · respiro grande */}
-      <div className="px-6 md:px-12 max-w-[1400px] mx-auto mb-20 md:mb-28">
-        <span
-          style={{
-            color: 'hsl(var(--bronze-soft))',
-            fontSize: '0.7rem',
-            fontWeight: 500,
-            letterSpacing: '0.24em',
-            textTransform: 'uppercase',
-          }}
-        >
+      {/* Header · centralizado */}
+      <div className="px-6 md:px-12 max-w-[1200px] mx-auto mb-16 md:mb-20">
+        <span className="block mb-4" style={labelStyle}>
           {t('selected.label', lang)}
         </span>
+        <h2
+          className="max-w-[720px]"
+          style={{
+            fontSize: 'clamp(1.75rem, 3vw, 2.5rem)',
+            fontWeight: 400,
+            letterSpacing: '-0.02em',
+            lineHeight: 1.15,
+            color: '#FFFFFF',
+          }}
+        >
+          Three signals from Studio, Lab, and Library.
+        </h2>
       </div>
 
-      {/* MasterChef · poster custom + play Apple */}
-      <div className="px-6 md:px-12 max-w-[1400px] mx-auto mb-32 md:mb-44">
+      {/* 1 · MasterChef · destaque Studio grande */}
+      <div className="px-6 md:px-12 max-w-[1200px] mx-auto mb-24 md:mb-32">
         <a
           href={MASTERCHEF_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="block relative w-full mb-12 md:mb-16 overflow-hidden group cursor-pointer"
+          className="block relative w-full mb-8 md:mb-10 overflow-hidden group cursor-pointer"
           style={{ aspectRatio: '16 / 9', backgroundColor: 'hsl(var(--ink-soft))' }}
           onMouseEnter={() => setHoverPlay(true)}
           onMouseLeave={() => setHoverPlay(false)}
@@ -66,12 +86,10 @@ const SelectedWorkSection = () => {
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
           />
-          {/* Veil dark leve pra deixar play button legível */}
           <div
             className="absolute inset-0 pointer-events-none transition-opacity duration-500"
             style={{ backgroundColor: 'hsl(var(--ink) / 0.15)', opacity: hoverPlay ? 0.05 : 0.15 }}
           />
-          {/* Play button Apple-style · círculo cream 72px · triangle preto */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div
               className="rounded-full flex items-center justify-center transition-all duration-500"
@@ -82,61 +100,45 @@ const SelectedWorkSection = () => {
                 backdropFilter: 'blur(8px)',
               }}
             >
-              <svg
-                width="20"
-                height="22"
-                viewBox="0 0 20 22"
-                fill="none"
-                style={{ marginLeft: '3px' }}
-              >
+              <svg width="20" height="22" viewBox="0 0 20 22" fill="none" style={{ marginLeft: '3px' }}>
                 <path d="M0 0 L20 11 L0 22 Z" fill="hsl(var(--ink))" />
               </svg>
             </div>
           </div>
         </a>
 
-        {/* Metadata MasterChef · dark card */}
         <div className="max-w-[720px]">
-          <span
-            className="block mb-4"
-            style={{
-              color: 'hsl(var(--bronze-soft))',
-              fontSize: '0.7rem',
-              fontWeight: 500,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-            }}
-          >
+          <span className="block mb-3" style={{ ...labelStyle, letterSpacing: '0.2em', fontSize: '0.65rem' }}>
             {t('selected.masterchef.tag', lang)}
           </span>
           <h3
-            className="mb-3"
+            className="mb-2"
             style={{
-              fontSize: 'clamp(1.75rem, 3.5vw, 3rem)',
+              fontSize: 'clamp(1.5rem, 2.6vw, 2.25rem)',
               fontWeight: 400,
               letterSpacing: '-0.02em',
               lineHeight: 1.1,
-              color: 'hsl(var(--background))',
+              color: '#FFFFFF',
             }}
           >
             {t('selected.masterchef.title', lang)}
           </h3>
           <p
-            className="mb-6"
+            className="mb-5"
             style={{
-              fontSize: '0.75rem',
+              fontSize: '0.7rem',
               fontWeight: 500,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
               color: 'hsl(var(--cool-gray-secondary))',
             }}
           >
-            {t('selected.masterchef.client', lang)}
+            Studio · Selected Case
           </p>
           <p
-            className="mb-8"
+            className="mb-6 max-w-[62ch]"
             style={{
-              fontSize: '1rem',
+              fontSize: '0.9375rem',
               fontWeight: 300,
               lineHeight: 1.65,
               color: 'hsl(var(--cool-gray-tertiary))',
@@ -144,126 +146,112 @@ const SelectedWorkSection = () => {
           >
             {t('selected.masterchef.desc', lang)}
           </p>
-          <p
-            className="italic pt-6 mb-8"
-            style={{
-              fontSize: '1rem',
-              fontWeight: 300,
-              lineHeight: 1.65,
-              color: 'hsl(var(--cool-gray-secondary))',
-              borderTop: '1px solid hsl(var(--background) / 0.12)',
-            }}
-          >
-            {t('selected.masterchef.bridge', lang)}
-          </p>
-
-          {/* Wave 3.1.1 · canon Mary QA · Read Volume in the Library · funil Director's Cut */}
-          <a
-            href="/library"
+          <Link
+            to="/library"
             className="inline-flex items-center gap-2 hover:gap-3 transition-all duration-500"
-            style={{
-              color: 'hsl(var(--bronze-soft))',
-              fontSize: '0.7rem',
-              fontWeight: 500,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-            }}
+            style={ctaStyle}
           >
             Read Volume in the Library <span aria-hidden="true">→</span>
-          </a>
+          </Link>
         </div>
       </div>
 
-      {/* Pietra · FULL-BLEED · viewport width · cinemascope */}
-      <div
-        className="w-full mb-12 md:mb-16 overflow-hidden"
-        style={{
-          aspectRatio: '21 / 9',
-          backgroundColor: 'hsl(var(--ink-soft))',
-        }}
-      >
-        <img
-          src="/images/hollis/campaign/campaign-bottega.jpg"
-          alt="PIETRA — editorial fashion collection · speculative luxury system"
-          loading="lazy"
-          className="w-full h-full object-cover"
-        />
-      </div>
-
-      {/* Metadata Pietra */}
-      <div className="px-6 md:px-12 max-w-[1400px] mx-auto">
-        <div className="max-w-[720px]">
-          <span
-            className="block mb-4"
-            style={{
-              color: 'hsl(var(--bronze-soft))',
-              fontSize: '0.7rem',
-              fontWeight: 500,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-            }}
+      {/* 2 + 3 · HIT (Lab) + Director's Prompt (Library) · grid dois cards */}
+      <div className="px-6 md:px-12 max-w-[1200px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2" style={{ borderTop: '1px solid #1C1C1E' }}>
+          {/* HIT · Lab · instrumento ativo */}
+          <Link
+            to="/lab"
+            className="group block p-8 md:p-12 min-h-[340px] flex flex-col justify-between transition-colors duration-500"
+            style={{ borderBottom: '1px solid #1C1C1E', borderRight: '1px solid #1C1C1E' }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = '#121214'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; }}
           >
-            {t('selected.pietra.tag', lang)}
-          </span>
-          <h3
-            className="mb-5"
-            style={{
-              fontSize: 'clamp(1.75rem, 3.5vw, 3rem)',
-              fontWeight: 400,
-              letterSpacing: '-0.02em',
-              lineHeight: 1.1,
-              color: 'hsl(var(--background))',
-            }}
-          >
-            {t('selected.pietra.title', lang)}
-          </h3>
-          <p
-            className="mb-6"
-            style={{
-              fontSize: '1rem',
-              fontWeight: 300,
-              lineHeight: 1.65,
-              color: 'hsl(var(--cool-gray-tertiary))',
-            }}
-          >
-            {t('selected.pietra.desc', lang)}
-          </p>
-          {/* Wave 3.1.1 · canon Mary QA · Read Volume in the Library funil Director's Cut */}
-          <div className="mb-8">
-            <a
-              href="/library"
-              className="inline-flex items-center gap-2 hover:gap-3 transition-all duration-500"
-              style={{
-                color: 'hsl(var(--bronze-soft))',
-                fontSize: '0.7rem',
-                fontWeight: 500,
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-              }}
+            <div>
+              <span className="block mb-3" style={{ ...labelStyle, fontSize: '0.65rem', letterSpacing: '0.2em' }}>
+                Lab · Instrument · Active
+              </span>
+              <h3
+                className="mb-3"
+                style={{
+                  fontSize: 'clamp(1.5rem, 2.2vw, 2rem)',
+                  fontWeight: 400,
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1.1,
+                  color: '#FFFFFF',
+                }}
+              >
+                HIT — Human Intention Translator
+              </h3>
+              <p
+                className="max-w-[46ch]"
+                style={{
+                  fontSize: '0.9375rem',
+                  fontWeight: 300,
+                  lineHeight: 1.65,
+                  color: 'hsl(var(--cool-gray-tertiary))',
+                }}
+              >
+                An instrument for turning an intention into a direction.
+                Editorial questions. No form-fill.
+              </p>
+            </div>
+            <span
+              className="inline-flex items-center gap-2 group-hover:gap-3 transition-all duration-500 mt-6"
+              style={ctaStyle}
             >
-              Read Volume in the Library <span aria-hidden="true">→</span>
-            </a>
-          </div>
+              Enter the Lab <span aria-hidden="true">→</span>
+            </span>
+          </Link>
 
-          {/* Wave 3.1.1 · canon Mary QA · disclaimer monospace opacity 0.4 · letras miúdas técnicas cinema */}
-          <p
-            style={{
-              fontFamily:
-                'ui-monospace, "SF Mono", Menlo, Monaco, "Cascadia Mono", "Roboto Mono", Consolas, monospace',
-              fontSize: '0.6875rem',
-              fontWeight: 400,
-              lineHeight: 1.5,
-              letterSpacing: '0.01em',
-              color: '#FFFFFF',
-              opacity: 0.4,
-            }}
+          {/* Director's Prompt · Library Vol 01 */}
+          <Link
+            to="/library"
+            className="group block p-8 md:p-12 min-h-[340px] flex flex-col justify-between transition-colors duration-500"
+            style={{ borderBottom: '1px solid #1C1C1E' }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = '#121214'; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; }}
           >
-            {t('selected.pietra.legal', lang)}
-          </p>
+            <div>
+              <span className="block mb-3" style={{ ...labelStyle, fontSize: '0.65rem', letterSpacing: '0.2em' }}>
+                Library · Volume 01 · Available
+              </span>
+              <h3
+                className="mb-3"
+                style={{
+                  fontSize: 'clamp(1.5rem, 2.2vw, 2rem)',
+                  fontWeight: 400,
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1.1,
+                  color: '#FFFFFF',
+                }}
+              >
+                The Director's Prompt
+              </h3>
+              <p
+                className="max-w-[46ch]"
+                style={{
+                  fontSize: '0.9375rem',
+                  fontWeight: 300,
+                  lineHeight: 1.65,
+                  color: 'hsl(var(--cool-gray-tertiary))',
+                }}
+              >
+                The method behind the film. Editorial reading on directing AI —
+                for people who write cinema, not commands.
+              </p>
+            </div>
+            <span
+              className="inline-flex items-center gap-2 group-hover:gap-3 transition-all duration-500 mt-6"
+              style={ctaStyle}
+            >
+              Read Volume <span aria-hidden="true">→</span>
+            </span>
+          </Link>
         </div>
       </div>
     </section>
   );
 };
 
-export default SelectedWorkSection;
+export default SelectedHighlight;

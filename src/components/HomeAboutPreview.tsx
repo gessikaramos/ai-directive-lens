@@ -15,7 +15,7 @@ export default function HomeAboutPreview() {
     >
       <div className="max-w-[820px] mx-auto">
         <span
-          className="block mb-8"
+          className="block mb-5"
           style={{
             color: 'hsl(var(--bronze-soft))',
             fontSize: '0.7rem',
@@ -27,7 +27,7 @@ export default function HomeAboutPreview() {
           {t('about.label', lang)}
         </span>
         <p
-          className="mb-10"
+          className="mb-7"
           style={{
             fontSize: 'clamp(1.125rem, 1.8vw, 1.5rem)',
             fontWeight: 300,

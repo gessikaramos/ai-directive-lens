@@ -1,9 +1,14 @@
 /**
- * Studio · Wave 3.1 · canon Mary Editorial Dark Fred+Gé 7/jul
+ * Studio · Wave 3.2 · canon Cláudio+Mary Fred+Gé 8/jul
  *
- * Atmosfera canon Mary: mesa de luz de diretor de criação.
- * Fundo #0B0B0C · texto Apple cinzas frios · clientes cinza escovado #2C2C2E hover #FFFFFF.
- * Inquiry CTA canon underline hairline (não botão preto).
+ * Migração canon Gé QA:
+ *   - StudioExperiments (15 tiles) MIGRADO do Lab
+ *   - Collective retrátil (accordion) MIGRADO do Lab
+ *   - MasterChef categoria já refletida (Studio Selected Case)
+ *   - Selected Clients mantido cinza escovado #2C2C2E hover #FFFFFF
+ *   - Request Allocation CTA canon Mary underline hairline
+ *
+ * Atmosfera canon Mary: mesa de luz de diretor de criação · dark ink.
  */
 import { useEffect } from 'react';
 import { LanguageProvider, useLanguage } from '@/hooks/use-language';
@@ -12,6 +17,9 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/PageHero';
 import FooterLine from '@/components/FooterLine';
+import StudioExperiments from '@/components/lab/StudioExperiments';
+import { CollectiveForm } from '@/components/lab/LabExtras';
+import { useState } from 'react';
 
 const SERVICES = [
   {
@@ -42,6 +50,46 @@ const CLIENTS = [
   'BeWe · Fashion',
   'Bloom · Beauty',
 ];
+
+const labelStyle = {
+  color: 'hsl(var(--bronze-soft))',
+  fontSize: '0.7rem',
+  fontWeight: 500,
+  letterSpacing: '0.24em',
+  textTransform: 'uppercase' as const,
+};
+
+const CollectiveAccordion = () => {
+  const [open, setOpen] = useState(false);
+  return (
+    <section className="px-6 md:px-12 py-16 md:py-20" style={{ backgroundColor: 'hsl(var(--ink))' }}>
+      <div className="max-w-[900px] mx-auto">
+        <button
+          onClick={() => setOpen((o) => !o)}
+          className="w-full flex items-baseline justify-between py-5 transition-opacity duration-500 hover:opacity-80"
+          style={{ borderTop: '1px solid #1C1C1E', borderBottom: '1px solid #1C1C1E' }}
+        >
+          <span style={labelStyle}>Collective · A Quiet Network</span>
+          <span
+            style={{
+              color: 'hsl(var(--cool-gray-secondary))',
+              fontSize: '0.65rem',
+              fontWeight: 500,
+              letterSpacing: '0.16em',
+            }}
+          >
+            {open ? '— HIDE' : '+ APPLY'}
+          </span>
+        </button>
+        {open && (
+          <div className="pt-6">
+            <CollectiveForm />
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
 
 const StudioContent = () => {
   const { lang } = useLanguage();
@@ -80,18 +128,9 @@ const StudioContent = () => {
         </PageHero>
 
         {/* What we make · grid tipográfico Apple / Collins */}
-        <section className="px-6 md:px-12 py-24 md:py-40">
+        <section className="px-6 md:px-12 py-20 md:py-28">
           <div className="max-w-[1200px] mx-auto">
-            <span
-              className="block mb-16 md:mb-20"
-              style={{
-                color: 'hsl(var(--bronze-soft))',
-                fontSize: '0.7rem',
-                fontWeight: 500,
-                letterSpacing: '0.24em',
-                textTransform: 'uppercase',
-              }}
-            >
+            <span className="block mb-10 md:mb-14" style={labelStyle}>
               What We Make
             </span>
 
@@ -109,7 +148,7 @@ const StudioContent = () => {
                   }}
                 >
                   <span
-                    className="block mb-4"
+                    className="block mb-3"
                     style={{
                       color: 'hsl(var(--bronze-soft))',
                       fontSize: '0.7rem',
@@ -120,7 +159,7 @@ const StudioContent = () => {
                     {service.number}
                   </span>
                   <h3
-                    className="mb-4"
+                    className="mb-3"
                     style={{
                       fontSize: 'clamp(1.5rem, 2.4vw, 2.25rem)',
                       fontWeight: 400,
@@ -148,19 +187,10 @@ const StudioContent = () => {
           </div>
         </section>
 
-        {/* Clients · nomes cinza escovado #2C2C2E → hover #FFFFFF */}
-        <section className="px-6 md:px-12 py-24 md:py-32">
+        {/* Clients */}
+        <section className="px-6 md:px-12 py-20 md:py-24">
           <div className="max-w-[1200px] mx-auto">
-            <span
-              className="block mb-14"
-              style={{
-                color: 'hsl(var(--bronze-soft))',
-                fontSize: '0.7rem',
-                fontWeight: 500,
-                letterSpacing: '0.24em',
-                textTransform: 'uppercase',
-              }}
-            >
+            <span className="block mb-10" style={labelStyle}>
               Selected Clients
             </span>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-12">
@@ -190,11 +220,17 @@ const StudioContent = () => {
           </div>
         </section>
 
+        {/* Studio Experiments · MIGRADO do Lab · 15 tiles editorial */}
+        <StudioExperiments />
+
+        {/* Collective retrátil · MIGRADO do Lab · não polui a página */}
+        <CollectiveAccordion />
+
         {/* Closing CTA · Request Allocation canon Mary */}
-        <section className="px-6 md:px-12 py-32 md:py-44">
+        <section className="px-6 md:px-12 py-28 md:py-40">
           <div className="max-w-[900px] mx-auto text-center">
             <p
-              className="mb-14"
+              className="mb-12"
               style={{
                 fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
                 fontWeight: 300,

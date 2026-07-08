@@ -26,7 +26,7 @@ export default function PageHero({ label, headline, sub, children }: Props) {
     >
       <div className="max-w-[1000px] mx-auto text-center">
         {label && (
-          <div className="mb-10 md:mb-14">
+          <div className="mb-6 md:mb-8">
             <span
               style={{
                 color: 'hsl(var(--bronze-soft))',
@@ -41,7 +41,7 @@ export default function PageHero({ label, headline, sub, children }: Props) {
           </div>
         )}
         <h1
-          className="mb-8"
+          className="mb-5"
           style={{
             fontSize: 'clamp(2.5rem, 6vw, 5.5rem)',
             fontWeight: 400,
@@ -60,13 +60,13 @@ export default function PageHero({ label, headline, sub, children }: Props) {
               fontWeight: 300,
               letterSpacing: '-0.005em',
               lineHeight: 1.5,
-              color: 'hsl(var(--cool-gray-secondary))',
+              color: 'hsl(var(--cool-gray-tertiary))',
             }}
           >
             {sub}
           </p>
         )}
-        {children && <div className="mt-12">{children}</div>}
+        {children && <div className="mt-8">{children}</div>}
       </div>
     </section>
   );

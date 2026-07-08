@@ -15,7 +15,7 @@ export default function HomeContactPreview() {
     >
       <div className="max-w-[820px] mx-auto">
         <span
-          className="block mb-8"
+          className="block mb-5"
           style={{
             color: 'hsl(var(--bronze-soft))',
             fontSize: '0.7rem',
@@ -27,7 +27,7 @@ export default function HomeContactPreview() {
           {t('nav.contact', lang)}
         </span>
         <p
-          className="mb-6"
+          className="mb-4"
           style={{
             fontSize: 'clamp(1.125rem, 1.8vw, 1.5rem)',
             fontWeight: 300,
@@ -40,7 +40,7 @@ export default function HomeContactPreview() {
         </p>
         <a
           href="mailto:hello@lolalabstudio.com"
-          className="block mb-10 transition-opacity hover:opacity-70"
+          className="block mb-7 transition-opacity hover:opacity-70"
           style={{
             fontSize: '1rem',
             fontWeight: 300,

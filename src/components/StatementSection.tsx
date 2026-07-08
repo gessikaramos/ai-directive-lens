@@ -18,7 +18,7 @@ export default function StatementSection() {
 
   return (
     <section
-      className="px-6 md:px-12 py-32 md:py-44"
+      className="px-6 md:px-12 py-28 md:py-36"
       style={{ backgroundColor: 'hsl(var(--ink))' }}
     >
       <div
@@ -26,13 +26,13 @@ export default function StatementSection() {
         className="max-w-4xl mx-auto text-center"
       >
         <p
-          className="mb-6"
+          className="mb-4"
           style={{
             fontSize: 'clamp(1.5rem, 3.8vw, 3rem)',
             fontWeight: 400,
             letterSpacing: '-0.018em',
             lineHeight: 1.25,
-            color: 'hsl(var(--background))',
+            color: '#FFFFFF',
           }}
         >
           {t('statement.line1', lang)}
@@ -43,7 +43,7 @@ export default function StatementSection() {
             fontWeight: 300,
             letterSpacing: '-0.018em',
             lineHeight: 1.25,
-            color: 'hsl(var(--cool-gray-secondary))',
+            color: 'hsl(var(--cool-gray-tertiary))',
           }}
         >
           {t('statement.line2', lang)}
