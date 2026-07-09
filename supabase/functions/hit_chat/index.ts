@@ -122,6 +122,7 @@ Deno.serve(async (req) => {
         .from("hit_conversations")
         .insert({
           session_id: sessionId,
+          user_id: userId,
           user_message: trimmed,
           ai_response,
           latency_ms: 0,
