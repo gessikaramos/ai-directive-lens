@@ -73,26 +73,34 @@ Deno.serve(async (req) => {
       });
     }
 
-    // v3.1 — greeting guard (canon Fred 03/jul): calor antes de função.
-    // Só dispara quando a mensagem é APENAS saudação/small-talk (âncoras ^...$),
-    // então "oi, quero um vídeo" NÃO cai aqui — segue fluxo normal.
+    // v3.2 — greeting short-circuit (canon Fred 03/jul + briefing Walter).
+    // Saudação pura NÃO chama o modelo: resposta fixa, humana, sem funil "criar"
+    // ("perguntar antes de assumir" + reduzir fricção). A regex só casa quando a
+    // mensagem INTEIRA é composta de tokens de saudação + separadores (ex.: "oi
+    // tudo bem?"), então "oi, quero um vídeo" NÃO cai aqui — segue o fluxo normal.
+    // Walter = nome INTERNO: a resposta não se autonomeia (público vê "Human Intent Translator").
     const GREETING_RE =
-      /^\s*(oi+|ol[áa]|opa|e a[íi]|bom dia|boa tarde|boa noite|tudo bem|tudo bom|como vai|hey+|hi+|hello|hola|yo|good (morning|afternoon|evening)|how are you)\b[\s!?.…,]*$/i;
-    const isGreeting = GREETING_RE.test(trimmed);
-
-    const messages = [
-      { role: "system", content: FILTER_PROMPT },
-      ...(isGreeting
-        ? [
-            {
-              role: "system",
-              content:
-                "The user sent only a greeting or small-talk. Reply warmly in THE USER'S LANGUAGE: acknowledge the greeting in one line, be present (you are the Lab, not a form), then invite openly what brought them today. Do NOT jump straight to 'what do you want to create?'.",
-            },
-          ]
-        : []),
-      { role: "user", content: trimmed },
-    ];
+      /^(?:[\s,!?.…]|oi+|ol[áa]|opa|e a[íi]|bom dia|boa tarde|boa noite|tudo bem|tudo bom|tudo certo|como vai|como (?:você|voce) est[áa]|hey+|hi+|hello+|hola|yo|good (?:morning|afternoon|evening)|how are you|how'?s it going)+$/i;
+    const PT_GREETING_RE =
+      /(oi+|ol[áa]|opa|e a[íi]|bom dia|boa tarde|boa noite|tudo bem|tudo bom|tudo certo|como vai|como (?:você|voce) est)/i;
+    if (GREETING_RE.test(trimmed)) {
+      const ai_response = PT_GREETING_RE.test(trimmed)
+        ? "Oi — que bom te ver por aqui. Me conta, com tuas próprias palavras, o que você tem em mente. Eu te ajudo a dar forma."
+        : "Hey — good to have you here. Tell me, in your own words, what you have in mind. I'll help give it shape.";
+      const { data: inserted } = await admin
+        .from("hit_conversations")
+        .insert({
+          session_id: sessionId,
+          user_message: trimmed,
+          ai_response,
+          latency_ms: 0,
+          model_used: "greeting_guard_v3.2",
+          ip_hash,
+        })
+        .select("id")
+        .single();
+      return json({ ai_response, message_id: inserted?.id ?? null, latency_ms: 0 });
+    }
 
     const started = Date.now();
     const r = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -103,7 +111,10 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
-        messages,
+        messages: [
+          { role: "system", content: FILTER_PROMPT },
+          { role: "user", content: trimmed },
+        ],
         temperature: 0.7,
       }),
     });
