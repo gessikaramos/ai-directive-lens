@@ -90,14 +90,16 @@ Deno.serve(async (req) => {
       });
     }
 
-    // v4 — memória de conversa: carrega o histórico desta conversa (por session_id)
-    // pra dar contexto ao modelo. Persistência entre sessões chega com login (Camada B).
-    const { data: history } = await admin
+    // v4 — memória de conversa. Se autenticado, memória persiste por user_id
+    // (cross-session). Anônimo mantém o comportamento por session_id.
+    const historyQuery = admin
       .from("hit_conversations")
       .select("user_message, ai_response")
-      .eq("session_id", sessionId)
       .order("created_at", { ascending: true })
       .limit(40);
+    const { data: history } = userId
+      ? await historyQuery.eq("user_id", userId)
+      : await historyQuery.eq("session_id", sessionId);
     const priorTurns = history ?? [];
     const hasHistory = priorTurns.length > 0;
 
