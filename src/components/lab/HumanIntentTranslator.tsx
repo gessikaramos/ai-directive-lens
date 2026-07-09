@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState, KeyboardEvent } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { getLabSessionId } from '@/lib/session';
+import { getLabSessionId, resetLabSessionId } from '@/lib/session';
+import { useAuth } from '@/hooks/use-auth';
+import PastConversations, { HistoryTurn } from './PastConversations';
 
 type Role = 'user' | 'lab';
 interface Msg {
@@ -23,9 +26,11 @@ interface Props {
 }
 
 const HumanIntentTranslator = ({ initialIntent }: Props) => {
+  const { user, signOut } = useAuth();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [sessionId, setSessionId] = useState<string>(() => getLabSessionId());
   const scrollRef = useRef<HTMLDivElement>(null);
   const sentInitialRef = useRef(false);
 
@@ -36,7 +41,6 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
     setMessages((m) => [...m, { role: 'user', text }]);
     setLoading(true);
     try {
-      const sessionId = getLabSessionId();
       const { data, error } = await supabase.functions.invoke('hit_chat', {
         body: { message: text, sessionId },
       });
@@ -90,14 +94,29 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
       await supabase.from('hit_feedback').insert({
         message_id: msg.message_id,
         feedback_type: key,
-        session_id: getLabSessionId(),
+        session_id: sessionId,
       });
     } catch {
       /* silent */
     }
   };
 
-  // Wave 3.0-B · canon Apple/Mary Fred+Gé 7/jul · dark base coeso · tipografia refinada
+  const resumeSession = (turns: HistoryTurn[], sid: string) => {
+    setSessionId(sid);
+    try {
+      sessionStorage.setItem('lab_session_id', sid);
+    } catch {
+      /* silent */
+    }
+    setMessages(turns.map((t) => ({ role: t.role, text: t.text, message_id: t.message_id })));
+  };
+
+  const startNew = () => {
+    const sid = resetLabSessionId();
+    setSessionId(sid);
+    setMessages([]);
+  };
+
   return (
     <div className="w-full max-w-[720px] mx-auto">
       <div className="mb-6">
@@ -125,7 +144,53 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
           <br />
           Free during beta. Your conversations help us translate intention into form.
         </p>
+
+        {/* Auth status line */}
+        <div
+          className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2"
+          style={{
+            fontSize: '0.7rem',
+            fontWeight: 500,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+          }}
+        >
+          {user ? (
+            <>
+              <span style={{ color: 'hsl(var(--cool-gray-tertiary))' }}>
+                Signed in as{' '}
+                <span style={{ color: 'hsl(var(--bronze-soft))' }}>{user.email}</span>
+              </span>
+              <button
+                onClick={startNew}
+                className="transition-opacity hover:opacity-80"
+                style={{ color: 'hsl(var(--bronze-soft))' }}
+              >
+                + New conversation
+              </button>
+              <button
+                onClick={() => void signOut()}
+                className="transition-opacity hover:opacity-80"
+                style={{ color: 'hsl(var(--cool-gray-secondary))' }}
+              >
+                Sign out
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/auth"
+              className="transition-opacity hover:opacity-80"
+              style={{ color: 'hsl(var(--bronze-soft))' }}
+            >
+              Sign in to save your conversations →
+            </Link>
+          )}
+        </div>
       </div>
+
+      {user && (
+        <PastConversations onResume={resumeSession} currentSessionId={sessionId} />
+      )}
 
       <div
         ref={scrollRef}
