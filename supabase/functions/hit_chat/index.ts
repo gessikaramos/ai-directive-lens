@@ -73,6 +73,27 @@ Deno.serve(async (req) => {
       });
     }
 
+    // v3.1 — greeting guard (canon Fred 03/jul): calor antes de função.
+    // Só dispara quando a mensagem é APENAS saudação/small-talk (âncoras ^...$),
+    // então "oi, quero um vídeo" NÃO cai aqui — segue fluxo normal.
+    const GREETING_RE =
+      /^\s*(oi+|ol[áa]|opa|e a[íi]|bom dia|boa tarde|boa noite|tudo bem|tudo bom|como vai|hey+|hi+|hello|hola|yo|good (morning|afternoon|evening)|how are you)\b[\s!?.…,]*$/i;
+    const isGreeting = GREETING_RE.test(trimmed);
+
+    const messages = [
+      { role: "system", content: FILTER_PROMPT },
+      ...(isGreeting
+        ? [
+            {
+              role: "system",
+              content:
+                "The user sent only a greeting or small-talk. Reply warmly in THE USER'S LANGUAGE: acknowledge the greeting in one line, be present (you are the Lab, not a form), then invite openly what brought them today. Do NOT jump straight to 'what do you want to create?'.",
+            },
+          ]
+        : []),
+      { role: "user", content: trimmed },
+    ];
+
     const started = Date.now();
     const r = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -82,10 +103,7 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: FILTER_PROMPT },
-          { role: "user", content: trimmed },
-        ],
+        messages,
         temperature: 0.7,
       }),
     });
