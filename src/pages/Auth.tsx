@@ -8,7 +8,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { LanguageProvider } from '@/hooks/use-language';
 import { useAuth } from '@/hooks/use-auth';
 import { supabase } from '@/integrations/supabase/client';
-import { lovable } from '@/integrations/lovable';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -51,10 +50,11 @@ const AuthContent = () => {
   };
 
   const signInGoogle = async () => {
-    const result = await lovable.auth.signInWithOAuth('google', {
-      redirect_uri: `${window.location.origin}/lab`,
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}/lab` },
     });
-    if (result.error) {
+    if (error) {
       setStatus('error');
       setMessage('Google sign-in failed. Please try again.');
     }
