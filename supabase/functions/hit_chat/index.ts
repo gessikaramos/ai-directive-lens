@@ -73,17 +73,29 @@ Deno.serve(async (req) => {
       });
     }
 
+    // v4 — memória de conversa: carrega o histórico desta conversa (por session_id)
+    // pra dar contexto ao modelo. Persistência entre sessões chega com login (Camada B).
+    const { data: history } = await admin
+      .from("hit_conversations")
+      .select("user_message, ai_response")
+      .eq("session_id", sessionId)
+      .order("created_at", { ascending: true })
+      .limit(40);
+    const priorTurns = history ?? [];
+    const hasHistory = priorTurns.length > 0;
+
     // v3.2 — greeting short-circuit (canon Fred 03/jul + briefing Walter).
     // Saudação pura NÃO chama o modelo: resposta fixa, humana, sem funil "criar"
     // ("perguntar antes de assumir" + reduzir fricção). A regex só casa quando a
     // mensagem INTEIRA é composta de tokens de saudação + separadores (ex.: "oi
-    // tudo bem?"), então "oi, quero um vídeo" NÃO cai aqui — segue o fluxo normal.
+    // tudo bem?"). v4: só dispara na ABERTURA da conversa (sem histórico) — num
+    // "oi" no meio do papo, Walter responde com contexto em vez da copy fixa.
     // Walter = nome INTERNO: a resposta não se autonomeia (público vê "Human Intent Translator").
     const GREETING_RE =
       /^(?:[\s,!?.…]|oi+|ol[áa]|opa|e a[íi]|bom dia|boa tarde|boa noite|tudo bem|tudo bom|tudo certo|como vai|como (?:você|voce) est[áa]|hey+|hi+|hello+|hola|yo|good (?:morning|afternoon|evening)|how are you|how'?s it going)+$/i;
     const PT_GREETING_RE =
       /(oi+|ol[áa]|opa|e a[íi]|bom dia|boa tarde|boa noite|tudo bem|tudo bom|tudo certo|como vai|como (?:você|voce) est)/i;
-    if (GREETING_RE.test(trimmed)) {
+    if (!hasHistory && GREETING_RE.test(trimmed)) {
       const ai_response = PT_GREETING_RE.test(trimmed)
         ? "Oi — que bom te ver por aqui. Me conta, com tuas próprias palavras, o que você tem em mente. Eu te ajudo a dar forma."
         : "Hey — good to have you here. Tell me, in your own words, what you have in mind. I'll help give it shape.";
@@ -113,6 +125,11 @@ Deno.serve(async (req) => {
         model: "gpt-4o-mini",
         messages: [
           { role: "system", content: FILTER_PROMPT },
+          // v4 — últimos ~12 turnos como contexto (cap pra controlar custo/token)
+          ...priorTurns.slice(-12).flatMap((h) => [
+            { role: "user", content: h.user_message },
+            { role: "assistant", content: h.ai_response },
+          ]),
           { role: "user", content: trimmed },
         ],
         temperature: 0.7,
