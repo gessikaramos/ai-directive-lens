@@ -53,6 +53,7 @@ Deno.serve(async (req) => {
       return json({ error: "bad_request" }, 400);
     }
     const trimmed = message.slice(0, 2000);
+    const userId = await getUserIdFromAuth(req);
 
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
