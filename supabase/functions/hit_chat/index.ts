@@ -12,8 +12,24 @@ const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
 const FILTER_PROMPT = Deno.env.get("LOLALAB_FILTER_PROMPT") ?? "";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 
 const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
+
+async function getUserIdFromAuth(req: Request): Promise<string | null> {
+  const authHeader = req.headers.get("Authorization") ?? "";
+  const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+  if (!token) return null;
+  try {
+    const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      global: { headers: { Authorization: `Bearer ${token}` } },
+    });
+    const { data } = await client.auth.getUser(token);
+    return data?.user?.id ?? null;
+  } catch {
+    return null;
+  }
+}
 
 async function sha256(input: string): Promise<string> {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
@@ -37,6 +53,7 @@ Deno.serve(async (req) => {
       return json({ error: "bad_request" }, 400);
     }
     const trimmed = message.slice(0, 2000);
+    const userId = await getUserIdFromAuth(req);
 
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
@@ -73,14 +90,16 @@ Deno.serve(async (req) => {
       });
     }
 
-    // v4 — memória de conversa: carrega o histórico desta conversa (por session_id)
-    // pra dar contexto ao modelo. Persistência entre sessões chega com login (Camada B).
-    const { data: history } = await admin
+    // v4 — memória de conversa. Se autenticado, memória persiste por user_id
+    // (cross-session). Anônimo mantém o comportamento por session_id.
+    const historyQuery = admin
       .from("hit_conversations")
       .select("user_message, ai_response")
-      .eq("session_id", sessionId)
       .order("created_at", { ascending: true })
       .limit(40);
+    const { data: history } = userId
+      ? await historyQuery.eq("user_id", userId)
+      : await historyQuery.eq("session_id", sessionId);
     const priorTurns = history ?? [];
     const hasHistory = priorTurns.length > 0;
 
@@ -103,6 +122,7 @@ Deno.serve(async (req) => {
         .from("hit_conversations")
         .insert({
           session_id: sessionId,
+          user_id: userId,
           user_message: trimmed,
           ai_response,
           latency_ms: 0,
@@ -158,6 +178,7 @@ Deno.serve(async (req) => {
       .from("hit_conversations")
       .insert({
         session_id: sessionId,
+        user_id: userId,
         user_message: trimmed,
         ai_response,
         latency_ms,

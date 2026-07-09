@@ -8,3 +8,11 @@ export function getLabSessionId(): string {
   }
   return id;
 }
+
+export function resetLabSessionId(): string {
+  if (typeof window === 'undefined') return 'server';
+  const KEY = 'lab_session_id';
+  const id = crypto.randomUUID();
+  sessionStorage.setItem(KEY, id);
+  return id;
+}

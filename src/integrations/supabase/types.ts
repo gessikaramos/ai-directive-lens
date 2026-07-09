@@ -79,6 +79,7 @@ export type Database = {
           message_index: number | null
           model_used: string | null
           session_id: string
+          user_id: string | null
           user_message: string | null
         }
         Insert: {
@@ -91,6 +92,7 @@ export type Database = {
           message_index?: number | null
           model_used?: string | null
           session_id: string
+          user_id?: string | null
           user_message?: string | null
         }
         Update: {
@@ -103,6 +105,7 @@ export type Database = {
           message_index?: number | null
           model_used?: string | null
           session_id?: string
+          user_id?: string | null
           user_message?: string | null
         }
         Relationships: []
