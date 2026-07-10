@@ -13,6 +13,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/PageHero';
 import FooterLine from '@/components/FooterLine';
+import Compendiums from '@/components/library/Compendiums';
 
 const VOLUMES = [
   {
@@ -212,6 +213,8 @@ const LibraryContent = () => {
             </p>
           </div>
         </section>
+
+        <Compendiums />
 
         <FooterLine translationKey="footer.line.library" />
       </main>
