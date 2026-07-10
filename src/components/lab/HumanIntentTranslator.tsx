@@ -34,6 +34,26 @@ interface Props {
 const HumanIntentTranslator = ({ initialIntent, onConversationChange }: Props) => {
   const { user, signOut } = useAuth();
   const [messages, setMessages] = useState<Msg[]>([]);
+  const [shared, setShared] = useState(false);
+
+  const shareWalter = async () => {
+    const url = 'https://www.lolalabstudio.com/lab';
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Walter · Human Intent Translator — LolaLab',
+          text: 'Direction over prompt. Talk to Walter.',
+          url,
+        });
+      } else {
+        await navigator.clipboard.writeText(url);
+        setShared(true);
+        setTimeout(() => setShared(false), 2500);
+      }
+    } catch {
+      /* usuário cancelou o share sheet — silêncio */
+    }
+  };
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string>(() => getLabSessionId());
@@ -204,6 +224,13 @@ const HumanIntentTranslator = ({ initialIntent, onConversationChange }: Props) =
               Sign in to save your conversations →
             </Link>
           )}
+          <button
+            onClick={() => void shareWalter()}
+            className="transition-opacity hover:opacity-80"
+            style={{ color: 'hsl(var(--cool-gray-secondary))' }}
+          >
+            {shared ? 'Link copied ✓' : 'Share Walter ↗'}
+          </button>
         </div>
       </div>
 
