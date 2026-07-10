@@ -25,7 +25,6 @@ import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import StatementSection from '@/components/StatementSection';
 import ChoosePathSection from '@/components/ChoosePathSection';
-import SelectedWorkSection from '@/components/CreativePipelineSection';
 import ManifestoSlice from '@/components/ManifestoSlice';
 import HomeAboutPreview from '@/components/HomeAboutPreview';
 import HomeContactPreview from '@/components/HomeContactPreview';
@@ -43,7 +42,8 @@ const IndexContent = () => {
         <HeroSection />
         <StatementSection />
         <ChoosePathSection />
-        <SelectedWorkSection />
+        {/* Selected Work (MasterChef) MIGRADO para /studio (canon Gé 10/jul):
+            o destaque de case pertence à casa do Studio, não à home. */}
         <ManifestoSlice />
         <HomeAboutPreview />
         <HomeContactPreview />

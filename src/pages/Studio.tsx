@@ -18,6 +18,7 @@ import Footer from '@/components/Footer';
 import PageHero from '@/components/PageHero';
 import FooterLine from '@/components/FooterLine';
 import StudioExperiments from '@/components/lab/StudioExperiments';
+import SelectedWork from '@/components/CreativePipelineSection';
 import { CollectiveForm } from '@/components/lab/LabExtras';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -184,6 +185,9 @@ const StudioContent = () => {
         </section>
 
         {/* Selected Clients removida (canon Gé 8/jul) */}
+
+        {/* Selected Work (MasterChef) · MIGRADO da home (canon Gé 10/jul) */}
+        <SelectedWork />
 
         {/* Studio Experiments · MIGRADO do Lab · 15 tiles editorial */}
         <StudioExperiments />
