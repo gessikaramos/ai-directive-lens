@@ -72,7 +72,9 @@ Deno.serve(async (req) => {
       .select("*", { count: "exact", head: true })
       .eq("ip_hash", ip_hash)
       .gte("created_at", since);
-    if ((count ?? 0) >= 10) {
+    // 30/h durante a Refinement Phase (QA + testes da Gé no preview).
+    // Reavaliar antes do lançamento público (custo gpt-4.1 x degustação).
+    if ((count ?? 0) >= 30) {
       return json(
         {
           ai_response:
@@ -159,7 +161,9 @@ Deno.serve(async (req) => {
           ]),
           { role: "user", content: trimmed },
         ],
-        temperature: 0.7,
+        // 0.5–0.6 (QA Mary): acima disso o modelo desobedece a pergunta única
+        // e inventa clichê; abaixo fica robótico. 0.55 = meio-termo calibrado.
+        temperature: 0.55,
       }),
     });
 
