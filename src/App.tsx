@@ -12,6 +12,7 @@ import Studio from "./pages/Studio.tsx";
 import About from "./pages/About.tsx";
 import Contact from "./pages/Contact.tsx";
 import Auth from "./pages/Auth.tsx";
+import Signal from "./pages/Signal.tsx";
 import ScrollToTop from "./components/ScrollToTop.tsx";
 import { AuthProvider } from "./hooks/use-auth";
 
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/lab" element={<Lab />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/signal" element={<Signal />} />
             {/* Wave 1 Foundations · canon Fred v1 · 4 rotas novas */}
             <Route path="/library" element={<Library />} />
             <Route path="/studio" element={<Studio />} />

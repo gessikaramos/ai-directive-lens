@@ -31,6 +31,7 @@ export default function Navbar() {
     { key: 'nav.studio', href: '/studio', type: 'route' },
     { key: 'nav.lab', href: '/lab', type: 'route' },
     { key: 'nav.library', href: '/library', type: 'route' },
+    { key: 'nav.signal', href: '/signal', type: 'route' },
     { key: 'nav.about', href: '/about', type: 'route' },
     { key: 'nav.contact', href: '/contact', type: 'route' },
   ];

@@ -163,7 +163,7 @@ const LabContent = () => {
         {!immersed && <CastTeaser />}
 
         {/* Signal Archive · accordion posts históricos (newsletter foi pro Footer global) */}
-        {!immersed && <SignalArchive />}
+        {/* SignalArchive MIGRADO para /signal (canon Gé 10/jul) */}
 
         {/* Back CTA */}
         <section className="px-6 md:px-12 py-20 md:py-28">
