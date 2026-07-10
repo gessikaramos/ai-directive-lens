@@ -15,6 +15,7 @@ interface Msg {
   feedback?: 'clear' | 'confused' | 'loved' | 'wrong';
   is_pack?: boolean;
   entitled?: boolean;
+  tech_locked?: boolean;
 }
 
 const FEEDBACK: Array<{ key: Msg['feedback']; label: string }> = [
@@ -59,6 +60,7 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
           message_id: data?.message_id ?? null,
           is_pack: data?.is_pack === true,
           entitled: data?.entitled === true,
+          tech_locked: data?.tech_locked === true,
         },
       ]);
     } catch (e) {
@@ -249,7 +251,11 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
                 </p>
               </div>
             ) : m.is_pack ? (
-              <CreativeDirectionPack text={m.text} entitled={m.entitled === true} />
+              <CreativeDirectionPack
+                text={m.text}
+                entitled={m.entitled === true}
+                techLocked={m.tech_locked === true}
+              />
             ) : (
               <div className="pt-1">
                 <span

@@ -10,6 +10,7 @@
  *   - Espaço vertical entre linhas: mb-6 (proximidade)
  *   - Copy canon travado
  */
+import { Link } from 'react-router-dom';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
 
@@ -48,6 +49,41 @@ export default function StatementSection() {
         >
           {t('statement.line2', lang)}
         </p>
+
+        {/* Os dois caminhos no primeiro terço da página (canon Mary 10/jul):
+            produto com preenchimento, estúdio em outline. Sem "Walter" — público
+            vê Human Intent Translator. */}
+        <div className="mt-12 flex flex-wrap justify-center gap-4">
+          <Link
+            to="/lab"
+            className="px-8 py-4 transition-opacity hover:opacity-85"
+            style={{
+              backgroundColor: 'hsl(var(--bronze-soft))',
+              color: 'hsl(var(--ink))',
+              fontSize: '0.7rem',
+              fontWeight: 600,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+            }}
+          >
+            Talk to the Translator →
+          </Link>
+          <Link
+            to="/contact"
+            className="px-8 py-4 transition-opacity hover:opacity-85"
+            style={{
+              backgroundColor: 'transparent',
+              color: 'hsl(var(--background) / 0.9)',
+              border: '1px solid hsl(var(--background) / 0.35)',
+              fontSize: '0.7rem',
+              fontWeight: 600,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+            }}
+          >
+            Partner with the Studio ↗
+          </Link>
+        </div>
       </div>
     </section>
   );

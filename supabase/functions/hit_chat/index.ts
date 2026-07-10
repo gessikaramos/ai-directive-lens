@@ -229,7 +229,27 @@ Deno.serve(async (req) => {
 
     if (insErr) console.error("insert error", insErr);
 
-    return json({ ai_response, message_id: inserted?.id ?? null, latency_ms, is_pack, entitled });
+    // Paywall de utilidade: a camada 6 (prompts técnicos) só sai da API para
+    // assinantes. O texto completo fica no banco — vira histórico/contexto e é
+    // liberado quando o entitlement chegar. Enforcement no servidor, não no CSS.
+    let response_text = ai_response;
+    let tech_locked = false;
+    if (is_pack && !entitled) {
+      const m = ai_response.match(/^6\.\s/m);
+      if (m && typeof m.index === "number" && m.index > 0) {
+        response_text = ai_response.slice(0, m.index).trimEnd();
+        tech_locked = true;
+      }
+    }
+
+    return json({
+      ai_response: response_text,
+      message_id: inserted?.id ?? null,
+      latency_ms,
+      is_pack,
+      entitled,
+      tech_locked,
+    });
   } catch (e) {
     console.error(e);
     return json(

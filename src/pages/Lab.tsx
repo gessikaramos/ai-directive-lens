@@ -19,14 +19,6 @@ import Footer from '@/components/Footer';
 import HumanIntentTranslator from '@/components/lab/HumanIntentTranslator';
 import { CastTeaser } from '@/components/lab/LabExtras';
 
-const INSTRUMENTS = [
-  { name: 'Human Intention Translator', status: 'ACTIVE', active: true },
-  { name: 'Image Director', status: 'IN DEVELOPMENT', active: false },
-  { name: 'Video Director', status: 'IN DEVELOPMENT', active: false },
-  { name: 'Character Builder', status: 'IN DEVELOPMENT', active: false },
-  { name: 'Brand World Builder', status: 'IN DEVELOPMENT', active: false },
-];
-
 const SIGNAL_POSTS = [
   {
     date: 'JUN 2026',
@@ -154,59 +146,10 @@ const LabContent = () => {
           <HumanIntentTranslator initialIntent={intent} />
         </section>
 
-        {/* Instruments · roadmap */}
-        <section className="px-6 md:px-12 py-20 md:py-28">
-          <div className="max-w-[1000px] mx-auto">
-            <span className="block mb-6" style={labelStyle}>
-              INSTRUMENTS · ROADMAP
-            </span>
-            <p
-              className="max-w-[520px] mb-12"
-              style={{
-                fontSize: '0.9375rem',
-                fontWeight: 300,
-                lineHeight: 1.65,
-                color: 'hsl(var(--cool-gray-tertiary))',
-              }}
-            >
-              A growing set of instruments for AI-native creative direction.
-              One is live. The rest are being written.
-            </p>
-
-            <div style={{ borderTop: '1px solid #1C1C1E' }}>
-              {INSTRUMENTS.map((inst) => (
-                <div
-                  key={inst.name}
-                  className="flex justify-between items-baseline py-5"
-                  style={{ borderBottom: '1px solid #1C1C1E' }}
-                >
-                  <span
-                    style={{
-                      fontSize: '1rem',
-                      fontWeight: 400,
-                      letterSpacing: '-0.005em',
-                      color: inst.active ? '#FFFFFF' : 'hsl(var(--cool-gray-tertiary) / 0.5)',
-                    }}
-                  >
-                    {inst.name}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: '0.65rem',
-                      fontWeight: 500,
-                      letterSpacing: '0.2em',
-                      color: inst.active
-                        ? 'hsl(var(--bronze-soft))'
-                        : 'hsl(var(--cool-gray-secondary) / 0.5)',
-                    }}
-                  >
-                    {inst.status}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Instruments/Roadmap REMOVIDO do palco (canon Mary 10/jul, análise crua):
+            lista de "In Development" ao lado do produto pago lia como projeto
+            inacabado. O Translator tem palco exclusivo; futuros instrumentos
+            voltam quando estiverem vivos. */}
 
         {/* Cast · notify me · fica no Lab */}
         <CastTeaser />

@@ -38,7 +38,7 @@ const BOOKS = [
 
 const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'form' | 'sending' | 'done' | 'error'>('idle');
 
   const reserve = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,24 +135,48 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
           {book.desc}
         </p>
 
-        <div className="flex gap-8 mb-7" style={{ color: 'hsl(var(--background) / 0.8)' }}>
-          <span style={{ fontSize: '0.8125rem', fontWeight: 300 }}>
-            Digital Edition · <span style={{ color: 'hsl(var(--bronze-soft))' }}>{book.digital}</span>
-          </span>
-          <span style={{ fontSize: '0.8125rem', fontWeight: 300 }}>
-            Hardcover · <span style={{ color: 'hsl(var(--bronze-soft))' }}>{book.hardcover}</span>
-          </span>
-        </div>
-
         {status === 'done' ? (
           <p style={{ fontSize: '0.8125rem', fontWeight: 300, color: 'hsl(var(--bronze-soft))' }}>
-            Reserved. You'll be the first to know when the printing opens.
+            Reserved. Your copy is held for the first printing — we'll write when it opens.
           </p>
+        ) : status === 'idle' ? (
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => setStatus('form')}
+              className="px-6 py-3.5 transition-opacity hover:opacity-80"
+              style={{
+                backgroundColor: 'hsl(var(--bronze-soft))',
+                color: 'hsl(var(--ink))',
+                fontSize: '0.65rem',
+                fontWeight: 600,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Pre-order Digital Edition · {book.digital}
+            </button>
+            <button
+              onClick={() => setStatus('form')}
+              className="px-6 py-3.5 transition-opacity hover:opacity-80"
+              style={{
+                backgroundColor: 'transparent',
+                color: 'hsl(var(--background) / 0.85)',
+                border: '1px solid hsl(var(--background) / 0.3)',
+                fontSize: '0.65rem',
+                fontWeight: 600,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Reserve Hardcover · {book.hardcover}
+            </button>
+          </div>
         ) : (
           <form onSubmit={reserve} className="flex flex-wrap gap-3 items-center max-w-[540px]">
             <input
               type="email"
               required
+              autoFocus
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@domain.com"
@@ -178,7 +202,7 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
                 textTransform: 'uppercase',
               }}
             >
-              Reserve the first printing
+              Hold my copy
             </button>
             {status === 'error' && (
               <span style={{ fontSize: '0.75rem', color: 'hsl(var(--bronze-soft))' }}>

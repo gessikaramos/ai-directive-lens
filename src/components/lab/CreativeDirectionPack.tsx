@@ -18,6 +18,7 @@ const label = {
 interface Props {
   text: string;
   entitled: boolean;
+  techLocked?: boolean;
 }
 
 /** Realça **negritos** do Markdown sem depender de lib externa. */
@@ -49,21 +50,19 @@ function exportMarkdown(text: string) {
   URL.revokeObjectURL(url);
 }
 
-const CreativeDirectionPack = ({ text, entitled }: Props) => {
+const CreativeDirectionPack = ({ text, entitled, techLocked }: Props) => {
   const lines = text.split('\n');
   // separa o corpo do marcador-título
   const bodyLines = lines.filter((l) => !/^##\s+CREATIVE DIRECTION PACK/.test(l));
-  // degustação: intenção traduzida + conceito central visíveis; resto sob frost
-  const cutIdx = entitled
-    ? bodyLines.length
-    : Math.min(
-        bodyLines.findIndex((l) => /^3\.\s/.test(l)) > 0
-          ? bodyLines.findIndex((l) => /^3\.\s/.test(l))
-          : Math.ceil(bodyLines.length * 0.35),
-        bodyLines.length,
-      );
-  const visible = bodyLines.slice(0, cutIdx);
-  const frosted = bodyLines.slice(cutIdx);
+  // Paywall de utilidade (não de leitura): o conceito inteiro (camadas 1–5) é
+  // sempre visível — cobra-se a camada técnica derivada (6), o export e a
+  // memória de longo prazo. Nada de texto borrado (canon Mary: frost blur
+  // rebaixa a grife a funil de infoproduto).
+  const techIdx = bodyLines.findIndex((l) => /^6\.\s/.test(l));
+  // O servidor já corta a camada 6 para não-assinantes (tech_locked); o corte
+  // local é só fallback para histórico antigo que veio completo.
+  const hasTechCut = !entitled && (techLocked === true || techIdx > 0);
+  const visible = !entitled && techIdx > 0 ? bodyLines.slice(0, techIdx) : bodyLines;
 
   return (
     <div
@@ -93,21 +92,23 @@ const CreativeDirectionPack = ({ text, entitled }: Props) => {
       >
         {visible.map((l, i) => inlineBold(l, i))}
 
-        {!entitled && frosted.length > 0 && (
-          <div className="relative mt-1" aria-hidden>
-            <div
+        {hasTechCut && (
+          <div
+            className="mt-4 pt-4 flex items-baseline gap-3"
+            style={{ borderTop: '1px solid hsl(var(--background) / 0.1)' }}
+          >
+            <span style={{ ...label, fontSize: '0.6rem' }}>6 · Technical prompts</span>
+            <span
               style={{
-                filter: 'blur(7px)',
-                userSelect: 'none',
-                pointerEvents: 'none',
-                maskImage: 'linear-gradient(to bottom, black 20%, transparent 85%)',
-                WebkitMaskImage: 'linear-gradient(to bottom, black 20%, transparent 85%)',
-                maxHeight: '180px',
-                overflow: 'hidden',
+                fontFamily: "'Inter', sans-serif",
+                fontSize: '0.8125rem',
+                fontWeight: 300,
+                color: 'hsl(var(--background) / 0.55)',
               }}
             >
-              {frosted.map((l, i) => inlineBold(l, i))}
-            </div>
+              The derived command layer for visual tools ships with Founding Access —
+              along with the exportable brief and long-term memory.
+            </span>
           </div>
         )}
       </div>
@@ -131,10 +132,10 @@ const CreativeDirectionPack = ({ text, entitled }: Props) => {
               lineHeight: 1.65,
             }}
           >
-            You've reached the spine of your concept. To unlock the complete Creative
-            Direction Pack, export the executable brief and keep long-term memory for this
-            project, join the Founding Cohort — €19/month, or €149/year at the Founding
-            Commitment Rate.
+            The concept is yours — take it. Founding Access adds the working layer: the
+            technical prompt commands for visual tools, the exportable brief, and a
+            Translator that keeps long-term memory of this project. €19/month, or €149/year
+            at the Founding Commitment Rate.
           </p>
           <a
             href="mailto:hello@lolalabstudio.com?subject=Founding%20Access%20%C2%B7%20Cohort%2001"
