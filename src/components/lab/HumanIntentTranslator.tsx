@@ -203,7 +203,7 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
 
       <div
         ref={scrollRef}
-        className="min-h-[240px] max-h-[520px] overflow-y-auto py-6 space-y-5 scrollbar-none"
+        className="min-h-[240px] max-h-[62vh] overflow-y-auto py-8 space-y-9 scrollbar-none"
       >
         {messages.length === 0 && !loading && (
           <p
@@ -218,62 +218,94 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
           </p>
         )}
 
+        {/* Minimalismo Imersivo (canon Mary): fluxo editorial contínuo, sem bolhas.
+            Voz do usuário em sans discreta; voz do Translator em serif editorial. */}
         {messages.map((m, i) => (
-          <div key={i} className={m.role === 'user' ? 'flex justify-end' : 'flex flex-col items-start'}>
-            {m.role === 'lab' && m.is_pack ? (
+          <div key={i} className={m.role === 'lab' ? 'lab-fade-in' : undefined}>
+            {m.role === 'user' ? (
+              <div className="pt-1">
+                <span
+                  className="block mb-1.5"
+                  style={{
+                    color: 'hsl(var(--background) / 0.35)',
+                    fontSize: '0.6rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.28em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  You
+                </span>
+                <p
+                  style={{
+                    color: 'hsl(var(--background) / 0.6)',
+                    fontSize: '0.9375rem',
+                    fontWeight: 300,
+                    lineHeight: 1.7,
+                    whiteSpace: 'pre-wrap',
+                  }}
+                >
+                  {m.text}
+                </p>
+              </div>
+            ) : m.is_pack ? (
               <CreativeDirectionPack text={m.text} entitled={m.entitled === true} />
             ) : (
-            <div
-              className={
-                m.role === 'user'
-                  ? 'max-w-[80%] px-5 py-3.5'
-                  : 'max-w-[88%] px-5 py-3.5'
-              }
-              style={{
-                backgroundColor:
-                  m.role === 'user'
-                    ? 'hsl(var(--background) / 0.08)'
-                    : 'hsl(var(--background) / 0.04)',
-                color: 'hsl(var(--background))',
-                fontSize: '0.9375rem',
-                fontWeight: 300,
-                lineHeight: 1.65,
-                borderRadius: '2px',
-                border: '1px solid hsl(var(--background) / 0.08)',
-              }}
-            >
-              {m.text.split('\n').map((line, j) => (
-                <p key={j} className="mb-2 last:mb-0">
-                  {line}
-                </p>
-              ))}
-            </div>
-            )}
-            {m.role === 'lab' && m.message_id && (
-              <div className="flex gap-5 mt-3 pl-1">
-                {FEEDBACK.map((f) => {
-                  const chosen = m.feedback === f.key;
-                  const anyChosen = !!m.feedback;
-                  return (
-                    <button
-                      key={f.key}
-                      onClick={() => rate(i, f.key!)}
-                      disabled={anyChosen}
-                      className="transition-opacity"
-                      style={{
-                        color: 'hsl(var(--bronze-soft))',
-                        fontSize: '0.65rem',
-                        fontWeight: chosen ? 500 : 400,
-                        letterSpacing: '0.2em',
-                        textTransform: 'uppercase',
-                        opacity: chosen ? 1 : anyChosen ? 0.3 : 0.75,
-                        cursor: anyChosen ? 'default' : 'pointer',
-                      }}
-                    >
-                      {f.label}
-                    </button>
-                  );
-                })}
+              <div className="pt-1">
+                <span
+                  className="block mb-2"
+                  style={{
+                    color: 'hsl(var(--bronze-soft))',
+                    fontSize: '0.6rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.28em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  The Translator
+                </span>
+                <div
+                  style={{
+                    fontFamily: "'Newsreader', Georgia, serif",
+                    color: 'hsl(var(--background) / 0.94)',
+                    fontSize: '1.1875rem',
+                    fontWeight: 300,
+                    lineHeight: 1.8,
+                  }}
+                >
+                  {m.text.split('\n').map((line, j) => (
+                    <p key={j} className="mb-3 last:mb-0">
+                      {line}
+                    </p>
+                  ))}
+                </div>
+                {m.message_id && (
+                  <div className="flex gap-5 mt-4">
+                    {FEEDBACK.map((f) => {
+                      const chosen = m.feedback === f.key;
+                      const anyChosen = !!m.feedback;
+                      return (
+                        <button
+                          key={f.key}
+                          onClick={() => rate(i, f.key!)}
+                          disabled={anyChosen}
+                          className="transition-opacity hover:opacity-100"
+                          style={{
+                            color: 'hsl(var(--bronze-soft))',
+                            fontSize: '0.6rem',
+                            fontWeight: chosen ? 500 : 400,
+                            letterSpacing: '0.2em',
+                            textTransform: 'uppercase',
+                            opacity: chosen ? 1 : anyChosen ? 0.25 : 0.45,
+                            cursor: anyChosen ? 'default' : 'pointer',
+                          }}
+                        >
+                          {f.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -303,28 +335,35 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
         )}
       </div>
 
-      <div className="relative mt-6">
+      <div className="relative mt-8">
         <textarea
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => {
+            setInput(e.target.value);
+            // expansão orgânica: o campo cresce com o pensamento
+            e.target.style.height = 'auto';
+            e.target.style.height = Math.min(e.target.scrollHeight, 220) + 'px';
+          }}
           onKeyDown={onKey}
-          rows={1}
-          placeholder="Write to the Lab."
-          className="w-full resize-none focus:outline-none py-3 pl-4 pr-12 transition-colors"
+          rows={2}
+          placeholder="Pour your intention here."
+          className="w-full resize-none focus:outline-none py-4 pl-5 pr-14 transition-colors"
           style={{
-            backgroundColor: 'transparent',
+            backgroundColor: 'hsl(var(--background) / 0.03)',
             color: 'hsl(var(--background))',
-            border: '1px solid hsl(var(--background) / 0.2)',
-            fontSize: '0.9375rem',
-            fontWeight: 400,
-            minHeight: 48,
+            border: '1px solid hsl(var(--background) / 0.14)',
+            borderRadius: '2px',
+            fontSize: '1rem',
+            fontWeight: 300,
+            lineHeight: 1.6,
+            minHeight: 76,
           }}
         />
         <button
           onClick={() => void send(input)}
           disabled={loading || !input.trim()}
           aria-label="Send"
-          className="absolute right-3 top-1/2 -translate-y-1/2 disabled:opacity-30 transition-opacity"
+          className="absolute right-4 bottom-4 disabled:opacity-30 transition-opacity"
           style={{ color: 'hsl(var(--bronze-soft))' }}
         >
           <ArrowRight className="w-5 h-5" />

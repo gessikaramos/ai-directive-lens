@@ -84,10 +84,11 @@ const CreativeDirectionPack = ({ text, entitled }: Props) => {
       <div
         className="px-6 py-5"
         style={{
+          fontFamily: "'Newsreader', Georgia, serif",
           color: 'hsl(var(--background) / 0.92)',
-          fontSize: '0.9375rem',
+          fontSize: '1.0625rem',
           fontWeight: 300,
-          lineHeight: 1.7,
+          lineHeight: 1.75,
         }}
       >
         {visible.map((l, i) => inlineBold(l, i))}
