@@ -16,7 +16,6 @@
  *   - Director's Prompt = Vol 01 available (canon Library)
  */
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
 
@@ -30,14 +29,6 @@ const labelStyle = {
   fontSize: '0.7rem',
   fontWeight: 500,
   letterSpacing: '0.24em',
-  textTransform: 'uppercase' as const,
-};
-
-const ctaStyle = {
-  color: 'hsl(var(--bronze-soft))',
-  fontSize: '0.7rem',
-  fontWeight: 500,
-  letterSpacing: '0.2em',
   textTransform: 'uppercase' as const,
 };
 
@@ -152,13 +143,9 @@ const SelectedHighlight = () => {
           >
             {t('selected.masterchef.desc', lang)}
           </p>
-          <Link
-            to="/library"
-            className="inline-flex items-center gap-2 hover:gap-3 transition-all duration-500"
-            style={ctaStyle}
-          >
-            Read Volume in the Library <span aria-hidden="true">→</span>
-          </Link>
+          {/* "Read Volume in the Library" REMOVIDO (canon Gé 10/jul): apontava
+              para o Vol 01 do Restricted Archive, descontinuado hoje. O case
+              fala por si — a ação é o play. */}
         </div>
       </div>
 
