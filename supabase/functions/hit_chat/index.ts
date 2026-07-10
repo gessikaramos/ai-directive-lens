@@ -52,11 +52,26 @@ Deno.serve(async (req) => {
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
 
   try {
-    const { message, sessionId } = await req.json();
+    const { message, sessionId, imageDataUrl } = await req.json();
     if (!message || typeof message !== "string" || !sessionId) {
       return json({ error: "bad_request" }, 400);
     }
     const trimmed = message.slice(0, 2000);
+
+    // Imagem de referência (opcional): data URL validada + teto de ~6MB.
+    // V1: a imagem entra no contexto do modelo, mas não é persistida — o
+    // histórico guarda o marcador [reference image attached].
+    let image: string | null = null;
+    if (typeof imageDataUrl === "string" && imageDataUrl.length > 0) {
+      if (!/^data:image\/(png|jpe?g|webp|gif);base64,/.test(imageDataUrl)) {
+        return json({ error: "bad_image" }, 400);
+      }
+      if (imageDataUrl.length > 8_000_000) {
+        return json({ error: "image_too_large" }, 413);
+      }
+      image = imageDataUrl;
+    }
+
     const userId = await getUserIdFromAuth(req);
 
     // Entitlement (Founding/Personal/Studio): controla o frost-glass do Pack no frontend.
@@ -170,7 +185,17 @@ Deno.serve(async (req) => {
             { role: "user", content: h.user_message },
             { role: "assistant", content: h.ai_response },
           ]),
-          { role: "user", content: trimmed },
+          // Imagem de referência: entra como conteúdo multimodal (detail low
+          // controla custo). O Walter lê a imagem como material criativo.
+          image
+            ? {
+                role: "user",
+                content: [
+                  { type: "text", text: trimmed },
+                  { type: "image_url", image_url: { url: image, detail: "low" } },
+                ],
+              }
+            : { role: "user", content: trimmed },
         ],
         // 0.5–0.6 (QA Mary): acima disso o modelo desobedece a pergunta única
         // e inventa clichê; abaixo fica robótico. 0.55 = meio-termo calibrado.
@@ -216,7 +241,8 @@ Deno.serve(async (req) => {
       .insert({
         session_id: sessionId,
         user_id: userId,
-        user_message: trimmed,
+        // marcador no histórico: turnos futuros sabem que houve referência visual
+        user_message: image ? `${trimmed}\n[reference image attached]` : trimmed,
         ai_response,
         latency_ms,
         model_used: "gpt-4.1",

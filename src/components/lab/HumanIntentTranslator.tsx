@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, KeyboardEvent } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Mic, Paperclip, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { getLabSessionId, resetLabSessionId } from '@/lib/session';
@@ -16,6 +16,8 @@ interface Msg {
   is_pack?: boolean;
   entitled?: boolean;
   tech_locked?: boolean;
+  /** miniatura da imagem de referência enviada junto (data URL) */
+  image?: string;
 }
 
 const FEEDBACK: Array<{ key: Msg['feedback']; label: string }> = [
@@ -35,6 +37,51 @@ const HumanIntentTranslator = ({ initialIntent, onConversationChange }: Props) =
   const { user, signOut } = useAuth();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [shared, setShared] = useState(false);
+  // Voz (ditado nativo do navegador) e imagem de referência
+  const [listening, setListening] = useState(false);
+  const [attachedImage, setAttachedImage] = useState<string | null>(null);
+  const recognitionRef = useRef<any>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const toggleMic = () => {
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SR) {
+      alert('Voice input is not supported in this browser yet. Try Chrome or Safari.');
+      return;
+    }
+    if (listening) {
+      recognitionRef.current?.stop();
+      setListening(false);
+      return;
+    }
+    const rec = new SR();
+    rec.lang = navigator.language || 'en-US';
+    rec.interimResults = false;
+    rec.continuous = true;
+    rec.onresult = (e: any) => {
+      let chunk = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) chunk += e.results[i][0].transcript;
+      }
+      if (chunk) setInput((prev) => (prev ? prev + ' ' : '') + chunk.trim());
+    };
+    rec.onend = () => setListening(false);
+    rec.onerror = () => setListening(false);
+    recognitionRef.current = rec;
+    rec.start();
+    setListening(true);
+  };
+
+  const attachImage = (file: File) => {
+    if (!file.type.startsWith('image/')) return;
+    if (file.size > 5_000_000) {
+      alert('Image too large — 5MB max.');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setAttachedImage(reader.result as string);
+    reader.readAsDataURL(file);
+  };
 
   const shareWalter = async () => {
     const url = 'https://www.lolalabstudio.com/lab';
@@ -63,12 +110,18 @@ const HumanIntentTranslator = ({ initialIntent, onConversationChange }: Props) =
   const send = async (raw: string) => {
     const text = raw.trim();
     if (!text || loading) return;
+    const image = attachedImage ?? undefined;
     setInput('');
-    setMessages((m) => [...m, { role: 'user', text }]);
+    setAttachedImage(null);
+    if (listening) {
+      recognitionRef.current?.stop();
+      setListening(false);
+    }
+    setMessages((m) => [...m, { role: 'user', text, image }]);
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke('hit_chat', {
-        body: { message: text, sessionId },
+        body: { message: text, sessionId, imageDataUrl: image },
       });
       if (error) throw error;
       const ai_response =
@@ -273,6 +326,14 @@ const HumanIntentTranslator = ({ initialIntent, onConversationChange }: Props) =
                 >
                   You
                 </span>
+                {m.image && (
+                  <img
+                    src={m.image}
+                    alt="Reference"
+                    className="mb-3 max-h-[180px] w-auto"
+                    style={{ borderRadius: '4px', border: '1px solid hsl(var(--background) / 0.15)' }}
+                  />
+                )}
                 <p
                   style={{
                     color: 'hsl(var(--background) / 0.6)',
@@ -377,6 +438,26 @@ const HumanIntentTranslator = ({ initialIntent, onConversationChange }: Props) =
       </div>
 
       <div className="relative mt-8">
+        {/* Imagem de referência anexada · chip de preview */}
+        {attachedImage && (
+          <div className="mb-3 inline-flex items-center gap-3">
+            <img
+              src={attachedImage}
+              alt="Reference to send"
+              className="h-14 w-auto"
+              style={{ borderRadius: '4px', border: '1px solid hsl(var(--background) / 0.2)' }}
+            />
+            <button
+              onClick={() => setAttachedImage(null)}
+              aria-label="Remove image"
+              className="transition-opacity hover:opacity-80"
+              style={{ color: 'hsl(var(--cool-gray-secondary))' }}
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
         <textarea
           value={input}
           onChange={(e) => {
@@ -387,19 +468,55 @@ const HumanIntentTranslator = ({ initialIntent, onConversationChange }: Props) =
           }}
           onKeyDown={onKey}
           rows={2}
-          placeholder="What are you trying to put into the world?"
-          className="w-full resize-none focus:outline-none py-4 pl-5 pr-14 transition-colors"
+          placeholder={listening ? 'Listening… speak your intention.' : 'What are you trying to put into the world?'}
+          className="w-full resize-none focus:outline-none py-4 pl-5 pr-14 pb-12 transition-colors"
           style={{
             backgroundColor: 'hsl(var(--background) / 0.03)',
             color: 'hsl(var(--background))',
-            border: '1px solid hsl(var(--background) / 0.14)',
+            border: listening
+              ? '1px solid hsl(var(--bronze-soft) / 0.6)'
+              : '1px solid hsl(var(--background) / 0.14)',
             borderRadius: '2px',
             fontSize: '1rem',
             fontWeight: 300,
             lineHeight: 1.6,
-            minHeight: 76,
+            minHeight: 96,
           }}
         />
+
+        {/* Voz + imagem · canto inferior esquerdo */}
+        <div className="absolute left-4 bottom-4 flex items-center gap-4">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/png,image/jpeg,image/webp,image/gif"
+            className="hidden"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) attachImage(f);
+              e.target.value = '';
+            }}
+          />
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            aria-label="Attach a reference image"
+            className="transition-opacity hover:opacity-100"
+            style={{ color: 'hsl(var(--background) / 0.45)' }}
+          >
+            <Paperclip className="w-[18px] h-[18px]" />
+          </button>
+          <button
+            onClick={toggleMic}
+            aria-label={listening ? 'Stop voice input' : 'Speak your intention'}
+            className={listening ? 'animate-pulse' : 'transition-opacity hover:opacity-100'}
+            style={{
+              color: listening ? 'hsl(var(--bronze-soft))' : 'hsl(var(--background) / 0.45)',
+            }}
+          >
+            <Mic className="w-[18px] h-[18px]" />
+          </button>
+        </div>
+
         <button
           onClick={() => void send(input)}
           disabled={loading || !input.trim()}
