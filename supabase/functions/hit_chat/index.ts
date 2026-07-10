@@ -9,7 +9,11 @@ const corsHeaders = {
 };
 
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
-const FILTER_PROMPT = Deno.env.get("LOLALAB_FILTER_PROMPT") ?? "";
+// V2 do prompt (secret LOLALAB_FILTER_PROMPT_V2) tem precedência quando setada.
+// Rollback instantâneo: apagar o secret V2 e a V1 volta a valer.
+const FILTER_PROMPT =
+  (Deno.env.get("LOLALAB_FILTER_PROMPT_V2") ?? "").trim() ||
+  (Deno.env.get("LOLALAB_FILTER_PROMPT") ?? "");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
@@ -174,6 +178,10 @@ Deno.serve(async (req) => {
     const ai_response: string = data?.choices?.[0]?.message?.content?.trim() ?? "";
     const latency_ms = Date.now() - started;
 
+    // Ciclo completo = resposta contendo o marcador fixo do Pack (contrato com o prompt V2).
+    // Base do contador de degustação (paywall) e da métrica "Taxa de Ativação do Pack".
+    const is_pack = /^##\s+CREATIVE DIRECTION PACK\b/m.test(ai_response);
+
     const { data: inserted, error: insErr } = await admin
       .from("hit_conversations")
       .insert({
@@ -184,13 +192,14 @@ Deno.serve(async (req) => {
         latency_ms,
         model_used: "gpt-4o-mini",
         ip_hash,
+        is_pack,
       })
       .select("id")
       .single();
 
     if (insErr) console.error("insert error", insErr);
 
-    return json({ ai_response, message_id: inserted?.id ?? null, latency_ms });
+    return json({ ai_response, message_id: inserted?.id ?? null, latency_ms, is_pack });
   } catch (e) {
     console.error(e);
     return json(
