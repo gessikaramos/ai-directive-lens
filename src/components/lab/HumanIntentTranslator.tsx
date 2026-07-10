@@ -153,7 +153,8 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
         >
           An investigation into how humans talk to AI.
           <br />
-          Free during beta. Your conversations help us translate intention into form.
+          The tasting is open during the Refinement Phase. Your conversations help us
+          translate intention into form.
         </p>
 
         {/* Auth status line */}
