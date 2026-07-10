@@ -54,21 +54,10 @@ const SelectedHighlight = () => {
     >
       {/* Header · centralizado */}
       <div className="px-6 md:px-12 max-w-[1200px] mx-auto mb-16 md:mb-20">
-        <span className="block mb-4" style={labelStyle}>
+        {/* Só o label — sem frase-síntese (canon Gé: "coloca só Selected Work") */}
+        <span className="block" style={labelStyle}>
           {t('selected.label', lang)}
         </span>
-        <h2
-          className="max-w-[720px]"
-          style={{
-            fontSize: 'clamp(1.75rem, 3vw, 2.5rem)',
-            fontWeight: 400,
-            letterSpacing: '-0.02em',
-            lineHeight: 1.15,
-            color: '#FFFFFF',
-          }}
-        >
-          A selected case, a working instrument, a printed method.
-        </h2>
       </div>
 
       {/* 1 · MasterChef · destaque Studio grande · player inline canon (não sai do site) */}
@@ -173,100 +162,9 @@ const SelectedHighlight = () => {
         </div>
       </div>
 
-      {/* 2 + 3 · HIT (Lab) + Director's Prompt (Library) · grid dois cards */}
-      <div className="px-6 md:px-12 max-w-[1200px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2" style={{ borderTop: '1px solid #1C1C1E' }}>
-          {/* HIT · Lab · instrumento ativo */}
-          <Link
-            to="/lab"
-            className="group block p-8 md:p-12 min-h-[340px] flex flex-col justify-between transition-colors duration-500"
-            style={{ borderBottom: '1px solid #1C1C1E', borderRight: '1px solid #1C1C1E' }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = '#121214'; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; }}
-          >
-            <div>
-              <span className="block mb-3" style={{ ...labelStyle, fontSize: '0.65rem', letterSpacing: '0.2em' }}>
-                Lab · Instrument · Active
-              </span>
-              <h3
-                className="mb-3"
-                style={{
-                  fontSize: 'clamp(1.5rem, 2.2vw, 2rem)',
-                  fontWeight: 400,
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1.1,
-                  color: '#FFFFFF',
-                }}
-              >
-                Walter · Human Intent Translator
-              </h3>
-              <p
-                className="max-w-[46ch]"
-                style={{
-                  fontSize: '0.9375rem',
-                  fontWeight: 300,
-                  lineHeight: 1.65,
-                  color: 'hsl(var(--cool-gray-tertiary))',
-                }}
-              >
-                An instrument for turning an intention into a direction.
-                Editorial questions. No form-fill.
-              </p>
-            </div>
-            <span
-              className="inline-flex items-center gap-2 group-hover:gap-3 transition-all duration-500 mt-6"
-              style={ctaStyle}
-            >
-              Talk to Walter <span aria-hidden="true">→</span>
-            </span>
-          </Link>
-
-          {/* Director's Prompt · Library Vol 01 */}
-          <Link
-            to="/library"
-            className="group block p-8 md:p-12 min-h-[340px] flex flex-col justify-between transition-colors duration-500"
-            style={{ borderBottom: '1px solid #1C1C1E' }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = '#121214'; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; }}
-          >
-            <div>
-              <span className="block mb-3" style={{ ...labelStyle, fontSize: '0.65rem', letterSpacing: '0.2em' }}>
-                Library · Volume 01 · Available
-              </span>
-              <h3
-                className="mb-3"
-                style={{
-                  fontSize: 'clamp(1.5rem, 2.2vw, 2rem)',
-                  fontWeight: 400,
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1.1,
-                  color: '#FFFFFF',
-                }}
-              >
-                The Director's Prompt
-              </h3>
-              <p
-                className="max-w-[46ch]"
-                style={{
-                  fontSize: '0.9375rem',
-                  fontWeight: 300,
-                  lineHeight: 1.65,
-                  color: 'hsl(var(--cool-gray-tertiary))',
-                }}
-              >
-                The method behind the film. Editorial reading on directing AI —
-                for people who write cinema, not commands.
-              </p>
-            </div>
-            <span
-              className="inline-flex items-center gap-2 group-hover:gap-3 transition-all duration-500 mt-6"
-              style={ctaStyle}
-            >
-              Read Volume <span aria-hidden="true">→</span>
-            </span>
-          </Link>
-        </div>
-      </div>
+      {/* Cards HIT + Director's Prompt REMOVIDOS (canon Gé 10/jul): Selected Work
+          é só trabalho — MasterChef expandido, estilo Vision Pro. Walter e Library
+          já têm hero, nav e Choose your path. */}
     </section>
   );
 };

@@ -10,7 +10,6 @@
  *   - Espaço vertical entre linhas: mb-6 (proximidade)
  *   - Copy canon travado
  */
-import { Link } from 'react-router-dom';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
 
@@ -50,42 +49,8 @@ export default function StatementSection() {
           {t('statement.line2', lang)}
         </p>
 
-        {/* Os dois caminhos no primeiro terço da página (canon Mary 10/jul):
-            produto com preenchimento, estúdio em outline. Sem "Walter" — público
-            vê Human Intent Translator. */}
-        <div className="mt-12 flex flex-wrap justify-center gap-4">
-          <Link
-            to="/lab"
-            className="px-9 py-3.5 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
-            style={{
-              backgroundColor: 'hsl(var(--bronze-soft))',
-              color: 'hsl(var(--ink))',
-              borderRadius: '9999px',
-              fontSize: '0.7rem',
-              fontWeight: 500,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-            }}
-          >
-            Talk to Walter →
-          </Link>
-          <Link
-            to="/contact"
-            className="px-9 py-3.5 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
-            style={{
-              backgroundColor: 'transparent',
-              color: 'hsl(var(--background) / 0.9)',
-              border: '1px solid hsl(var(--background) / 0.3)',
-              borderRadius: '9999px',
-              fontSize: '0.7rem',
-              fontWeight: 500,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-            }}
-          >
-            Partner with the Studio ↗
-          </Link>
-        </div>
+        {/* Botões daqui REMOVIDOS (canon Gé 10/jul): os dois caminhos vivem no
+            hero — sem duplicação. */}
       </div>
     </section>
   );

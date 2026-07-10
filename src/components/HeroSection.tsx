@@ -110,30 +110,35 @@ export default function HeroSection() {
           {t('hero.support', lang)}
         </p>
 
-        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-10">
+        {/* Os DOIS caminhos vivem AQUI no hero (canon Gé 10/jul) — os botões
+            duplicados do Statement foram removidos. Pills canon Vision Pro. */}
+        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             to="/lab"
-            className="transition-opacity duration-500 hover:opacity-60"
+            className="px-9 py-3.5 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
             style={{
-              color: '#FFFFFF',
-              fontSize: '0.75rem',
+              backgroundColor: 'hsl(var(--bronze-soft))',
+              color: 'hsl(var(--ink))',
+              borderRadius: '9999px',
+              fontSize: '0.7rem',
               fontWeight: 500,
-              letterSpacing: '0.2em',
+              letterSpacing: '0.18em',
               textTransform: 'uppercase',
-              borderBottom: '1px solid hsl(var(--background) / 0.6)',
-              paddingBottom: '4px',
             }}
           >
             {t('hero.cta.lab', lang)}
           </Link>
           <Link
-            to="/library"
-            className="transition-opacity duration-500 hover:opacity-100"
+            to="/contact"
+            className="px-9 py-3.5 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
             style={{
-              color: 'hsl(var(--background) / 0.5)',
-              fontSize: '0.75rem',
+              backgroundColor: 'transparent',
+              color: 'hsl(var(--background) / 0.9)',
+              border: '1px solid hsl(var(--background) / 0.3)',
+              borderRadius: '9999px',
+              fontSize: '0.7rem',
               fontWeight: 500,
-              letterSpacing: '0.2em',
+              letterSpacing: '0.18em',
               textTransform: 'uppercase',
             }}
           >

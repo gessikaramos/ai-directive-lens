@@ -123,12 +123,14 @@ export default function Footer() {
 
         {/* Logo stacked + social + copyright */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
-          {/* Coluna 1 · Logo stacked */}
+          {/* Coluna 1 · Logo — o MESMO wordmark da navbar (logo-horizontal).
+              O logo-stacked.svg era um arquivo gerado, fora da marca ("sempre
+              errado" — canon Gé 10/jul). */}
           <div>
             <img
-              src="/images/logos/logo-stacked.svg"
+              src="/images/logos/logo-horizontal.svg"
               alt="LolaLab"
-              className="h-14 md:h-16"
+              className="h-8 md:h-9"
               style={{ opacity: 0.95, width: 'auto' }}
             />
           </div>

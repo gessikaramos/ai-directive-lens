@@ -109,6 +109,9 @@ const SignalArchive = () => {
 const LabContent = () => {
   const [params] = useSearchParams();
   const intent = params.get('intent') ?? undefined;
+  // Modo imersivo (canon Gé/Her): quando a conversa começa, a página inteira
+  // dá lugar ao diálogo — manifesto, Cast e Signal saem de cena.
+  const [immersed, setImmersed] = useState(false);
 
   useEffect(() => {
     document.title = 'The Lab · LolaLab';
@@ -121,29 +124,34 @@ const LabContent = () => {
     <>
       <Navbar />
       <main className="pt-32" style={{ backgroundColor: 'hsl(var(--ink))' }}>
-        {/* Manifesto Lab · canon Mary aproximado */}
-        <section className="px-6 md:px-12 pt-16 md:pt-24 pb-16 md:pb-20">
-          <div className="max-w-[900px] mx-auto text-center">
-            <span className="block mb-6" style={labelStyle}>
-              WALTER
-            </span>
-            <p
-              style={{
-                fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
-                fontWeight: 300,
-                letterSpacing: '-0.018em',
-                lineHeight: 1.3,
-                color: '#FFFFFF',
-              }}
-            >
-              Walter listens before the machines produce.
-            </p>
-          </div>
-        </section>
+        {/* Manifesto Lab · some no modo imersivo */}
+        {!immersed && (
+          <section className="px-6 md:px-12 pt-16 md:pt-24 pb-16 md:pb-20">
+            <div className="max-w-[900px] mx-auto text-center">
+              <span className="block mb-6" style={labelStyle}>
+                WALTER
+              </span>
+              <p
+                style={{
+                  fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
+                  fontWeight: 300,
+                  letterSpacing: '-0.018em',
+                  lineHeight: 1.3,
+                  color: '#FFFFFF',
+                }}
+              >
+                Walter listens before the machines produce.
+              </p>
+            </div>
+          </section>
+        )}
 
         {/* HIT · protagonista · vem PRIMEIRO */}
-        <section className="px-6 md:px-12 pb-16 md:pb-20">
-          <HumanIntentTranslator initialIntent={intent} />
+        <section className="px-6 md:px-12 pb-16 md:pb-20 pt-8">
+          <HumanIntentTranslator
+            initialIntent={intent}
+            onConversationChange={(active) => setImmersed(active)}
+          />
         </section>
 
         {/* Instruments/Roadmap REMOVIDO do palco (canon Mary 10/jul, análise crua):
@@ -152,10 +160,10 @@ const LabContent = () => {
             voltam quando estiverem vivos. */}
 
         {/* Cast · notify me · fica no Lab */}
-        <CastTeaser />
+        {!immersed && <CastTeaser />}
 
         {/* Signal Archive · accordion posts históricos (newsletter foi pro Footer global) */}
-        <SignalArchive />
+        {!immersed && <SignalArchive />}
 
         {/* Back CTA */}
         <section className="px-6 md:px-12 py-20 md:py-28">

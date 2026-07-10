@@ -27,9 +27,11 @@ const FEEDBACK: Array<{ key: Msg['feedback']; label: string }> = [
 
 interface Props {
   initialIntent?: string;
+  /** Notifica a página quando a conversa está ativa (modo imersivo). */
+  onConversationChange?: (active: boolean) => void;
 }
 
-const HumanIntentTranslator = ({ initialIntent }: Props) => {
+const HumanIntentTranslator = ({ initialIntent, onConversationChange }: Props) => {
   const { user, signOut } = useAuth();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState('');
@@ -89,6 +91,11 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, loading]);
+
+  useEffect(() => {
+    onConversationChange?.(messages.length > 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages.length]);
 
   const onKey = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -353,7 +360,7 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
           }}
           onKeyDown={onKey}
           rows={2}
-          placeholder="Pour your intention here."
+          placeholder="What are you trying to put into the world?"
           className="w-full resize-none focus:outline-none py-4 pl-5 pr-14 transition-colors"
           style={{
             backgroundColor: 'hsl(var(--background) / 0.03)',

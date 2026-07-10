@@ -30,9 +30,9 @@ export const translations: Record<string, Record<Lang, string>> = {
   },
   'hero.scroll': { en: 'SCROLL', pt: 'SCROLL' },
   'hero.cta.selected': { en: 'View selected work', pt: 'Ver trabalhos selecionados' },
-  'hero.cta.lab': { en: 'Enter the Lab', pt: 'Entrar no Lab' },
+  'hero.cta.lab': { en: 'Talk to Walter →', pt: 'Falar com Walter →' },
   // Wave 1.1 · Fred v1 canon · CTA secondary Explore the Library
-  'hero.cta.library': { en: 'Explore the Library', pt: 'Explorar a Library' },
+  'hero.cta.library': { en: 'Partner with the Studio ↗', pt: 'Trabalhar com o Studio ↗' },
 
   // Statement
   'statement.line1': {
