@@ -133,9 +133,9 @@ const CreativeDirectionPack = ({ text, entitled, techLocked }: Props) => {
             }}
           >
             The concept is yours — take it. Founding Access adds the working layer: the
-            technical prompt commands for visual tools, the exportable brief, and a
-            Translator that keeps long-term memory of this project. €19/month, or €149/year
-            at the Founding Commitment Rate.
+            technical prompt commands for visual tools, the exportable brief, and Walter's
+            long-term memory of this project. €19/month, or €149/year at the Founding
+            Commitment Rate.
           </p>
           <a
             href="mailto:hello@lolalabstudio.com?subject=Founding%20Access%20%C2%B7%20Cohort%2001"

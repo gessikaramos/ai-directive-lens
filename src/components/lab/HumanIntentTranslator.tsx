@@ -141,7 +141,7 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
             textTransform: 'uppercase',
           }}
         >
-          HUMAN INTENT TRANSLATOR · OPEN BETA
+          WALTER · HUMAN INTENT TRANSLATOR · REFINEMENT PHASE
         </span>
         <p
           style={{
@@ -268,7 +268,7 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
                     textTransform: 'uppercase',
                   }}
                 >
-                  The Translator
+                  Walter
                 </span>
                 <div
                   style={{

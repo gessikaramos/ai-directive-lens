@@ -66,7 +66,7 @@ export default function StatementSection() {
               textTransform: 'uppercase',
             }}
           >
-            Talk to the Translator →
+            Talk to Walter →
           </Link>
           <Link
             to="/contact"

@@ -2,7 +2,8 @@ export type Lang = 'en' | 'pt';
 
 export const translations: Record<string, Record<Lang, string>> = {
   // Nav · canon Fred v1 Wave 1 · Lab · Library · Studio · About · Contact
-  'nav.lab': { en: 'LAB', pt: 'LAB' },
+  // Walter público desde 10/jul (decisão Gé) · rota continua /lab
+  'nav.lab': { en: 'WALTER', pt: 'WALTER' },
   'nav.library': { en: 'LIBRARY', pt: 'LIBRARY' },
   'nav.studio': { en: 'STUDIO', pt: 'STUDIO' },
   'nav.about': { en: 'ABOUT', pt: 'SOBRE' },
