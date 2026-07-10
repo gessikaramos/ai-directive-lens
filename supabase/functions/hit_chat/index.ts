@@ -146,7 +146,10 @@ Deno.serve(async (req) => {
         Authorization: `Bearer ${OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
+        // upgrade p/ frontier: o comportamento conversacional do V2 (pergunta única,
+        // não-colonização) exige instruction-following que o 4o-mini não sustenta.
+        // Margem já modelada no Deal Memo p/ modelo frontier (80%+ a €19).
+        model: "gpt-4.1",
         messages: [
           { role: "system", content: FILTER_PROMPT },
           // v4 — últimos ~12 turnos como contexto (cap pra controlar custo/token)
@@ -190,7 +193,7 @@ Deno.serve(async (req) => {
         user_message: trimmed,
         ai_response,
         latency_ms,
-        model_used: "gpt-4o-mini",
+        model_used: "gpt-4.1",
         ip_hash,
         is_pack,
       })
