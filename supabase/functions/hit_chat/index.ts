@@ -59,6 +59,17 @@ Deno.serve(async (req) => {
     const trimmed = message.slice(0, 2000);
     const userId = await getUserIdFromAuth(req);
 
+    // Entitlement (Founding/Personal/Studio): controla o frost-glass do Pack no frontend.
+    let entitled = false;
+    if (userId) {
+      const { data: ent } = await admin
+        .from("entitlements")
+        .select("user_id")
+        .eq("user_id", userId)
+        .maybeSingle();
+      entitled = !!ent;
+    }
+
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
       req.headers.get("cf-connecting-ip") ||
@@ -189,6 +200,17 @@ Deno.serve(async (req) => {
     // Base do contador de degustação (paywall) e da métrica "Taxa de Ativação do Pack".
     const is_pack = /^##\s+CREATIVE DIRECTION PACK\b/m.test(ai_response);
 
+    // Rastreador de qualidade silencioso (Mary): densidade de adjetivos genéricos no Pack.
+    // >3 = o Walter não elevou o nicho e entregou o básico.
+    let generic_adjective_hits: number | null = null;
+    if (is_pack) {
+      const GENERIC_ADJ = /\b(modern[oa]s?|inovador(?:a|es|as)?|prátic[oa]s?|eficientes?|tecnológic[oa]s?)\b/gi;
+      generic_adjective_hits = (ai_response.match(GENERIC_ADJ) ?? []).length;
+      if (generic_adjective_hits > 3) {
+        console.error("LOW_QUALITY_OUTPUT", { sessionId, generic_adjective_hits });
+      }
+    }
+
     const { data: inserted, error: insErr } = await admin
       .from("hit_conversations")
       .insert({
@@ -200,13 +222,14 @@ Deno.serve(async (req) => {
         model_used: "gpt-4.1",
         ip_hash,
         is_pack,
+        generic_adjective_hits,
       })
       .select("id")
       .single();
 
     if (insErr) console.error("insert error", insErr);
 
-    return json({ ai_response, message_id: inserted?.id ?? null, latency_ms, is_pack });
+    return json({ ai_response, message_id: inserted?.id ?? null, latency_ms, is_pack, entitled });
   } catch (e) {
     console.error(e);
     return json(

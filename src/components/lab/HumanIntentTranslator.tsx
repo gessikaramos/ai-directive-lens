@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { getLabSessionId, resetLabSessionId } from '@/lib/session';
 import { useAuth } from '@/hooks/use-auth';
 import PastConversations, { HistoryTurn } from './PastConversations';
+import CreativeDirectionPack from './CreativeDirectionPack';
 
 type Role = 'user' | 'lab';
 interface Msg {
@@ -12,6 +13,8 @@ interface Msg {
   text: string;
   message_id?: string | null;
   feedback?: 'clear' | 'confused' | 'loved' | 'wrong';
+  is_pack?: boolean;
+  entitled?: boolean;
 }
 
 const FEEDBACK: Array<{ key: Msg['feedback']; label: string }> = [
@@ -50,7 +53,13 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
         'The Lab is processing many ideas right now. You can try again in a few minutes, or write directly to LolaLab at hello@lolalabstudio.com.';
       setMessages((m) => [
         ...m,
-        { role: 'lab', text: ai_response, message_id: data?.message_id ?? null },
+        {
+          role: 'lab',
+          text: ai_response,
+          message_id: data?.message_id ?? null,
+          is_pack: data?.is_pack === true,
+          entitled: data?.entitled === true,
+        },
       ]);
     } catch (e) {
       setMessages((m) => [
@@ -211,6 +220,9 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
 
         {messages.map((m, i) => (
           <div key={i} className={m.role === 'user' ? 'flex justify-end' : 'flex flex-col items-start'}>
+            {m.role === 'lab' && m.is_pack ? (
+              <CreativeDirectionPack text={m.text} entitled={m.entitled === true} />
+            ) : (
             <div
               className={
                 m.role === 'user'
@@ -236,6 +248,7 @@ const HumanIntentTranslator = ({ initialIntent }: Props) => {
                 </p>
               ))}
             </div>
+            )}
             {m.role === 'lab' && m.message_id && (
               <div className="flex gap-5 mt-3 pl-1">
                 {FEEDBACK.map((f) => {
