@@ -47,7 +47,8 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
     const { error } = await supabase
       .from('signal_opt_in')
       .insert({ email: email.trim(), source: book.slug });
-    setStatus(error ? 'error' : 'done');
+    // 23505 = já reservado com este e-mail — para o leitor, é sucesso.
+    setStatus(error && error.code !== '23505' ? 'error' : 'done');
   };
 
   return (
