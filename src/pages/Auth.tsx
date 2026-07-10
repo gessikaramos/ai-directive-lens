@@ -69,7 +69,7 @@ const AuthContent = () => {
       >
         <div className="max-w-[440px] mx-auto">
           <span className="block mb-6" style={labelStyle}>
-            {user ? 'Signed in' : 'Sign in to the Lab'}
+            {user ? 'Signed in' : 'Sign in to Walter'}
           </span>
 
           {loading ? (
@@ -89,7 +89,7 @@ const AuthContent = () => {
               >
                 You're signed in as{' '}
                 <span style={{ color: 'hsl(var(--bronze-soft))' }}>{user.email}</span>.
-                Your conversations with the Lab are now saved across sessions.
+                Your conversations with Walter are now saved across sessions.
               </p>
               <div className="flex gap-6">
                 <button onClick={() => navigate('/lab')} style={labelStyle}>
@@ -116,8 +116,8 @@ const AuthContent = () => {
                   color: 'hsl(var(--cool-gray-tertiary))',
                 }}
               >
-                Sign in to keep your conversations with the Human Intent Translator across
-                sessions. No password needed.
+                Sign in to keep your conversations with Walter across sessions. No
+                password needed.
               </p>
 
               <button
@@ -129,7 +129,7 @@ const AuthContent = () => {
                   border: '1px solid hsl(var(--background) / 0.15)',
                   fontSize: '0.9375rem',
                   fontWeight: 400,
-                  borderRadius: '2px',
+                  borderRadius: '9999px',
                 }}
               >
                 Continue with Google
@@ -176,7 +176,7 @@ const AuthContent = () => {
                     fontWeight: 600,
                     letterSpacing: '0.2em',
                     textTransform: 'uppercase',
-                    borderRadius: '2px',
+                    borderRadius: '9999px',
                   }}
                 >
                   {status === 'sending' ? 'Sending…' : 'Send magic link'}

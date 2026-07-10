@@ -125,7 +125,7 @@ const LabContent = () => {
         <section className="px-6 md:px-12 pt-16 md:pt-24 pb-16 md:pb-20">
           <div className="max-w-[900px] mx-auto text-center">
             <span className="block mb-6" style={labelStyle}>
-              LAB
+              WALTER
             </span>
             <p
               style={{
@@ -136,7 +136,7 @@ const LabContent = () => {
                 color: '#FFFFFF',
               }}
             >
-              The lab is where we investigate before we produce.
+              Walter listens before the machines produce.
             </p>
           </div>
         </section>

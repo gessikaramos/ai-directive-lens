@@ -198,7 +198,7 @@ const SelectedHighlight = () => {
                   color: '#FFFFFF',
                 }}
               >
-                Human Intention Translator
+                Walter · Human Intent Translator
               </h3>
               <p
                 className="max-w-[46ch]"
@@ -217,7 +217,7 @@ const SelectedHighlight = () => {
               className="inline-flex items-center gap-2 group-hover:gap-3 transition-all duration-500 mt-6"
               style={ctaStyle}
             >
-              Enter the Lab <span aria-hidden="true">→</span>
+              Talk to Walter <span aria-hidden="true">→</span>
             </span>
           </Link>
 

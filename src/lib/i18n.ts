@@ -169,12 +169,12 @@ export const translations: Record<string, Record<Lang, string>> = {
 
   // Wave 1 · Home Choose your path · canon Fred v1
   'home.choose.label': { en: 'CHOOSE YOUR PATH', pt: 'ESCOLHA O SEU CAMINHO' },
-  'home.path.lab.name': { en: 'Lab', pt: 'Lab' },
+  'home.path.lab.name': { en: 'Walter', pt: 'Walter' },
   'home.path.lab.desc': {
-    en: 'For shaping loose ideas into clear creative direction.',
-    pt: 'Para dar forma a ideias soltas transformando-as em direção criativa clara.',
+    en: 'Our proprietary intent translator. For shaping loose ideas into clear creative direction.',
+    pt: 'Nosso tradutor de intenção proprietário. Para dar forma a ideias soltas em direção criativa clara.',
   },
-  'home.path.lab.cta': { en: 'Enter the Lab', pt: 'Entrar no Lab' },
+  'home.path.lab.cta': { en: 'Talk to Walter', pt: 'Falar com Walter' },
   'home.path.library.name': { en: 'Library', pt: 'Library' },
   'home.path.library.desc': {
     en: 'For learning the method behind the work.',
@@ -186,7 +186,7 @@ export const translations: Record<string, Record<Lang, string>> = {
     en: 'For brands, films, campaigns and visual systems.',
     pt: 'Para marcas, filmes, campanhas e sistemas visuais.',
   },
-  'home.path.studio.cta': { en: 'Work with the studio', pt: 'Trabalhar com o estúdio' },
+  'home.path.studio.cta': { en: 'Partner with the Studio', pt: 'Trabalhar com o Studio' },
 
   // Wave 1 · Home About preview · canon Fred v1
   'home.about.preview': {

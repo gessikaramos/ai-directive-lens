@@ -143,13 +143,14 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
           <div className="flex flex-wrap gap-3">
             <button
               onClick={() => setStatus('form')}
-              className="px-6 py-3.5 transition-opacity hover:opacity-80"
+              className="px-7 py-3 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
               style={{
                 backgroundColor: 'hsl(var(--bronze-soft))',
                 color: 'hsl(var(--ink))',
+                borderRadius: '9999px',
                 fontSize: '0.65rem',
-                fontWeight: 600,
-                letterSpacing: '0.2em',
+                fontWeight: 500,
+                letterSpacing: '0.18em',
                 textTransform: 'uppercase',
               }}
             >
@@ -157,14 +158,15 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
             </button>
             <button
               onClick={() => setStatus('form')}
-              className="px-6 py-3.5 transition-opacity hover:opacity-80"
+              className="px-7 py-3 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
               style={{
                 backgroundColor: 'transparent',
                 color: 'hsl(var(--background) / 0.85)',
                 border: '1px solid hsl(var(--background) / 0.3)',
+                borderRadius: '9999px',
                 fontSize: '0.65rem',
-                fontWeight: 600,
-                letterSpacing: '0.2em',
+                fontWeight: 500,
+                letterSpacing: '0.18em',
                 textTransform: 'uppercase',
               }}
             >
@@ -192,13 +194,14 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
             <button
               type="submit"
               disabled={status === 'sending'}
-              className="px-6 py-3 transition-opacity hover:opacity-80 disabled:opacity-40"
+              className="px-7 py-3 transition-all duration-300 hover:opacity-85 disabled:opacity-40"
               style={{
                 backgroundColor: 'hsl(var(--bronze-soft))',
                 color: 'hsl(var(--ink))',
+                borderRadius: '9999px',
                 fontSize: '0.65rem',
-                fontWeight: 600,
-                letterSpacing: '0.2em',
+                fontWeight: 500,
+                letterSpacing: '0.18em',
                 textTransform: 'uppercase',
               }}
             >

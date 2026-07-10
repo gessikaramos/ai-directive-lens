@@ -56,13 +56,14 @@ export default function StatementSection() {
         <div className="mt-12 flex flex-wrap justify-center gap-4">
           <Link
             to="/lab"
-            className="px-8 py-4 transition-opacity hover:opacity-85"
+            className="px-9 py-3.5 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
             style={{
               backgroundColor: 'hsl(var(--bronze-soft))',
               color: 'hsl(var(--ink))',
+              borderRadius: '9999px',
               fontSize: '0.7rem',
-              fontWeight: 600,
-              letterSpacing: '0.22em',
+              fontWeight: 500,
+              letterSpacing: '0.18em',
               textTransform: 'uppercase',
             }}
           >
@@ -70,14 +71,15 @@ export default function StatementSection() {
           </Link>
           <Link
             to="/contact"
-            className="px-8 py-4 transition-opacity hover:opacity-85"
+            className="px-9 py-3.5 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
             style={{
               backgroundColor: 'transparent',
               color: 'hsl(var(--background) / 0.9)',
-              border: '1px solid hsl(var(--background) / 0.35)',
+              border: '1px solid hsl(var(--background) / 0.3)',
+              borderRadius: '9999px',
               fontSize: '0.7rem',
-              fontWeight: 600,
-              letterSpacing: '0.22em',
+              fontWeight: 500,
+              letterSpacing: '0.18em',
               textTransform: 'uppercase',
             }}
           >

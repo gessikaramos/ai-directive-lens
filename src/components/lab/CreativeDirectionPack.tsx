@@ -139,15 +139,15 @@ const CreativeDirectionPack = ({ text, entitled, techLocked }: Props) => {
           </p>
           <a
             href="mailto:hello@lolalabstudio.com?subject=Founding%20Access%20%C2%B7%20Cohort%2001"
-            className="inline-block px-6 py-3 transition-opacity hover:opacity-80"
+            className="inline-block px-7 py-3 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
             style={{
               backgroundColor: 'hsl(var(--bronze-soft))',
               color: 'hsl(var(--ink))',
               fontSize: '0.7rem',
-              fontWeight: 600,
-              letterSpacing: '0.2em',
+              fontWeight: 500,
+              letterSpacing: '0.18em',
               textTransform: 'uppercase',
-              borderRadius: '2px',
+              borderRadius: '9999px',
             }}
           >
             Apply for Founding Access
