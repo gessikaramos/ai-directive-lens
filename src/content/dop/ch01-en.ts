@@ -1,6 +1,6 @@
 // Gerado a partir do manuscrito aprovado · Reader Edition · NÃO editar a prosa aqui.
 export const CH01_EN = {
-  "title": "WHEN EVERYTHING CAN BE MADE",
+  "title": "When Everything Can Be Made",
   "chapter": "Chapter 01 · Direction Over Prompt",
   "question": "WHAT BECOMES SCARCE WHEN MAKING BECOMES ABUNDANT?",
   "sections": [

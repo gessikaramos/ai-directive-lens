@@ -45,7 +45,7 @@ export default function DopLaunchBlock() {
           </h2>
           <p className="mb-6" style={{ ...label, letterSpacing: '0.16em' }}>
             {pt
-              ? 'Capítulo 01 · Quando Tudo Pode Ser Feito'
+              ? 'Capítulo 01 · Quando tudo pode ser feito'
               : 'Chapter 01 · When Everything Can Be Made'}
           </p>
           <p

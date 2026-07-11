@@ -1,6 +1,6 @@
 // Gerado a partir do manuscrito aprovado · Reader Edition · NÃO editar a prosa aqui.
 export const CH01_PT = {
-  "title": "QUANDO TUDO PODE SER FEITO",
+  "title": "Quando tudo pode ser feito",
   "chapter": "Capítulo 01 · Direction Over Prompt",
   "question": "O QUE SE TORNA ESCASSO QUANDO CRIAR SE TORNA ABUNDANTE?",
   "sections": [

@@ -28,7 +28,7 @@ const serif = "'Newsreader', Georgia, serif";
 const COPY = {
   'pt-BR': {
     eyebrow: 'DIRECTION OVER PROMPT · CAPÍTULO 01',
-    title: 'Quando Tudo Pode Ser Feito',
+    title: 'Quando tudo pode ser feito',
     subtitle: 'O que se torna escasso quando criar se torna abundante?',
     description:
       'Um ensaio de Gessika Olivieri sobre direção, julgamento e autoria na era das mídias sintéticas.',
@@ -44,7 +44,7 @@ const COPY = {
     micro: 'Sem spam. Sem venda de dados. Cancelamento disponível em todos os e-mails.',
     firstName: 'Primeiro nome (opcional)',
     checkEmail:
-      'Quase lá. Enviamos um link de confirmação para o seu e-mail — abra-o para liberar a leitura.',
+      'Quase lá. Enviamos um link para o seu e-mail — confirme e o capítulo se abre.',
     content: CH01_PT,
     readPath: '/pt-br/library/direction-over-prompt/read',
     landingPath: '/pt-br/library/direction-over-prompt',
@@ -67,7 +67,7 @@ const COPY = {
     micro: 'No spam. No data sales. Unsubscribe at any time.',
     firstName: 'First name (optional)',
     checkEmail:
-      'Almost there. We sent a confirmation link to your email — open it to unlock the reading.',
+      'Almost there. We sent a link to your email — confirm it and your chapter opens.',
     content: CH01_EN,
     readPath: '/en/library/direction-over-prompt/read',
     landingPath: '/en/library/direction-over-prompt',
@@ -365,7 +365,7 @@ export const DopLanding = ({ loc }: { loc: Loc }) => {
           {alreadyConfirmed ? (
             <div className="text-center">
               <p className="mb-6" style={{ fontFamily: serif, fontSize: '1.25rem', color: ink }}>
-                {loc === 'pt-BR' ? 'Seu acesso já está aberto.' : 'Your access is already open.'}
+                {loc === 'pt-BR' ? 'Seu capítulo está pronto.' : 'Your chapter is ready.'}
               </p>
               <Link
                 to={c.readPath}
@@ -539,7 +539,7 @@ export const DopConfirmed = ({ loc }: { loc: Loc }) => {
         {state === 'ok' && (
           <>
             <p className="mb-8" style={{ fontFamily: serif, fontSize: '1.5rem', color: ink }}>
-              {loc === 'pt-BR' ? 'Seu acesso está aberto.' : 'Your access is open.'}
+              {loc === 'pt-BR' ? 'Seu capítulo está pronto.' : 'Your chapter is ready.'}
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link

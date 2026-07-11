@@ -4,9 +4,7 @@
  * nenhum login à sala, nenhuma promessa de teste. Só a tese, o status e
  * dois caminhos: lista de abertura e o Capítulo 01.
  */
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 import { track } from '@/lib/analytics';
 
 const label = {
@@ -18,21 +16,6 @@ const label = {
 };
 
 const WalterContainment = () => {
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle');
-
-  const join = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim() || status === 'sending') return;
-    setStatus('sending');
-    const { error } = await supabase
-      .from('signal_opt_in')
-      .insert({ email: email.trim(), source: 'lab' });
-    const ok = !error || /duplicate/i.test(error.message ?? '');
-    setStatus(ok ? 'done' : 'error');
-    if (ok) track('walter_opening_interest');
-  };
-
   return (
     <section className="px-6 md:px-12 pt-16 md:pt-24 pb-24 md:pb-32">
       <div className="max-w-[760px] mx-auto text-center">
@@ -64,65 +47,30 @@ const WalterContainment = () => {
             color: 'hsl(var(--cool-gray-tertiary))',
           }}
         >
-          <p className="mb-4">
-            Walter is an investigation into how humans express ideas before they become
-            instructions.
-          </p>
           <p>
-            The system is currently being refined in a closed environment. Public access
-            will open only when the experience can preserve intention with the rigor it
+            Walter is currently being refined in a closed environment. Public access will
+            open only when the experience can preserve human intention with the rigor it
             requires.
           </p>
         </div>
 
-        {status === 'done' ? (
-          <p
-            className="mb-10"
-            style={{ fontSize: '0.875rem', fontWeight: 300, color: 'hsl(var(--bronze-soft))' }}
-          >
-            You're on the opening list. We'll write when the room opens.
-          </p>
-        ) : (
-          <form onSubmit={join} className="mb-10 flex flex-wrap justify-center gap-3">
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@domain.com"
-              className="min-w-[240px] py-3 px-5 focus:outline-none"
-              style={{
-                backgroundColor: 'transparent',
-                color: 'hsl(var(--background))',
-                border: '1px solid hsl(var(--background) / 0.2)',
-                borderRadius: '9999px',
-                fontSize: '0.875rem',
-                fontWeight: 300,
-              }}
-            />
-            <button
-              type="submit"
-              disabled={status === 'sending'}
-              className="px-8 py-3 transition-all duration-300 hover:opacity-85 disabled:opacity-40"
-              style={{
-                backgroundColor: 'hsl(var(--bronze-soft))',
-                color: 'hsl(var(--ink))',
-                borderRadius: '9999px',
-                fontSize: '0.65rem',
-                fontWeight: 500,
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-              }}
-            >
-              Join the opening list
-            </button>
-            {status === 'error' && (
-              <span className="w-full" style={{ fontSize: '0.75rem', color: 'hsl(var(--bronze-soft))' }}>
-                Something slipped — try again.
-              </span>
-            )}
-          </form>
-        )}
+        {/* Finalization round (Gé+Fred): SEM funil próprio do Walter nesta Wave —
+            uma única conversão central (o capítulo). Opening list removida. */}
+        <p
+          className="mb-10 inline-block px-7 py-3"
+          style={{
+            border: '1px solid hsl(var(--background) / 0.25)',
+            borderRadius: '9999px',
+            color: 'hsl(var(--background) / 0.7)',
+            fontSize: '0.65rem',
+            fontWeight: 500,
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+          }}
+        >
+          Private access closed
+        </p>
+        <br />
 
         <Link
           to="/library/direction-over-prompt"
