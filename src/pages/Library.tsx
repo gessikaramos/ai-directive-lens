@@ -297,13 +297,15 @@ const LibraryContent = () => {
                 Reading the Sam Altman forum speech. Where cinema keeps misreading the
                 moment — and what an AI-native studio actually looks like.
               </p>
-              <Link
-                to="/signal"
+              <a
+                href="https://www.linkedin.com/posts/gessikaolivieri_lolalabstudio-aistorytelling-creativedirection-ugcPost-7468316179032506368-utde/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAOhXU8B7ZIAU4iD8LavzZrMt75WJHizo7Q"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 hover:gap-3 transition-all duration-500 mt-4"
                 style={bronzeLabel}
               >
                 Read on Signal <span aria-hidden="true">→</span>
-              </Link>
+              </a>
             </article>
           </div>
         </section>

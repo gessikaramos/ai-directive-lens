@@ -8,9 +8,15 @@
  * tipografia surge em etapas (lolab-stage) e o marcador de estado respira
  * (lolab-pulse). Zero esferas, zero sci-fi, zero mockup. prefers-reduced-motion
  * desliga tudo via CSS.
+ *
+ * Conversion Patch (canon Gé 11/jul): a lista de abertura do Walter (consent
+ * próprio, ver WalterWaitlistForm) só aparece quando WALTER_WAITLIST_ENABLED
+ * =true. Desligada, a página permanece EXATAMENTE como acima — zero forms.
  */
 import { Link } from 'react-router-dom';
 import { track } from '@/lib/analytics';
+import { WALTER_WAITLIST_ENABLED } from '@/lib/flags';
+import WalterWaitlistForm from './WalterWaitlistForm';
 
 const label = {
   color: 'hsl(var(--bronze-soft))',
@@ -95,6 +101,9 @@ const WalterContainment = () => {
         >
           Private access closed
         </p>
+
+        {WALTER_WAITLIST_ENABLED && <WalterWaitlistForm />}
+
         <br />
 
         <Link

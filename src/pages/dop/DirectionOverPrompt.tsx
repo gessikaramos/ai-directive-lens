@@ -10,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { CH01_PT } from '@/content/dop/ch01-pt';
 import { CH01_EN } from '@/content/dop/ch01-en';
 import { track } from '@/lib/analytics';
+import { WALTER_WAITLIST_ENABLED } from '@/lib/flags';
 
 type Loc = 'pt-BR' | 'en';
 
@@ -798,6 +799,22 @@ export const DopRead = ({ loc }: { loc: Loc }) => {
               </Link>
             </div>
           </div>
+
+          {/* Conversion Patch (canon Gé 11/jul): CTA secundário para a lista
+              do Walter — desligado até WALTER_WAITLIST_ENABLED=true. */}
+          {WALTER_WAITLIST_ENABLED && (
+            <div className="mt-16 pt-12 text-center" style={{ borderTop: '1px solid hsl(30 14% 15% / 0.15)' }}>
+              <p
+                className="mx-auto mb-5 max-w-[36ch]"
+                style={{ fontFamily: serif, fontSize: '1.0625rem', lineHeight: 1.5, color: inkSoft }}
+              >
+                Walter is the system born from this method.
+              </p>
+              <Link to="/lab" style={{ ...label, textDecoration: 'underline' }}>
+                Join the opening list →
+              </Link>
+            </div>
+          )}
         </div>
       </article>
     </main>

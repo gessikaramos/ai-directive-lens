@@ -454,8 +454,11 @@ const SignalReads = () => {
                 </p>
               </div>
               {i === 0 && (
-                <span
-                  className="mt-6 self-start"
+                <a
+                  href="https://www.linkedin.com/posts/gessikaolivieri_lolalabstudio-aistorytelling-creativedirection-ugcPost-7468316179032506368-utde/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAOhXU8B7ZIAU4iD8LavzZrMt75WJHizo7Q"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 self-start hover:opacity-70 transition-opacity duration-300"
                   style={{
                     color: 'hsl(var(--bronze-soft))',
                     fontSize: '0.65rem',
@@ -465,7 +468,7 @@ const SignalReads = () => {
                   }}
                 >
                   Read →
-                </span>
+                </a>
               )}
             </article>
           ))}
