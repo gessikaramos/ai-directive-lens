@@ -16,12 +16,14 @@ type Props = {
   headline: string;
   sub?: string;
   children?: React.ReactNode;
+  /** Composition Pass: encurta a distância até a primeira prova da página */
+  compact?: boolean;
 };
 
-export default function PageHero({ label, headline, sub, children }: Props) {
+export default function PageHero({ label, headline, sub, children, compact }: Props) {
   return (
     <section
-      className="px-6 md:px-12 pt-40 md:pt-56 pb-24 md:pb-40"
+      className={`px-6 md:px-12 pt-40 md:pt-56 ${compact ? 'pb-16 md:pb-24' : 'pb-24 md:pb-40'}`}
       style={{ backgroundColor: 'hsl(var(--ink))' }}
     >
       <div className="max-w-[1000px] mx-auto text-center">

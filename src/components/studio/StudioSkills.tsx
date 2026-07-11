@@ -123,13 +123,16 @@ const StudioSkills = () => {
                 {String(i + 1).padStart(2, '0')}
               </span>
               <div>
+                {/* Composition Pass: o NOME lidera a leitura por varredura;
+                    a descrição apoia em voz mais baixa (taxonomia editorial,
+                    não tabela técnica). */}
                 <h3
                   className="mb-3"
                   style={{
-                    fontSize: 'clamp(1.375rem, 2vw, 1.875rem)',
+                    fontSize: 'clamp(1.5rem, 2.4vw, 2.125rem)',
                     fontWeight: 400,
-                    letterSpacing: '-0.02em',
-                    lineHeight: 1.1,
+                    letterSpacing: '-0.022em',
+                    lineHeight: 1.08,
                     color: '#FFFFFF',
                   }}
                 >
@@ -138,10 +141,10 @@ const StudioSkills = () => {
                 <p
                   className="max-w-[40ch]"
                   style={{
-                    fontSize: '0.9375rem',
+                    fontSize: '0.875rem',
                     fontWeight: 300,
-                    lineHeight: 1.65,
-                    color: 'hsl(var(--cool-gray-tertiary))',
+                    lineHeight: 1.6,
+                    color: 'hsl(var(--cool-gray-secondary))',
                   }}
                 >
                   {s.desc}

@@ -41,9 +41,11 @@ const IndexContent = () => {
       <Navbar />
       <main>
         <HeroSection />
-        {/* Lançamento editorial DOP CH01 · logo após o Hero (Wave DOP) */}
-        <DopLaunchBlock />
+        {/* Composition Pass (canon Gé+Fred 11/jul): hero cinematográfico →
+            pausa → TESE → o acontecimento editorial (DOP) como prova da tese
+            → caminhos da casa. A tese prepara; o capítulo responde. */}
         <StatementSection />
+        <DopLaunchBlock />
         <ChoosePathSection />
         {/* Selected Work (MasterChef) MIGRADO para /studio (canon Gé 10/jul):
             o destaque de case pertence à casa do Studio, não à home. */}

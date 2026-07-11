@@ -38,19 +38,20 @@ const LibraryContent = () => {
     <>
       <Navbar />
       <main style={{ backgroundColor: 'hsl(var(--background))', color: ink }}>
-        {/* A · HERO · presença editorial · a tipografia carrega */}
-        <section className="px-6 md:px-12 pt-44 md:pt-52 pb-20 md:pb-28 text-center">
-          <div className="max-w-[760px] mx-auto">
+        {/* A · HERO · Composition Pass: mais escala, menos vazio morto — o
+            hero conduz direto ao objeto principal (uma ideia por viewport). */}
+        <section className="px-6 md:px-12 pt-40 md:pt-48 pb-16 md:pb-20 text-center">
+          <div className="max-w-[880px] mx-auto">
             <span className="block mb-6" style={bronzeLabel}>
               LIBRARY
             </span>
             <h1
               className="mb-6"
               style={{
-                fontSize: 'clamp(2rem, 3.6vw, 3rem)',
-                fontWeight: 500,
-                letterSpacing: '-0.02em',
-                lineHeight: 1.12,
+                fontSize: 'clamp(2.5rem, 4.6vw, 3.875rem)',
+                fontWeight: 400,
+                letterSpacing: '-0.022em',
+                lineHeight: 1.08,
                 color: ink,
               }}
             >
@@ -159,25 +160,76 @@ const LibraryContent = () => {
                 An essay by Gessika Olivieri on direction, judgment and authorship in the
                 age of synthetic media.
               </p>
-              <div className="flex flex-wrap items-center gap-5">
-                <Link
-                  to="/library/direction-over-prompt"
-                  onClick={() => track('dop_library_featured_click')}
-                  className="px-9 py-3.5 transition-all duration-300 hover:opacity-85"
-                  style={{
-                    backgroundColor: ink,
-                    color: 'hsl(var(--background))',
-                    borderRadius: '9999px',
-                    fontSize: '0.7rem',
-                    fontWeight: 500,
-                    letterSpacing: '0.18em',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  Read Chapter 01 →
-                </Link>
-                <span style={{ ...bronzeLabel, fontSize: '0.6rem' }}>PT-BR · EN</span>
+              <span style={{ ...bronzeLabel, fontSize: '0.6rem' }}>PT-BR · EN</span>
+            </div>
+          </div>
+
+          {/* Composition Pass · a PROVA antes da ação: página real da edição
+              (prosa aprovada, sem tradução improvisada) → tese ampliada → CTA.
+              Sequência claim → objeto → detalhe → frase → ação. */}
+          <div className="max-w-[1100px] mx-auto mt-16 md:mt-24">
+            <div
+              className="mx-auto max-w-[680px] px-8 md:px-12 py-10 md:py-12"
+              style={{
+                backgroundColor: 'hsl(var(--background))',
+                border: '1px solid hsl(30 14% 15% / 0.12)',
+                boxShadow: '0 18px 48px rgba(42,37,32,0.10)',
+              }}
+            >
+              <p className="mb-6" style={{ ...bronzeLabel, fontSize: '0.55rem' }}>
+                READER EDITION · CHAPTER 01 · PAGE ONE
+              </p>
+              <div
+                style={{
+                  fontFamily: "'Newsreader', Georgia, serif",
+                  fontSize: '1.0625rem',
+                  lineHeight: 1.8,
+                  color: ink,
+                }}
+              >
+                <p className="mb-4">She appears again.</p>
+                <p className="mb-4">
+                  A woman who never existed, photographed in a place that may not exist
+                  either.
+                </p>
+                <p style={{ color: inkSoft }}>
+                  Nothing is wrong. That is precisely why something is deeply wrong.
+                </p>
               </div>
+            </div>
+
+            <p
+              className="mt-16 md:mt-20 text-center mx-auto max-w-[26ch]"
+              style={{
+                fontFamily: "'Newsreader', Georgia, serif",
+                fontSize: 'clamp(1.625rem, 3.2vw, 2.5rem)',
+                fontWeight: 300,
+                lineHeight: 1.35,
+                letterSpacing: '-0.015em',
+                color: ink,
+              }}
+            >
+              Tools generate possibilities.{' '}
+              <span style={{ color: 'hsl(28 35% 45%)' }}>Direction chooses meaning.</span>
+            </p>
+
+            <div className="mt-12 text-center">
+              <Link
+                to="/library/direction-over-prompt"
+                onClick={() => track('dop_library_featured_click')}
+                className="inline-block px-10 py-4 transition-all duration-300 hover:opacity-85"
+                style={{
+                  backgroundColor: ink,
+                  color: 'hsl(var(--background))',
+                  borderRadius: '9999px',
+                  fontSize: '0.7rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Read Chapter 01 →
+              </Link>
             </div>
           </div>
         </section>
@@ -256,9 +308,10 @@ const LibraryContent = () => {
           </div>
         </section>
 
-        {/* E · FINAL CTA · fecho silencioso */}
+        {/* E · FINAL CTA · fecho silencioso · Composition Pass: mais próximo
+            do arco anterior — conclusão, não seção solta */}
         <section
-          className="px-6 md:px-12 py-24 md:py-32 text-center"
+          className="px-6 md:px-12 py-20 md:py-24 text-center"
           style={{ borderTop: '1px solid hsl(30 14% 15% / 0.1)' }}
         >
           <div className="max-w-[640px] mx-auto">

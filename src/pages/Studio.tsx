@@ -55,6 +55,7 @@ const StudioContent = () => {
           label={t('studio.label', lang)}
           headline={t('studio.hero.headline', lang)}
           sub={t('studio.hero.sub', lang)}
+          compact
         >
           <Link
             to="/contact"
@@ -85,8 +86,9 @@ const StudioContent = () => {
             ainda — volta quando os experimentos estiverem vivos. */}
 
 
-        {/* Closing CTA · Request Allocation canon Mary */}
-        <section className="px-6 md:px-12 py-28 md:py-40">
+        {/* Closing CTA · Request Allocation canon Mary · Composition Pass:
+            a conclusão nasce do trabalho apresentado, sem campo vazio antes */}
+        <section className="px-6 md:px-12 py-24 md:py-32">
           <div className="max-w-[900px] mx-auto text-center">
             <p
               className="mb-12"

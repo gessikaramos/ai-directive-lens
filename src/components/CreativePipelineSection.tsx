@@ -40,19 +40,20 @@ const SelectedHighlight = () => {
   return (
     <section
       id="selected"
-      className="pt-28 md:pt-36 pb-28 md:pb-36"
+      className="pt-20 md:pt-24 pb-20 md:pb-24"
       style={{ backgroundColor: 'hsl(var(--ink))' }}
     >
-      {/* Header · centralizado */}
-      <div className="px-6 md:px-12 max-w-[1200px] mx-auto mb-16 md:mb-20">
-        {/* Só o label — sem frase-síntese (canon Gé: "coloca só Selected Work") */}
+      {/* Composition Pass: indicação curta → IMAGEM como primeira grande
+          revelação → título → contexto. A prova responde à promessa do hero
+          sem um vale de espaço morto no meio. */}
+      <div className="px-6 md:px-12 max-w-[1200px] mx-auto mb-10 md:mb-12">
         <span className="block" style={labelStyle}>
           {t('selected.label', lang)}
         </span>
       </div>
 
       {/* 1 · MasterChef · destaque Studio grande · player inline canon (não sai do site) */}
-      <div className="px-6 md:px-12 max-w-[1200px] mx-auto mb-24 md:mb-32">
+      <div className="px-6 md:px-12 max-w-[1200px] mx-auto">
         <div
           className="relative w-full mb-8 md:mb-10 overflow-hidden"
           style={{ aspectRatio: '16 / 9', backgroundColor: 'hsl(var(--ink-soft))' }}

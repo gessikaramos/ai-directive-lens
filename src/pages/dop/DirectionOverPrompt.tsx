@@ -99,7 +99,7 @@ function useSeo(title: string, description: string, path: string, loc?: Loc | 'n
   }, [title, description, path, loc]);
 }
 
-const DopHeader = ({ current }: { current?: Loc }) => (
+const DopHeader = ({ current, minimal }: { current?: Loc; minimal?: boolean }) => (
   <header
     className="px-6 md:px-12 py-6 flex items-center justify-between"
     style={{ borderBottom: '1px solid hsl(30 14% 15% / 0.1)' }}
@@ -110,6 +110,9 @@ const DopHeader = ({ current }: { current?: Loc }) => (
       </span>
       <span style={{ ...label, fontSize: '0.6rem' }}>Library</span>
     </Link>
+    {/* Composition Pass: na rota neutra a ESCOLHA é a página — sem PT/EN
+        duplicado no topo (uma decisão por momento). */}
+    {minimal ? null : (
     <nav className="flex items-center gap-4" aria-label="Reading edition">
       <Link
         to="/pt-br/library/direction-over-prompt"
@@ -135,6 +138,7 @@ const DopHeader = ({ current }: { current?: Loc }) => (
         EN
       </Link>
     </nav>
+    )}
   </header>
 );
 
@@ -149,59 +153,118 @@ export const DopNeutral = () => {
   useEffect(() => track('dop_landing_view', { route: 'neutral' }), []);
   const suggestPt = (navigator.language || '').toLowerCase().startsWith('pt');
 
+  // Composition Pass (canon Gé+Fred 11/jul): o seletor é o primeiro LIMIAR da
+  // publicação — objeto editorial de um lado, decisão do outro. A sensação:
+  // "estou entrando numa edição", não "configurando uma preferência".
   return (
     <main className="min-h-screen" style={{ backgroundColor: 'hsl(var(--background))', color: ink }}>
-      <DopHeader />
-      <section className="px-6 md:px-12 pt-28 md:pt-40 pb-24 text-center">
-        <span className="block mb-6" style={label}>
-          DIRECTION OVER PROMPT · CHAPTER 01
-        </span>
-        <h1
-          className="mb-10"
-          style={{
-            fontFamily: serif,
-            fontSize: 'clamp(2rem, 4vw, 3.25rem)',
-            fontWeight: 400,
-            letterSpacing: '-0.02em',
-            color: ink,
-          }}
-        >
-          Choose your reading edition.
-        </h1>
-        <div className="flex flex-wrap justify-center gap-4">
-          {(
-            [
-              ['pt-BR', 'Português', '/pt-br/library/direction-over-prompt', suggestPt],
-              ['en', 'English', '/en/library/direction-over-prompt', !suggestPt],
-            ] as const
-          ).map(([loc, name, path, suggested]) => (
-            <Link
-              key={loc}
-              to={path}
-              onClick={() => track('dop_language_selected', { locale: loc })}
-              className="px-10 py-4 transition-all duration-300 hover:opacity-85"
+      <DopHeader minimal />
+      <section className="px-6 md:px-12 pt-20 md:pt-32 pb-24">
+        <div className="max-w-[1000px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-14 md:gap-16 items-center">
+          {/* LADO A · o objeto: a capa da edição (mesma peça da Library) */}
+          <div className="md:col-span-5 flex justify-center md:justify-end lolab-stage" style={{ animationDelay: '0.1s' }}>
+            <div
+              className="w-[240px] h-[340px] md:w-[264px] md:h-[374px] px-8 py-10 flex flex-col justify-between"
               style={{
-                backgroundColor: suggested ? ink : 'transparent',
-                color: suggested ? 'hsl(var(--background))' : ink,
-                border: `1px solid ${ink}`,
-                borderRadius: '9999px',
-                fontSize: '0.75rem',
-                fontWeight: 500,
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
+                backgroundColor: 'hsl(var(--ink))',
+                boxShadow: '18px 24px 55px rgba(42,37,32,0.3)',
+                transform: 'rotate(-0.5deg)',
               }}
             >
-              {name}
-            </Link>
-          ))}
+              <span style={{ ...label, fontSize: '0.55rem' }}>CHAPTER 01</span>
+              <div>
+                <p
+                  style={{
+                    fontFamily: serif,
+                    fontSize: '1.75rem',
+                    fontWeight: 400,
+                    lineHeight: 1.12,
+                    letterSpacing: '-0.01em',
+                    color: '#FFFFFF',
+                  }}
+                >
+                  Direction Over Prompt
+                </p>
+                <p
+                  className="mt-3"
+                  style={{
+                    fontFamily: serif,
+                    fontStyle: 'italic',
+                    fontSize: '0.9375rem',
+                    color: 'hsl(var(--background) / 0.6)',
+                  }}
+                >
+                  When Everything Can Be Made
+                </p>
+              </div>
+              <span
+                style={{
+                  fontSize: '0.55rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.24em',
+                  textTransform: 'uppercase',
+                  color: 'hsl(var(--background) / 0.45)',
+                }}
+              >
+                Gessika Olivieri · LolaLab
+              </span>
+            </div>
+          </div>
+
+          {/* LADO B · a decisão */}
+          <div className="md:col-span-7 text-center md:text-left lolab-stage" style={{ animationDelay: '0.4s' }}>
+            <span className="block mb-6" style={label}>
+              DIRECTION OVER PROMPT · CHAPTER 01
+            </span>
+            <h1
+              className="mb-10"
+              style={{
+                fontFamily: serif,
+                fontSize: 'clamp(2rem, 4vw, 3.25rem)',
+                fontWeight: 400,
+                letterSpacing: '-0.02em',
+                lineHeight: 1.1,
+                color: ink,
+              }}
+            >
+              Choose your reading edition.
+            </h1>
+            <div className="flex flex-wrap justify-center md:justify-start gap-4">
+              {(
+                [
+                  ['pt-BR', 'Português', '/pt-br/library/direction-over-prompt', suggestPt],
+                  ['en', 'English', '/en/library/direction-over-prompt', !suggestPt],
+                ] as const
+              ).map(([loc, name, path, suggested]) => (
+                <Link
+                  key={loc}
+                  to={path}
+                  onClick={() => track('dop_language_selected', { locale: loc })}
+                  className="px-10 py-4 transition-all duration-300 hover:opacity-85"
+                  style={{
+                    backgroundColor: suggested ? ink : 'transparent',
+                    color: suggested ? 'hsl(var(--background))' : ink,
+                    border: `1px solid ${ink}`,
+                    borderRadius: '9999px',
+                    fontSize: '0.75rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.18em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {name}
+                </Link>
+              ))}
+            </div>
+            {suggestPt !== undefined && (
+              <p className="mt-6" style={{ fontSize: '0.8125rem', fontWeight: 300, color: inkSoft }}>
+                {suggestPt
+                  ? 'Seu navegador sugere português — a escolha é sua.'
+                  : 'Your browser suggests English — the choice is yours.'}
+              </p>
+            )}
+          </div>
         </div>
-        {suggestPt !== undefined && (
-          <p className="mt-6" style={{ fontSize: '0.8125rem', fontWeight: 300, color: inkSoft }}>
-            {suggestPt
-              ? 'Seu navegador sugere português — a escolha é sua.'
-              : 'Your browser suggests English — the choice is yours.'}
-          </p>
-        )}
       </section>
     </main>
   );

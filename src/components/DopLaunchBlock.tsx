@@ -30,14 +30,16 @@ export default function DopLaunchBlock() {
           <span className="block mb-5" style={label}>
             {pt ? 'NOVO NA LOLALAB LIBRARY' : 'NEW FROM LOLALAB LIBRARY'}
           </span>
+          {/* Composition Pass: o capítulo é o ACONTECIMENTO da Home — escala
+              de manchete, não de anúncio (uma ideia dominante por viewport). */}
           <h2
-            className="mb-2"
+            className="mb-3"
             style={{
               fontFamily: "'Newsreader', Georgia, serif",
-              fontSize: 'clamp(2rem, 4vw, 3.25rem)',
+              fontSize: 'clamp(2.5rem, 5vw, 4.25rem)',
               fontWeight: 400,
-              letterSpacing: '-0.02em',
-              lineHeight: 1.08,
+              letterSpacing: '-0.022em',
+              lineHeight: 1.05,
               color: '#FFFFFF',
             }}
           >
