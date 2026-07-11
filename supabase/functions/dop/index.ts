@@ -4,11 +4,9 @@
 // Com DOP_DEV_MODE=true e sem envio real, a resposta expõe confirm_url/unsubscribe_url para QA.
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-// CORS mínimo (§8): só as origens do site; previews por commit do Pages casam
-// com o padrão do projeto. Sem wildcard.
+// CORS mínimo (§8 + condição Gé 11/jul): STAGING é a única origem permitida
+// enquanto a Wave não vai a produção. Domínios de produção entram só no GO.
 const ORIGIN_EXACT = new Set([
-  "https://lolalabstudio.com",
-  "https://www.lolalabstudio.com",
   "http://localhost:5173",
   "http://localhost:8080",
 ]);
@@ -580,6 +578,11 @@ Deno.serve(async (req) => {
         .eq("confirm_token", token)
         .maybeSingle();
       if (!reader) return json({ error: "token_not_found" }, 404);
+      // Unsubscribe vence: confirmar depois de cancelar NÃO ressuscita o
+      // cadastro nem dispara e-mail. A página segue entregando o capítulo.
+      if (reader.status === "unsubscribed" || reader.status === "bounced" || reader.suppressed) {
+        return json({ ok: true, state: "already_confirmed", locale: reader.locale });
+      }
       if (reader.status === "confirmed") {
         // reclique no link: oportunidade de retry se o e-mail 2 falhou antes
         sendDelivery(reader as ReaderRow).catch((e) =>
