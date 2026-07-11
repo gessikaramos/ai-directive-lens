@@ -90,8 +90,10 @@ export default function Navbar() {
 
   // Wave 3.0-B · canon Apple/Mary Fred+Gé 7/jul
   // Home é toda dark ink · navbar cream sempre · backdrop ink sutil quando scrolled
-  const navTextColor = 'hsl(var(--background))';
-  const logoFilter = 'brightness(0) invert(1)';
+  // Wave DOP: rotas cream/paper (Library) usam tom ink para não sumir no fundo.
+  const lightRoute = location.pathname.startsWith('/library');
+  const navTextColor = lightRoute && !scrolled ? 'hsl(30 14% 15%)' : 'hsl(var(--background))';
+  const logoFilter = lightRoute && !scrolled ? 'none' : 'brightness(0) invert(1)';
   const navBg = scrolled
     ? { backgroundColor: 'hsl(var(--ink) / 0.85)', backdropFilter: 'blur(12px)' }
     : { backgroundColor: 'transparent' };
