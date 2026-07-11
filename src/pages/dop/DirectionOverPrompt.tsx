@@ -732,6 +732,148 @@ export const DopRead = ({ loc }: { loc: Loc }) => {
   );
 };
 
+/* ───────────────────────── Unsubscribe ─────────────────────────
+   Sem login, sem redigitar e-mail, sem dark pattern, sem e-mail de
+   confirmação do cancelamento. Token assinado vem do link do e-mail. */
+export const DopUnsubscribe = ({ loc }: { loc: Loc }) => {
+  const pt = loc === 'pt-BR';
+  const [params] = useSearchParams();
+  const token = params.get('u') ?? '';
+  const [state, setState] = useState<'loading' | 'ready' | 'working' | 'done' | 'invalid'>('loading');
+  const [info, setInfo] = useState<{ email_masked: string; has_general_consent: boolean } | null>(null);
+  const [doneScope, setDoneScope] = useState<'dop' | 'all'>('dop');
+  useSeo(
+    pt ? 'Cancelar inscrição · LolaLab Library' : 'Unsubscribe · LolaLab Library',
+    pt ? 'Gerencie suas comunicações editoriais.' : 'Manage your editorial communications.',
+    `/${pt ? 'pt-br' : 'en'}/library/direction-over-prompt/unsubscribe`,
+    loc,
+  );
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke('dop', {
+          body: { action: 'unsub_info', token },
+        });
+        if (error || !data?.ok) throw new Error('invalid');
+        if (data.already_unsubscribed) {
+          setState('done');
+        } else {
+          setInfo({ email_masked: data.email_masked, has_general_consent: data.has_general_consent });
+          setState('ready');
+        }
+      } catch {
+        setState('invalid');
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const unsubscribe = async (scope: 'dop' | 'all') => {
+    if (state === 'working') return;
+    setState('working');
+    try {
+      const { data, error } = await supabase.functions.invoke('dop', {
+        body: { action: 'unsubscribe_link', token, scope },
+      });
+      if (error || !data?.ok) throw new Error('failed');
+      setDoneScope(scope);
+      setState('done');
+      track('dop_unsubscribed', { locale: loc, scope });
+    } catch {
+      setState('invalid');
+    }
+  };
+
+  const pill = (solid: boolean) => ({
+    backgroundColor: solid ? ink : 'transparent',
+    color: solid ? 'hsl(var(--background))' : ink,
+    border: `1px solid ${ink}`,
+    borderRadius: '9999px',
+    fontSize: '0.75rem',
+    fontWeight: 500,
+    letterSpacing: '0.18em',
+    textTransform: 'uppercase' as const,
+  });
+
+  return (
+    <main className="min-h-screen" style={{ backgroundColor: 'hsl(var(--background))', color: ink }}>
+      <DopHeader current={loc} />
+      <section className="px-6 md:px-12 pt-32 pb-24 text-center">
+        {state === 'loading' && (
+          <p style={{ fontFamily: serif, fontSize: '1.25rem', color: inkSoft }}>…</p>
+        )}
+        {(state === 'ready' || state === 'working') && info && (
+          <>
+            <p className="mb-3" style={{ fontFamily: serif, fontSize: '1.375rem', lineHeight: 1.5, color: ink }}>
+              {pt
+                ? 'Não quer mais receber comunicações sobre Direction Over Prompt?'
+                : 'No longer want to receive updates about Direction Over Prompt?'}
+            </p>
+            <p className="mb-10" style={{ fontSize: '0.875rem', fontWeight: 300, color: inkSoft }}>
+              {info.email_masked}
+            </p>
+            <div className="flex flex-col items-center gap-4">
+              <button
+                onClick={() => unsubscribe('dop')}
+                disabled={state === 'working'}
+                className="px-10 py-4 transition-all duration-300 hover:opacity-85 disabled:opacity-40"
+                style={pill(true)}
+              >
+                {pt ? 'Cancelar inscrição' : 'Unsubscribe'}
+              </button>
+              {info.has_general_consent && (
+                <button
+                  onClick={() => unsubscribe('all')}
+                  disabled={state === 'working'}
+                  className="px-10 py-4 transition-all duration-300 hover:opacity-85 disabled:opacity-40"
+                  style={pill(false)}
+                >
+                  {pt
+                    ? 'Cancelar todas as comunicações da LolaLab'
+                    : 'Unsubscribe from all LolaLab communications'}
+                </button>
+              )}
+            </div>
+          </>
+        )}
+        {state === 'done' && (
+          <>
+            <p className="mb-4" style={{ fontFamily: serif, fontSize: '1.5rem', color: ink }}>
+              {pt ? 'Sua inscrição foi cancelada.' : 'You have been unsubscribed.'}
+            </p>
+            <p style={{ fontSize: '1rem', fontWeight: 300, lineHeight: 1.7, color: inkSoft }}>
+              {pt
+                ? 'Você não receberá novas comunicações editoriais desta lista.'
+                : 'You will no longer receive editorial messages from this list.'}
+              {doneScope === 'all' && (
+                <>
+                  <br />
+                  {pt
+                    ? 'As comunicações gerais da LolaLab também foram canceladas.'
+                    : 'General LolaLab communications were cancelled as well.'}
+                </>
+              )}
+            </p>
+          </>
+        )}
+        {state === 'invalid' && (
+          <>
+            <p className="mb-6" style={{ fontFamily: serif, fontSize: '1.25rem', color: ink }}>
+              {pt ? 'Link inválido.' : 'Invalid link.'}
+            </p>
+            <p style={{ fontSize: '0.9375rem', fontWeight: 300, color: inkSoft }}>
+              {pt
+                ? 'Se quiser cancelar, responda qualquer e-mail nosso com o assunto UNSUBSCRIBE.'
+                : 'To unsubscribe, reply to any of our emails with the subject UNSUBSCRIBE.'}
+            </p>
+          </>
+        )}
+      </section>
+    </main>
+  );
+};
+
 /* ───────────────────────── Interesse ES ───────────────────────── */
 export const DopSpanish = () => {
   const [email, setEmail] = useState('');
