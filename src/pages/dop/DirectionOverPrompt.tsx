@@ -506,7 +506,7 @@ export const DopLanding = ({ loc }: { loc: Loc }) => {
 export const DopConfirmed = ({ loc }: { loc: Loc }) => {
   const c = COPY[loc];
   const [params] = useSearchParams();
-  const [state, setState] = useState<'working' | 'ok' | 'expired' | 'invalid'>('working');
+  const [state, setState] = useState<'working' | 'ok' | 'already' | 'expired' | 'invalid'>('working');
   useSeo(`Confirmed · Direction Over Prompt · LolaLab`, c.description, c.landingPath, loc);
 
   useEffect(() => {
@@ -518,9 +518,11 @@ export const DopConfirmed = ({ loc }: { loc: Loc }) => {
         });
         if (error) throw error;
         if (data?.ok) {
+          // refresh/voltar/reabrir/segundo clique caem em already_confirmed —
+          // mesma página estável de sucesso, nunca "Link inválido" (QA item 3)
           localStorage.setItem('dop_confirmed', 'true');
-          setState('ok');
-          track('dop_email_confirmed', { locale: loc });
+          setState(data.state === 'already_confirmed' ? 'already' : 'ok');
+          if (data.state !== 'already_confirmed') track('dop_email_confirmed', { locale: loc });
         } else setState('invalid');
       } catch (e: any) {
         setState(/410|expired/i.test(String(e?.message)) ? 'expired' : 'invalid');
@@ -536,8 +538,15 @@ export const DopConfirmed = ({ loc }: { loc: Loc }) => {
         {state === 'working' && (
           <p style={{ fontFamily: serif, fontSize: '1.25rem', color: inkSoft }}>…</p>
         )}
-        {state === 'ok' && (
+        {(state === 'ok' || state === 'already') && (
           <>
+            {state === 'already' && (
+              <p className="mb-3" style={{ fontSize: '0.9375rem', fontWeight: 300, color: inkSoft }}>
+                {loc === 'pt-BR'
+                  ? 'Seu e-mail já foi confirmado.'
+                  : 'Your email has already been confirmed.'}
+              </p>
+            )}
             <p className="mb-8" style={{ fontFamily: serif, fontSize: '1.5rem', color: ink }}>
               {loc === 'pt-BR' ? 'Seu capítulo está pronto.' : 'Your chapter is ready.'}
             </p>

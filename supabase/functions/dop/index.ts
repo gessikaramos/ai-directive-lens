@@ -4,11 +4,37 @@
 // Com DOP_DEV_MODE=true e sem envio real, a resposta expõe confirm_url/unsubscribe_url para QA.
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
+// CORS mínimo (§8): só as origens do site; previews por commit do Pages casam
+// com o padrão do projeto. Sem wildcard.
+const ORIGIN_EXACT = new Set([
+  "https://lolalabstudio.com",
+  "https://www.lolalabstudio.com",
+  "http://localhost:5173",
+  "http://localhost:8080",
+]);
+const ORIGIN_PATTERN = /^https:\/\/[a-z0-9-]+\.ai-directive-lens\.pages\.dev$/;
+
+function corsFor(req: Request) {
+  const origin = req.headers.get("origin") ?? "";
+  const allowed = ORIGIN_EXACT.has(origin) || ORIGIN_PATTERN.test(origin);
+  return {
+    "Access-Control-Allow-Origin": allowed ? origin : new URL(SITE).origin,
+    Vary: "Origin",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+  };
+}
+
+const MAX_JSON_BODY = 10_000; // bytes · payloads reais têm <2KB
+const MAX_WEBHOOK_BODY = 100_000;
+// Allowlist estrita (§7): NENHUMA action administrativa existe nesta função.
+const PUBLIC_ACTIONS = new Set([
+  "subscribe",
+  "confirm",
+  "unsub_info",
+  "unsubscribe_link",
+  "unsubscribe",
+]);
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -200,7 +226,7 @@ type ReaderRow = {
 };
 
 const READER_COLS =
-  "id, email, locale, status, suppressed, unsubscribe_token, delivery_email_status, delivery_email_attempts, consent_lolalab_general, token_expires_at";
+  "id, email, locale, status, suppressed, unsubscribe_token, delivery_email_status, delivery_email_attempts, consent_lolalab_general, token_expires_at, updated_at";
 
 async function ensureUnsubToken(reader: ReaderRow): Promise<string> {
   if (reader.unsubscribe_token) return reader.unsubscribe_token;
@@ -333,14 +359,28 @@ async function verifySvix(req: Request, payload: string): Promise<boolean> {
   return sigHeader.split(" ").some((part) => part.split(",")[1] === expected);
 }
 
+const WEBHOOK_EVENTS = new Set([
+  "email.delivered",
+  "email.bounced",
+  "email.complained",
+  "email.failed",
+  "email.suppressed",
+]);
+
 async function handleWebhook(req: Request): Promise<Response> {
   const payload = await req.text();
+  if (payload.length > MAX_WEBHOOK_BODY) return new Response("too large", { status: 413 });
+  // Assinatura verificada sobre o corpo BRUTO, antes de qualquer escrita (§8).
   if (!(await verifySvix(req, payload))) {
     console.error("dop webhook: assinatura inválida ou secret ausente");
     return new Response("unauthorized", { status: 401 });
   }
   const evt = JSON.parse(payload);
   const type = String(evt?.type ?? "");
+  if (!WEBHOOK_EVENTS.has(type)) {
+    console.log("dop webhook ignorado", { type: type.slice(0, 40) });
+    return new Response("ok", { status: 200 }); // evento fora da allowlist: sem efeito
+  }
   const emailId = evt?.data?.email_id ?? null;
   const to = (evt?.data?.to?.[0] ?? "").toLowerCase();
   const now = new Date().toISOString();
@@ -373,21 +413,26 @@ async function handleWebhook(req: Request): Promise<Response> {
 
 // ---------- servidor ----------
 
-function json(body: unknown, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
-  });
+function jsonWith(cors: Record<string, string>) {
+  return (body: unknown, status = 200) =>
+    new Response(JSON.stringify(body), {
+      status,
+      headers: { ...cors, "Content-Type": "application/json" },
+    });
 }
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  const cors = corsFor(req);
+  const json = jsonWith(cors);
+  if (req.method === "OPTIONS") return new Response(null, { headers: cors });
 
   const url = new URL(req.url);
   const qAction = url.searchParams.get("action");
 
-  // RFC 8058 one-click: provedores de e-mail fazem POST form-encoded direto aqui.
-  if (qAction === "one_click" && req.method === "POST") {
+  // Ações por query string: somente one_click e webhook, somente POST (§8).
+  if (qAction === "one_click") {
+    if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
+    // RFC 8058: provedores fazem POST form-encoded, sem cookie/JS/JWT. Corpo ignorado.
     const uuid = await verifyUnsubToken(url.searchParams.get("u") ?? "");
     if (uuid) {
       const { data: reader } = await admin
@@ -395,19 +440,29 @@ Deno.serve(async (req) => {
         .select("id")
         .eq("unsubscribe_token", uuid)
         .maybeSingle();
-      if (reader) await applyUnsubscribe(reader.id, "dop");
+      if (reader) await applyUnsubscribe(reader.id, "dop"); // idempotente
       console.log("dop one_click_unsubscribe", { found: !!reader });
     }
-    return new Response("ok", { status: 200, headers: corsHeaders });
+    return new Response(null, { status: 202, headers: cors });
   }
 
-  if (qAction === "webhook" && req.method === "POST") return handleWebhook(req);
+  if (qAction === "webhook") {
+    if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
+    return handleWebhook(req);
+  }
 
+  if (qAction) return json({ error: "not_found" }, 404); // query action desconhecida
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
+  if (!(req.headers.get("content-type") ?? "").includes("application/json")) {
+    return json({ error: "unsupported_media_type" }, 415);
+  }
 
   try {
-    const body = await req.json();
+    const raw = await req.text();
+    if (raw.length > MAX_JSON_BODY) return json({ error: "payload_too_large" }, 413);
+    const body = JSON.parse(raw);
     const action = body?.action;
+    if (!PUBLIC_ACTIONS.has(action)) return json({ error: "not_found" }, 404);
 
     if (action === "subscribe") {
       // honeypot: bots preenchem "website"; humanos nunca veem o campo
@@ -432,6 +487,14 @@ Deno.serve(async (req) => {
       // hard bounce permanece suprimido mesmo com novo pedido (endereço inválido)
       if (existing && existing.status === "bounced") {
         return json({ ok: true, state: "check_email" }); // genérico
+      }
+      // rate limit por e-mail (§8): 1 pedido/min; resposta genérica anti-enumeração
+      if (
+        existing?.updated_at &&
+        Date.now() - new Date(existing.updated_at).getTime() < 60_000 &&
+        existing.status !== "confirmed"
+      ) {
+        return json({ ok: true, state: "check_email" });
       }
 
       const token = crypto.randomUUID();
@@ -602,7 +665,7 @@ Deno.serve(async (req) => {
       return json({ ok: true });
     }
 
-    return json({ error: "unknown_action" }, 400);
+    return json({ error: "not_found" }, 404); // inalcançável (allowlist acima); defesa em profundidade
   } catch (e) {
     console.error("dop error", String(e).slice(0, 200));
     return json({ error: "internal" }, 500);

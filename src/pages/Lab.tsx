@@ -136,8 +136,8 @@ const LabContent = () => {
         <Navbar />
         <main className="pt-32" style={{ backgroundColor: 'hsl(var(--ink))' }}>
           <WalterContainment />
-          {/* Cast permanece como teaser subordinado */}
-          <CastTeaser />
+          {/* QA independente (blocker 1): NENHUM funil próprio do Walter na
+              contenção — CastTeaser (Notify Me) removido. Única conversão: DOP. */}
         </main>
         <Footer hideNewsletter />
       </>
