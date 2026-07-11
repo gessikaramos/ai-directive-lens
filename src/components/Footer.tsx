@@ -48,10 +48,12 @@ export default function Footer({ hideNewsletter = false }: { hideNewsletter?: bo
     >
       <div className="max-w-[1200px] mx-auto">
         {/* Signal newsletter · UMA captura por jornada (Wave DOP): páginas com
-            captura própria (Library/DOP/Walter/About/Contact) escondem esta. */}
+            captura própria escondem esta. Render condicional (não display:none):
+            o QA independente exige ZERO forms no DOM da página do Walter. */}
+        {!hideNewsletter && (
         <div
           className="pb-16 md:pb-20 mb-16 md:mb-20"
-          style={{ borderBottom: '1px solid #1C1C1E', display: hideNewsletter ? 'none' : undefined }}
+          style={{ borderBottom: '1px solid #1C1C1E' }}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
             <div>
@@ -124,6 +126,7 @@ export default function Footer({ hideNewsletter = false }: { hideNewsletter?: bo
             </div>
           </div>
         </div>
+        )}
 
         {/* Logo stacked + social + copyright */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
