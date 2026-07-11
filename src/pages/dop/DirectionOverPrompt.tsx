@@ -10,7 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { CH01_PT } from '@/content/dop/ch01-pt';
 import { CH01_EN } from '@/content/dop/ch01-en';
 import { track } from '@/lib/analytics';
-import { WALTER_WAITLIST_ENABLED } from '@/lib/flags';
+import { WALTER_WAITLIST_ENABLED, DOP_PDF_DOWNLOAD_ENABLED } from '@/lib/flags';
 
 type Loc = 'pt-BR' | 'en';
 
@@ -631,27 +631,31 @@ export const DopConfirmed = ({ loc }: { loc: Loc }) => {
               >
                 {loc === 'pt-BR' ? 'LER NO NAVEGADOR' : 'READ ONLINE'}
               </Link>
-              <a
-                href={
-                  loc === 'pt-BR'
-                    ? '/downloads/Direction_Over_Prompt_CH01_PT-BR_Reader_Edition_v1.pdf'
-                    : '/downloads/Direction_Over_Prompt_CH01_EN_Reader_Edition_v1.pdf'
-                }
-                onClick={() => track('dop_pdf_downloaded', { locale: loc })}
-                className="px-10 py-4 transition-all duration-300 hover:opacity-85"
-                style={{
-                  backgroundColor: 'transparent',
-                  color: ink,
-                  border: `1px solid ${ink}`,
-                  borderRadius: '9999px',
-                  fontSize: '0.75rem',
-                  fontWeight: 500,
-                  letterSpacing: '0.18em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {loc === 'pt-BR' ? 'BAIXAR O PDF' : 'DOWNLOAD THE PDF'}
-              </a>
+              {/* PDF reprovado visualmente pela Gé (CANDIDATE ONLY) — CTA some
+                  até DOP_PDF_DOWNLOAD_ENABLED=true (canon 11/jul). */}
+              {DOP_PDF_DOWNLOAD_ENABLED && (
+                <a
+                  href={
+                    loc === 'pt-BR'
+                      ? '/downloads/Direction_Over_Prompt_CH01_PT-BR_Reader_Edition_v1.pdf'
+                      : '/downloads/Direction_Over_Prompt_CH01_EN_Reader_Edition_v1.pdf'
+                  }
+                  onClick={() => track('dop_pdf_downloaded', { locale: loc })}
+                  className="px-10 py-4 transition-all duration-300 hover:opacity-85"
+                  style={{
+                    backgroundColor: 'transparent',
+                    color: ink,
+                    border: `1px solid ${ink}`,
+                    borderRadius: '9999px',
+                    fontSize: '0.75rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.18em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {loc === 'pt-BR' ? 'BAIXAR O PDF' : 'DOWNLOAD THE PDF'}
+                </a>
+              )}
             </div>
           </>
         )}
@@ -765,17 +769,21 @@ export const DopRead = ({ loc }: { loc: Loc }) => {
               © 2026 LolaLab · Direction Over Prompt
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-5">
-              <a
-                href={
-                  loc === 'pt-BR'
-                    ? '/downloads/Direction_Over_Prompt_CH01_PT-BR_Reader_Edition_v1.pdf'
-                    : '/downloads/Direction_Over_Prompt_CH01_EN_Reader_Edition_v1.pdf'
-                }
-                onClick={() => track('dop_pdf_downloaded', { locale: loc, via: 'reader' })}
-                style={{ ...label, textDecoration: 'underline' }}
-              >
-                {loc === 'pt-BR' ? 'Baixar o PDF' : 'Download the PDF'}
-              </a>
+              {/* PDF reprovado visualmente pela Gé (CANDIDATE ONLY) — CTA some
+                  até DOP_PDF_DOWNLOAD_ENABLED=true (canon 11/jul). */}
+              {DOP_PDF_DOWNLOAD_ENABLED && (
+                <a
+                  href={
+                    loc === 'pt-BR'
+                      ? '/downloads/Direction_Over_Prompt_CH01_PT-BR_Reader_Edition_v1.pdf'
+                      : '/downloads/Direction_Over_Prompt_CH01_EN_Reader_Edition_v1.pdf'
+                  }
+                  onClick={() => track('dop_pdf_downloaded', { locale: loc, via: 'reader' })}
+                  style={{ ...label, textDecoration: 'underline' }}
+                >
+                  {loc === 'pt-BR' ? 'Baixar o PDF' : 'Download the PDF'}
+                </a>
+              )}
               <button
                 onClick={async () => {
                   const url = window.location.origin + c.landingPath;

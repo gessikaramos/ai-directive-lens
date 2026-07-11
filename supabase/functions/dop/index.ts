@@ -12,15 +12,37 @@ const ORIGIN_EXACT = new Set([
 ]);
 const ORIGIN_PATTERN = /^https:\/\/[a-z0-9-]+\.ai-directive-lens\.pages\.dev$/;
 
+// DOP-QA-ENV-001 (fechado): CORS e environment/site_origin derivam da MESMA
+// função — nunca de um header aceito livremente do cliente. Um cliente
+// não-browser (curl) que force `Origin: https://www.lolalabstudio.com` não
+// consegue se marcar como produção: essa origem não existe em nenhuma regra
+// abaixo até a Gé autorizar o GO. Sem isso, site_origin seria um open redirect.
+function matchOrigin(origin: string): { environment: string; site_origin: string } | null {
+  if (ORIGIN_EXACT.has(origin) || ORIGIN_PATTERN.test(origin)) {
+    return { environment: "staging", site_origin: SITE };
+  }
+  // Produção: NÃO ativa ainda. No GO, adicionar "https://www.lolalabstudio.com"
+  // a ORIGIN_EXACT E descomentar a linha abaixo — as duas mudanças autorizam
+  // CORS e origem de link ao mesmo tempo, pela mesma allowlist.
+  // if (origin === "https://www.lolalabstudio.com") {
+  //   return { environment: "production", site_origin: origin };
+  // }
+  return null;
+}
+
 function corsFor(req: Request) {
   const origin = req.headers.get("origin") ?? "";
-  const allowed = ORIGIN_EXACT.has(origin) || ORIGIN_PATTERN.test(origin);
+  const allowed = matchOrigin(origin) !== null;
   return {
     "Access-Control-Allow-Origin": allowed ? origin : new URL(SITE).origin,
     Vary: "Origin",
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
   };
+}
+
+function resolveEnvironment(req: Request): { environment: string; site_origin: string } {
+  return matchOrigin(req.headers.get("origin") ?? "") ?? { environment: "staging", site_origin: SITE };
 }
 
 const MAX_JSON_BODY = 10_000; // bytes · payloads reais têm <2KB
@@ -47,6 +69,9 @@ const MAIL_REPLY_TO = "hello@lolalabstudio.com";
 // Chave do HMAC do token de unsubscribe (dedicada se existir; senão derivada da service role)
 const UNSUB_SECRET = Deno.env.get("DOP_UNSUB_SECRET") ?? `dop-unsub:${SERVICE_ROLE}`;
 const MAX_DELIVERY_ATTEMPTS = 3;
+// PDF reprovado visualmente pela Gé (CANDIDATE ONLY) — e-mail 2 envia só
+// READ ONLINE até este secret virar "true" (canon 11/jul).
+const PDF_DOWNLOAD_ENABLED = (Deno.env.get("DOP_PDF_DOWNLOAD_ENABLED") ?? "false") === "true";
 
 // ---------- utilidades ----------
 
@@ -84,9 +109,11 @@ async function verifyUnsubToken(token: string): Promise<string | null> {
   return diff === 0 ? m[1] : null;
 }
 
-function unsubPageUrl(locale: string, token: string) {
+// site_origin vem do leitor (resolvido no subscribe via matchOrigin — nunca
+// arbitrário), não do global SITE: cada e-mail linka pro ambiente correto.
+function unsubPageUrl(siteOrigin: string, locale: string, token: string) {
   const p = locale === "pt-BR" ? "pt-br" : "en";
-  return `${SITE}/${p}/library/direction-over-prompt/unsubscribe?u=${token}`;
+  return `${siteOrigin}/${p}/library/direction-over-prompt/unsubscribe?u=${token}`;
 }
 
 function oneClickUrl(token: string) {
@@ -131,15 +158,27 @@ function emailTemplates(locale: string, confirmUrl: string, unsubUrl: string) {
   return { subject, text: body, html };
 }
 
-function deliveryTemplates(locale: string, readUrl: string, pdfUrl: string, unsubUrl: string) {
+// PDF reprovado visualmente (CANDIDATE ONLY): com pdfEnabled=false o e-mail 2
+// envia SÓ o botão de leitura online — nem menciona a existência de um PDF.
+function deliveryTemplates(
+  locale: string,
+  readUrl: string,
+  pdfUrl: string,
+  unsubUrl: string,
+  pdfEnabled: boolean,
+) {
   const pt = locale === "pt-BR";
   const unsub = unsubBlock(pt, unsubUrl);
   const subject = pt
     ? "Capítulo 01 · Quando tudo pode ser feito"
     : "Chapter 01 · When Everything Can Be Made";
+  const bodyLine = pt
+    ? "Você pode ler no navegador ou guardar a edição em PDF."
+    : "You can read it online or keep the PDF reader edition.";
+  const onlineOnlyLine = pt ? "Você pode ler no navegador." : "You can read it online.";
   const text = pt
-    ? `Seu capítulo está pronto.\n\nVocê pode ler no navegador ou guardar a edição em PDF.\n\nLer no navegador: ${readUrl}\nBaixar o PDF: ${pdfUrl}\n\n— LolaLab Library\n\n${unsub.text}`
-    : `Your chapter is ready.\n\nYou can read it online or keep the PDF reader edition.\n\nRead online: ${readUrl}\nDownload the PDF: ${pdfUrl}\n\n— LolaLab Library\n\n${unsub.text}`;
+    ? `Seu capítulo está pronto.\n\n${pdfEnabled ? bodyLine : onlineOnlyLine}\n\nLer no navegador: ${readUrl}${pdfEnabled ? `\nBaixar o PDF: ${pdfUrl}` : ""}\n\n— LolaLab Library\n\n${unsub.text}`
+    : `Your chapter is ready.\n\n${pdfEnabled ? bodyLine : onlineOnlyLine}\n\nRead online: ${readUrl}${pdfEnabled ? `\nDownload the PDF: ${pdfUrl}` : ""}\n\n— LolaLab Library\n\n${unsub.text}`;
   const btn = (href: string, labelTxt: string, solid: boolean) =>
     `<a href="${href}" style="${solid
       ? "background:#2A2520;color:#F7F3EA;"
@@ -148,8 +187,8 @@ function deliveryTemplates(locale: string, readUrl: string, pdfUrl: string, unsu
   <div style="max-width:520px;margin:0 auto;">
     <p style="font-family:Helvetica,Arial,sans-serif;font-size:10px;letter-spacing:3px;color:#8A6B4A;text-transform:uppercase;">LolaLab Library</p>
     <h1 style="font-weight:400;font-size:24px;line-height:1.3;">${pt ? "Seu capítulo está pronto." : "Your chapter is ready."}</h1>
-    <p style="font-size:16px;line-height:1.7;">${pt ? "Você pode ler no navegador ou guardar a edição em PDF." : "You can read it online or keep the PDF reader edition."}</p>
-    <p style="margin:32px 0;">${btn(readUrl, pt ? "Ler no navegador" : "Read online", true)}${btn(pdfUrl, pt ? "Baixar o PDF" : "Download the PDF", false)}</p>
+    <p style="font-size:16px;line-height:1.7;">${pdfEnabled ? bodyLine : onlineOnlyLine}</p>
+    <p style="margin:32px 0;">${btn(readUrl, pt ? "Ler no navegador" : "Read online", true)}${pdfEnabled ? btn(pdfUrl, pt ? "Baixar o PDF" : "Download the PDF", false) : ""}</p>
     <hr style="border:none;border-top:1px solid #E4DCCB;margin:32px 0;">
     ${unsub.html}
   </div></body></html>`;
@@ -221,10 +260,12 @@ type ReaderRow = {
   delivery_email_attempts: number;
   consent_lolalab_general: boolean;
   token_expires_at?: string | null;
+  site_origin: string;
+  environment: string;
 };
 
 const READER_COLS =
-  "id, email, locale, status, suppressed, unsubscribe_token, delivery_email_status, delivery_email_attempts, consent_lolalab_general, token_expires_at, updated_at";
+  "id, email, locale, status, suppressed, unsubscribe_token, delivery_email_status, delivery_email_attempts, consent_lolalab_general, token_expires_at, updated_at, site_origin, environment";
 
 async function ensureUnsubToken(reader: ReaderRow): Promise<string> {
   if (reader.unsubscribe_token) return reader.unsubscribe_token;
@@ -245,7 +286,7 @@ async function sendConfirmation(reader: ReaderRow, confirmUrl: string) {
   if (!RESEND_API_KEY) return { sent: false, reason: "no_provider" };
   if (!canEmail(reader) || reader.locale === "es") return { sent: false, reason: "suppressed_or_es" };
   const unsubToken = await signUnsubToken(await ensureUnsubToken(reader));
-  const t = emailTemplates(reader.locale, confirmUrl, unsubPageUrl(reader.locale, unsubToken));
+  const t = emailTemplates(reader.locale, confirmUrl, unsubPageUrl(reader.site_origin, reader.locale, unsubToken));
   const res = await resendSend(reader.email, t, unsubToken, `dop-confirm-${reader.id}`);
   if (!res.sent) {
     console.error("resend confirm error", res.error, maskEmail(reader.email));
@@ -297,9 +338,10 @@ async function sendDelivery(reader: ReaderRow) {
   const unsubToken = await signUnsubToken(await ensureUnsubToken(reader));
   const t = deliveryTemplates(
     reader.locale,
-    `${SITE}/${p}/library/direction-over-prompt/read`,
-    `${SITE}/downloads/${pdf}`,
-    unsubPageUrl(reader.locale, unsubToken),
+    `${reader.site_origin}/${p}/library/direction-over-prompt/read`,
+    `${reader.site_origin}/downloads/${pdf}`,
+    unsubPageUrl(reader.site_origin, reader.locale, unsubToken),
+    PDF_DOWNLOAD_ENABLED,
   );
   const res = await resendSend(reader.email, t, unsubToken, `dop-delivery-${reader.id}-a${attempt}`);
 
@@ -475,6 +517,9 @@ Deno.serve(async (req) => {
         return json({ error: "consent_required" }, 400);
       }
       const locale = ["pt-BR", "en", "es"].includes(body.locale) ? body.locale : "en";
+      // DOP-QA-ENV-001: environment/site_origin derivados server-side (matchOrigin),
+      // gravados no leitor — cada e-mail/link nasce preso ao ambiente de origem.
+      const { environment, site_origin } = resolveEnvironment(req);
 
       const { data: existing } = await admin
         .from("direction_over_prompt_readers")
@@ -510,6 +555,8 @@ Deno.serve(async (req) => {
         utm_campaign: body.utm_campaign ? String(body.utm_campaign).slice(0, 120) : null,
         utm_content: body.utm_content ? String(body.utm_content).slice(0, 120) : null,
         referrer: body.referrer ? String(body.referrer).slice(0, 300) : null,
+        environment,
+        site_origin,
         consent_editorial: true,
         consent_lolalab_general: body.consent_general === true,
         consent_copy_version: CONSENT_VERSION,
@@ -549,7 +596,7 @@ Deno.serve(async (req) => {
         .maybeSingle();
 
       const confirmPath = locale === "pt-BR" ? "pt-br" : "en";
-      const confirm_url = `${SITE}/${confirmPath}/library/direction-over-prompt/confirmed?token=${token}`;
+      const confirm_url = `${site_origin}/${confirmPath}/library/direction-over-prompt/confirmed?token=${token}`;
 
       const mail = locale === "es" || !fresh
         ? { sent: false, reason: "es_no_email" }
@@ -559,7 +606,7 @@ Deno.serve(async (req) => {
       // Links DEV visíveis SOMENTE enquanto não há envio real (regra da rodada final).
       const exposeDevLink = DEV_MODE && !mail.sent;
       const devUnsub = exposeDevLink && fresh?.unsubscribe_token
-        ? unsubPageUrl(locale, await signUnsubToken(fresh.unsubscribe_token))
+        ? unsubPageUrl(site_origin, locale, await signUnsubToken(fresh.unsubscribe_token))
         : null;
       return json({
         ok: true,

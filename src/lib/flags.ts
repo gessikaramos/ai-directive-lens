@@ -16,3 +16,13 @@ export const PUBLIC_WALTER_ENABLED =
  */
 export const WALTER_WAITLIST_ENABLED =
   import.meta.env.VITE_WALTER_WAITLIST_ENABLED === 'true';
+
+/**
+ * DOP_PDF_DOWNLOAD_ENABLED: o PDF atual foi reprovado visualmente pela Gé
+ * (CANDIDATE ONLY). Default false — enquanto false, nenhuma interface pública
+ * oferece ou menciona o download; READ ONLINE continua disponível. Ativa
+ * apenas quando ela entregar e aprovar o arquivo final (canon 11/jul
+ * "COMPLETE ALL REMAINING RELEASE WORK").
+ */
+export const DOP_PDF_DOWNLOAD_ENABLED =
+  import.meta.env.VITE_DOP_PDF_DOWNLOAD_ENABLED === 'true';
