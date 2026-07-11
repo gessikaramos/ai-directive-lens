@@ -17,7 +17,6 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/PageHero';
 import FooterLine from '@/components/FooterLine';
-import StudioExperiments from '@/components/lab/StudioExperiments';
 import SelectedWork from '@/components/CreativePipelineSection';
 import StudioSkills from '@/components/studio/StudioSkills';
 import { Link } from 'react-router-dom';
@@ -82,8 +81,8 @@ const StudioContent = () => {
         {/* Selected Work (MasterChef) · MIGRADO da home (canon Gé 10/jul) */}
         <SelectedWork />
 
-        {/* Studio Experiments · MIGRADO do Lab · 15 tiles editorial */}
-        <StudioExperiments />
+        {/* Studio Experiments REMOVIDO (canon Gé 11/jul): sem conteúdo real
+            ainda — volta quando os experimentos estiverem vivos. */}
 
 
         {/* Closing CTA · Request Allocation canon Mary */}
