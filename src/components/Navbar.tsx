@@ -93,7 +93,9 @@ export default function Navbar() {
   // Wave DOP: rotas cream/paper (Library) usam tom ink para não sumir no fundo.
   const lightRoute = location.pathname.startsWith('/library');
   const navTextColor = lightRoute && !scrolled ? 'hsl(30 14% 15%)' : 'hsl(var(--background))';
-  const logoFilter = lightRoute && !scrolled ? 'none' : 'brightness(0) invert(1)';
+  // logo-horizontal.svg é nativamente BRANCO: em rota cream vira ink com
+  // brightness(0); em rota dark/scrolled permanece branco (item 10 · dark→paper).
+  const logoFilter = lightRoute && !scrolled ? 'brightness(0)' : 'brightness(0) invert(1)';
   const navBg = scrolled
     ? { backgroundColor: 'hsl(var(--ink) / 0.85)', backdropFilter: 'blur(12px)' }
     : { backgroundColor: 'transparent' };
