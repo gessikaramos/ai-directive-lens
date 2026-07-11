@@ -56,7 +56,9 @@ const AuthContent = () => {
     });
     if (error) {
       setStatus('error');
-      setMessage('Google sign-in failed. Please try again.');
+      setMessage(
+        'Google sign-in is still being connected. Use the email link below — it takes one click.',
+      );
     }
   };
 
