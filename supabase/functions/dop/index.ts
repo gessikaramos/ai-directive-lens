@@ -45,6 +45,67 @@ function emailTemplates(locale: string, confirmUrl: string) {
   return { subject, text: body, html };
 }
 
+function deliveryTemplates(locale: string, readUrl: string, pdfUrl: string) {
+  const pt = locale === "pt-BR";
+  const unsubNote = pt
+    ? "Você recebeu este e-mail porque pediu o Capítulo 01 em lolalabstudio.com. Para cancelar, responda com o assunto UNSUBSCRIBE."
+    : "You received this email because you requested Chapter 01 at lolalabstudio.com. To unsubscribe, reply with the subject UNSUBSCRIBE.";
+  const subject = pt
+    ? "Capítulo 01 · Quando tudo pode ser feito"
+    : "Chapter 01 · When Everything Can Be Made";
+  const text = pt
+    ? `Seu capítulo está pronto.\n\nVocê pode ler no navegador ou guardar a edição em PDF.\n\nLer no navegador: ${readUrl}\nBaixar o PDF: ${pdfUrl}\n\n— LolaLab Library\n\n${unsubNote}`
+    : `Your chapter is ready.\n\nYou can read it online or keep the PDF reader edition.\n\nRead online: ${readUrl}\nDownload the PDF: ${pdfUrl}\n\n— LolaLab Library\n\n${unsubNote}`;
+  const btn = (href: string, labelTxt: string, solid: boolean) =>
+    `<a href="${href}" style="${solid
+      ? "background:#2A2520;color:#F7F3EA;"
+      : "background:transparent;color:#2A2520;border:1px solid #2A2520;"}text-decoration:none;padding:14px 32px;border-radius:9999px;font-family:Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;display:inline-block;margin:0 8px 8px 0;">${labelTxt}</a>`;
+  const html = `<!DOCTYPE html><html lang="${pt ? "pt-BR" : "en"}"><body style="margin:0;background:#F7F3EA;padding:32px 16px;font-family:Georgia,'Times New Roman',serif;color:#2A2520;">
+  <div style="max-width:520px;margin:0 auto;">
+    <p style="font-family:Helvetica,Arial,sans-serif;font-size:10px;letter-spacing:3px;color:#8A6B4A;text-transform:uppercase;">LolaLab Library</p>
+    <h1 style="font-weight:400;font-size:24px;line-height:1.3;">${pt ? "Seu capítulo está pronto." : "Your chapter is ready."}</h1>
+    <p style="font-size:16px;line-height:1.7;">${pt ? "Você pode ler no navegador ou guardar a edição em PDF." : "You can read it online or keep the PDF reader edition."}</p>
+    <p style="margin:32px 0;">${btn(readUrl, pt ? "Ler no navegador" : "Read online", true)}${btn(pdfUrl, pt ? "Baixar o PDF" : "Download the PDF", false)}</p>
+    <hr style="border:none;border-top:1px solid #E4DCCB;margin:32px 0;">
+    <p style="font-family:Helvetica,Arial,sans-serif;font-size:11px;color:#6E6257;line-height:1.6;">${unsubNote}</p>
+  </div></body></html>`;
+  return { subject, text, html };
+}
+
+async function sendDelivery(email: string, locale: string) {
+  if (!RESEND_API_KEY || locale === "es") return { sent: false };
+  const p = locale === "pt-BR" ? "pt-br" : "en";
+  const pdf = locale === "pt-BR"
+    ? "Direction_Over_Prompt_CH01_PT-BR_Reader_Edition_v1.pdf"
+    : "Direction_Over_Prompt_CH01_EN_Reader_Edition_v1.pdf";
+  const t = deliveryTemplates(
+    locale,
+    `${SITE}/${p}/library/direction-over-prompt/read`,
+    `${SITE}/downloads/${pdf}`,
+  );
+  const r = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: MAIL_FROM,
+      to: [email],
+      reply_to: MAIL_REPLY_TO,
+      subject: t.subject,
+      text: t.text,
+      html: t.html,
+    }),
+  });
+  if (!r.ok) {
+    console.error("resend delivery error", r.status, (await r.text()).slice(0, 180));
+    return { sent: false };
+  }
+  console.log("dop delivery_sent", { locale });
+  return { sent: true };
+}
+
 async function sendConfirmation(email: string, locale: string, confirmUrl: string) {
   if (!RESEND_API_KEY) return { sent: false, reason: "no_provider" };
   const t = emailTemplates(locale, confirmUrl);
@@ -169,7 +230,7 @@ Deno.serve(async (req) => {
       if (!/^[0-9a-f-]{36}$/.test(token)) return json({ error: "invalid_token" }, 400);
       const { data: reader } = await admin
         .from("direction_over_prompt_readers")
-        .select("id, status, token_expires_at, locale")
+        .select("id, email, status, token_expires_at, locale")
         .eq("confirm_token", token)
         .maybeSingle();
       if (!reader) return json({ error: "token_not_found" }, 404);
@@ -188,6 +249,13 @@ Deno.serve(async (req) => {
           updated_at: new Date().toISOString(),
         })
         .eq("id", reader.id);
+
+      // E-MAIL 2 (entrega permanente · spec §14): o leitor reencontra o capítulo
+      // mesmo se fechar a página de confirmação. Não bloqueia a resposta.
+      sendDelivery(reader.email, reader.locale).catch((e) =>
+        console.error("delivery send failed", String(e).slice(0, 120)),
+      );
+
       return json({ ok: true, state: "confirmed", locale: reader.locale });
     }
 
