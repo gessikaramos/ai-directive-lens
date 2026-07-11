@@ -94,6 +94,33 @@ const ContactContent = () => {
               For collaboration, press, or research, a paragraph is enough. We prefer
               specific to polite.
             </p>
+
+            {/* Assuntos predefinidos por origem (Wave DOP · seção 16) */}
+            <div className="mt-12 flex flex-wrap gap-x-8 gap-y-4">
+              {[
+                ['Book / Editorial', 'Book%20%2F%20Editorial'],
+                ['Studio Inquiry', 'Studio%20Inquiry'],
+                ['Press', 'Press'],
+                ['Collaboration', 'Collaboration'],
+              ].map(([labelTxt, subject]) => (
+                <a
+                  key={labelTxt}
+                  href={`mailto:hello@lolalabstudio.com?subject=${subject}`}
+                  className="transition-opacity hover:opacity-80"
+                  style={{
+                    color: 'hsl(var(--bronze-soft))',
+                    fontSize: '0.7rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    borderBottom: '1px solid hsl(var(--bronze-soft) / 0.4)',
+                    paddingBottom: '3px',
+                  }}
+                >
+                  {labelTxt} →
+                </a>
+              ))}
+            </div>
           </div>
         </section>
 

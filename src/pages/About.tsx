@@ -7,6 +7,7 @@
  * Manifesto em 4 blocos escalonados · primeiro branco puro · demais cinza secondary.
  */
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { LanguageProvider } from '@/hooks/use-language';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -122,9 +123,28 @@ const AboutContent = () => {
           </div>
         </section>
 
+        {/* Link discreto pro capítulo (Wave DOP · seção 16) */}
+        <section className="px-6 md:px-12 pb-20 md:pb-28">
+          <div className="max-w-[820px] mx-auto">
+            <Link
+              to="/library/direction-over-prompt"
+              className="inline-flex items-center gap-2 hover:gap-3 transition-all duration-500"
+              style={{
+                color: 'hsl(var(--bronze-soft))',
+                fontSize: '0.7rem',
+                fontWeight: 500,
+                letterSpacing: '0.24em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Read Direction Over Prompt <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+        </section>
+
         <FooterLine />
       </main>
-      <Footer />
+      <Footer hideNewsletter />
     </>
   );
 };
