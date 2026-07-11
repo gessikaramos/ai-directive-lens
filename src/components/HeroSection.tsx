@@ -114,7 +114,7 @@ export default function HeroSection() {
             duplicados do Statement foram removidos. Pills canon Vision Pro. */}
         <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
-            to="/lab"
+            to="/library/direction-over-prompt"
             className="px-9 py-3.5 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
             style={{
               backgroundColor: 'hsl(var(--bronze-soft))',

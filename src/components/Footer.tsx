@@ -20,7 +20,7 @@ const SOCIALS = [
   { label: 'UPWORK', href: 'https://www.upwork.com/freelancers/lolalabstudio?mp_source=share' },
 ];
 
-export default function Footer() {
+export default function Footer({ hideNewsletter = false }: { hideNewsletter?: boolean }) {
   const { lang } = useLanguage();
   const [email, setEmail] = useState('');
   const [done, setDone] = useState(false);
@@ -47,8 +47,12 @@ export default function Footer() {
       style={{ backgroundColor: 'hsl(var(--ink))' }}
     >
       <div className="max-w-[1200px] mx-auto">
-        {/* Signal newsletter · global · Supabase signal_opt_in */}
-        <div className="pb-16 md:pb-20 mb-16 md:mb-20" style={{ borderBottom: '1px solid #1C1C1E' }}>
+        {/* Signal newsletter · UMA captura por jornada (Wave DOP): páginas com
+            captura própria (Library/DOP/Walter/About/Contact) escondem esta. */}
+        <div
+          className="pb-16 md:pb-20 mb-16 md:mb-20"
+          style={{ borderBottom: '1px solid #1C1C1E', display: hideNewsletter ? 'none' : undefined }}
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
             <div>
               <span

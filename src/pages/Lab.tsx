@@ -17,7 +17,10 @@ import { LanguageProvider } from '@/hooks/use-language';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HumanIntentTranslator from '@/components/lab/HumanIntentTranslator';
+import WalterContainment from '@/components/lab/WalterContainment';
 import { CastTeaser } from '@/components/lab/LabExtras';
+import { PUBLIC_WALTER_ENABLED } from '@/lib/flags';
+import { track } from '@/lib/analytics';
 
 const SIGNAL_POSTS = [
   {
@@ -114,11 +117,32 @@ const LabContent = () => {
   const [immersed, setImmersed] = useState(false);
 
   useEffect(() => {
-    document.title = 'The Lab · LolaLab';
+    document.title = 'Walter · LolaLab';
     const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', 'An investigation into how humans talk to AI.');
+    if (meta)
+      meta.setAttribute(
+        'content',
+        'Walter listens before the machines produce. A human intent translator under private refinement.',
+      );
     window.scrollTo(0, 0);
+    if (!PUBLIC_WALTER_ENABLED) track('walter_public_page_view');
   }, []);
+
+  // PROTECT WALTER (Wave DOP CH01): com a flag desligada, a rota vira página
+  // editorial de contenção — zero hit_chat, zero login à sala, zero créditos.
+  if (!PUBLIC_WALTER_ENABLED) {
+    return (
+      <>
+        <Navbar />
+        <main className="pt-32" style={{ backgroundColor: 'hsl(var(--ink))' }}>
+          <WalterContainment />
+          {/* Cast permanece como teaser subordinado */}
+          <CastTeaser />
+        </main>
+        <Footer hideNewsletter />
+      </>
+    );
+  }
 
   return (
     <>

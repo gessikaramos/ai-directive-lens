@@ -23,6 +23,7 @@ import { useLenis } from '@/hooks/use-lenis';
 import { useScrollAnimations } from '@/hooks/use-scroll-animations';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
+import DopLaunchBlock from '@/components/DopLaunchBlock';
 import StatementSection from '@/components/StatementSection';
 import ChoosePathSection from '@/components/ChoosePathSection';
 import ManifestoSlice from '@/components/ManifestoSlice';
@@ -40,6 +41,8 @@ const IndexContent = () => {
       <Navbar />
       <main>
         <HeroSection />
+        {/* Lançamento editorial DOP CH01 · logo após o Hero (Wave DOP) */}
+        <DopLaunchBlock />
         <StatementSection />
         <ChoosePathSection />
         {/* Selected Work (MasterChef) MIGRADO para /studio (canon Gé 10/jul):

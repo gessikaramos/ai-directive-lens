@@ -13,6 +13,13 @@ import About from "./pages/About.tsx";
 import Contact from "./pages/Contact.tsx";
 import Auth from "./pages/Auth.tsx";
 import Signal from "./pages/Signal.tsx";
+import {
+  DopNeutral,
+  DopLanding,
+  DopRead,
+  DopConfirmed,
+  DopSpanish,
+} from "./pages/dop/DirectionOverPrompt.tsx";
 import ScrollToTop from "./components/ScrollToTop.tsx";
 import { AuthProvider } from "./hooks/use-auth";
 
@@ -31,6 +38,15 @@ const App = () => (
             <Route path="/lab" element={<Lab />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/signal" element={<Signal />} />
+            {/* Direction Over Prompt · Wave DOP CH01 */}
+            <Route path="/library/direction-over-prompt" element={<DopNeutral />} />
+            <Route path="/pt-br/library/direction-over-prompt" element={<DopLanding loc="pt-BR" />} />
+            <Route path="/en/library/direction-over-prompt" element={<DopLanding loc="en" />} />
+            <Route path="/pt-br/library/direction-over-prompt/read" element={<DopRead loc="pt-BR" />} />
+            <Route path="/en/library/direction-over-prompt/read" element={<DopRead loc="en" />} />
+            <Route path="/pt-br/library/direction-over-prompt/confirmed" element={<DopConfirmed loc="pt-BR" />} />
+            <Route path="/en/library/direction-over-prompt/confirmed" element={<DopConfirmed loc="en" />} />
+            <Route path="/es/library/direction-over-prompt" element={<DopSpanish />} />
             {/* Wave 1 Foundations · canon Fred v1 · 4 rotas novas */}
             <Route path="/library" element={<Library />} />
             <Route path="/studio" element={<Studio />} />

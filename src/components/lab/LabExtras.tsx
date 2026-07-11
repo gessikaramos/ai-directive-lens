@@ -416,7 +416,7 @@ const SignalReads = () => {
           className="grid grid-cols-1 md:grid-cols-3 mb-16"
           style={{ borderTop: '1px solid #1C1C1E' }}
         >
-          {posts.map((p, i) => (
+          {posts.filter((p) => p.title !== 'More soon').map((p, i) => (
             <article
               key={i}
               className="p-8 min-h-[240px] flex flex-col justify-between"

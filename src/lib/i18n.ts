@@ -31,7 +31,7 @@ export const translations: Record<string, Record<Lang, string>> = {
   },
   'hero.scroll': { en: 'SCROLL', pt: 'SCROLL' },
   'hero.cta.selected': { en: 'View selected work', pt: 'Ver trabalhos selecionados' },
-  'hero.cta.lab': { en: 'Talk to Walter →', pt: 'Falar com Walter →' },
+  'hero.cta.lab': { en: 'Read Chapter 01 →', pt: 'Ler o Capítulo 01 →' },
   // Wave 1.1 · Fred v1 canon · CTA secondary Explore the Library
   'hero.cta.library': { en: 'Partner with the Studio ↗', pt: 'Trabalhar com o Studio ↗' },
 
@@ -172,10 +172,10 @@ export const translations: Record<string, Record<Lang, string>> = {
   'home.choose.label': { en: 'CHOOSE YOUR PATH', pt: 'ESCOLHA O SEU CAMINHO' },
   'home.path.lab.name': { en: 'Walter', pt: 'Walter' },
   'home.path.lab.desc': {
-    en: 'Our proprietary intent translator. For shaping loose ideas into clear creative direction.',
-    pt: 'Nosso tradutor de intenção proprietário. Para dar forma a ideias soltas em direção criativa clara.',
+    en: 'A human intent translator under private refinement.',
+    pt: 'Um tradutor de intenção humana em refinamento privado.',
   },
-  'home.path.lab.cta': { en: 'Talk to Walter', pt: 'Falar com Walter' },
+  'home.path.lab.cta': { en: 'Private access closed', pt: 'Acesso privado fechado' },
   'home.path.library.name': { en: 'Library', pt: 'Library' },
   'home.path.library.desc': {
     en: 'For learning the method behind the work.',

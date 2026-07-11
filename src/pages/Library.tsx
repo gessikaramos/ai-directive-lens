@@ -1,34 +1,35 @@
 /**
- * Library · Wave 3.1 · canon Mary Editorial Dark Fred+Gé 7/jul
- *
- * Atmosfera canon Mary: arquivo secreto do estúdio.
- * Fundo #0B0B0C · grid tipográfico rigoroso · linhas 1px #1C1C1E.
- * Lista vertical de Volumes (NÃO cards infoproduto).
- * Copy: "Intelligence" · "Professional Analysis" · não "curso".
+ * Library · Wave DOP CH01 (11/jul/2026) · reconstrução editorial cream/paper.
+ * Canon: LOLALAB_LIBRARY_VISUAL_WIREFRAME_v2_APPROVED (estrutura/tipografia/motion)
+ * + Wave spec (conteúdo): SEM loja, SEM preços, SEM pré-venda. DOP CH01 é o
+ * único lançamento ativo; Tactility = IN DEVELOPMENT; ensaios reais apenas.
+ * "Papel para explicar": fundo cream, texto ink, bronze contido.
  */
 import { useEffect } from 'react';
-import { LanguageProvider, useLanguage } from '@/hooks/use-language';
-import { t } from '@/lib/i18n';
+import { Link } from 'react-router-dom';
+import { LanguageProvider } from '@/hooks/use-language';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import PageHero from '@/components/PageHero';
-import FooterLine from '@/components/FooterLine';
-import Compendiums from '@/components/library/Compendiums';
+import { track } from '@/lib/analytics';
 
-// VOLUMES removido (canon Gé 10/jul): Restricted Archive descontinuado —
-// a Library agora é hero + The LolaLab Compendiums.
-
+const ink = 'hsl(30 14% 15%)';
+const inkSoft = 'hsl(30 10% 38%)';
+const bronzeLabel = {
+  color: 'hsl(28 35% 45%)',
+  fontSize: '0.7rem',
+  fontWeight: 500,
+  letterSpacing: '0.24em',
+  textTransform: 'uppercase' as const,
+};
 
 const LibraryContent = () => {
-  const { lang } = useLanguage();
-
   useEffect(() => {
     document.title = 'Library · LolaLab';
     const meta = document.querySelector('meta[name="description"]');
     if (meta)
       meta.setAttribute(
         'content',
-        'Proprietary intelligence from LolaLab Studio. The method behind the work.',
+        'Essays, books and working methods on direction, authorship and creative systems. From LolaLab.',
       );
     window.scrollTo(0, 0);
   }, []);
@@ -36,18 +37,263 @@ const LibraryContent = () => {
   return (
     <>
       <Navbar />
-      <main style={{ backgroundColor: 'hsl(var(--ink))' }}>
-        <PageHero
-          label={t('library.label', lang)}
-          headline={t('library.hero.headline', lang)}
-          sub={t('library.hero.sub', lang)}
-        />
+      <main style={{ backgroundColor: 'hsl(var(--background))', color: ink }}>
+        {/* A · HERO · presença editorial · a tipografia carrega */}
+        <section className="px-6 md:px-12 pt-44 md:pt-52 pb-20 md:pb-28 text-center">
+          <div className="max-w-[760px] mx-auto">
+            <span className="block mb-6" style={bronzeLabel}>
+              LIBRARY
+            </span>
+            <h1
+              className="mb-6"
+              style={{
+                fontSize: 'clamp(2rem, 3.6vw, 3rem)',
+                fontWeight: 500,
+                letterSpacing: '-0.02em',
+                lineHeight: 1.12,
+                color: ink,
+              }}
+            >
+              Practical knowledge for creative minds.
+            </h1>
+            <p
+              className="mx-auto max-w-[640px]"
+              style={{ fontSize: '1.125rem', fontWeight: 300, lineHeight: 1.6, color: inkSoft }}
+            >
+              Essays, books and working methods on direction, authorship and creative
+              systems.
+            </p>
+          </div>
+        </section>
 
-        <Compendiums />
+        {/* B · FEATURED RELEASE · DOP CH01 */}
+        <section
+          className="px-6 md:px-12 py-20 md:py-32"
+          style={{ borderTop: '1px solid hsl(30 14% 15% / 0.1)' }}
+        >
+          <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 items-center">
+            {/* Capa editorial */}
+            <div className="md:col-span-5 flex justify-center md:justify-start">
+              <div
+                className="w-[260px] h-[368px] px-8 py-10 flex flex-col justify-between"
+                style={{
+                  backgroundColor: 'hsl(var(--ink))',
+                  boxShadow: '16px 22px 50px rgba(42,37,32,0.28)',
+                }}
+              >
+                <span style={{ ...bronzeLabel, fontSize: '0.55rem', color: 'hsl(var(--bronze-soft))' }}>
+                  CHAPTER 01
+                </span>
+                <div>
+                  <h3
+                    style={{
+                      fontFamily: "'Newsreader', Georgia, serif",
+                      fontSize: '1.875rem',
+                      fontWeight: 400,
+                      lineHeight: 1.12,
+                      letterSpacing: '-0.01em',
+                      color: '#FFFFFF',
+                    }}
+                  >
+                    Direction Over Prompt
+                  </h3>
+                  <p
+                    className="mt-3"
+                    style={{
+                      fontFamily: "'Newsreader', Georgia, serif",
+                      fontStyle: 'italic',
+                      fontSize: '0.9375rem',
+                      color: 'hsl(var(--background) / 0.6)',
+                    }}
+                  >
+                    When Everything Can Be Made
+                  </p>
+                </div>
+                <span
+                  style={{
+                    fontSize: '0.55rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.24em',
+                    textTransform: 'uppercase',
+                    color: 'hsl(var(--background) / 0.45)',
+                  }}
+                >
+                  Gessika Olivieri · LolaLab
+                </span>
+              </div>
+            </div>
 
-        <FooterLine translationKey="footer.line.library" />
+            {/* Texto */}
+            <div className="md:col-span-7">
+              <span className="block mb-4" style={bronzeLabel}>
+                NEW RELEASE · CHAPTER 01
+              </span>
+              <h2
+                className="mb-2"
+                style={{
+                  fontFamily: "'Newsreader', Georgia, serif",
+                  fontSize: 'clamp(1.875rem, 3.2vw, 2.75rem)',
+                  fontWeight: 400,
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1.1,
+                  color: ink,
+                }}
+              >
+                Direction Over Prompt
+              </h2>
+              <p
+                className="mb-5"
+                style={{
+                  fontFamily: "'Newsreader', Georgia, serif",
+                  fontStyle: 'italic',
+                  fontSize: '1.125rem',
+                  color: inkSoft,
+                }}
+              >
+                When Everything Can Be Made
+              </p>
+              <p
+                className="mb-8 max-w-[54ch]"
+                style={{ fontSize: '1rem', fontWeight: 300, lineHeight: 1.7, color: inkSoft }}
+              >
+                An essay by Gessika Olivieri on direction, judgment and authorship in the
+                age of synthetic media.
+              </p>
+              <div className="flex flex-wrap items-center gap-5">
+                <Link
+                  to="/library/direction-over-prompt"
+                  onClick={() => track('dop_library_featured_click')}
+                  className="px-9 py-3.5 transition-all duration-300 hover:opacity-85"
+                  style={{
+                    backgroundColor: ink,
+                    color: 'hsl(var(--background))',
+                    borderRadius: '9999px',
+                    fontSize: '0.7rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.18em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  Read Chapter 01 →
+                </Link>
+                <span style={{ ...bronzeLabel, fontSize: '0.6rem' }}>PT-BR · EN</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* C · THE BOOK OF TACTILITY · in development · sem comércio */}
+        <section
+          className="px-6 md:px-12 py-16 md:py-24"
+          style={{ borderTop: '1px solid hsl(30 14% 15% / 0.1)' }}
+        >
+          <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-baseline">
+            <div className="md:col-span-4">
+              <span className="block mb-3" style={bronzeLabel}>
+                IN DEVELOPMENT
+              </span>
+              <h3
+                style={{
+                  fontFamily: "'Newsreader', Georgia, serif",
+                  fontSize: 'clamp(1.5rem, 2.4vw, 2rem)',
+                  fontWeight: 400,
+                  letterSpacing: '-0.015em',
+                  color: ink,
+                }}
+              >
+                The Book of Tactility
+              </h3>
+            </div>
+            <p
+              className="md:col-span-8 max-w-[60ch]"
+              style={{ fontSize: '1rem', fontWeight: 300, lineHeight: 1.7, color: inkSoft }}
+            >
+              A future LolaLab compendium on materiality, imperfection and visual evidence
+              in the synthetic age.
+            </p>
+          </div>
+        </section>
+
+        {/* D · ESSAYS · somente conteúdo real */}
+        <section
+          className="px-6 md:px-12 py-16 md:py-24"
+          style={{ borderTop: '1px solid hsl(30 14% 15% / 0.1)' }}
+        >
+          <div className="max-w-[1100px] mx-auto">
+            <span className="block mb-8" style={bronzeLabel}>
+              FROM SIGNAL · READS
+            </span>
+            <article className="max-w-[720px]">
+              <span
+                className="block mb-2"
+                style={{ ...bronzeLabel, fontSize: '0.6rem', color: inkSoft }}
+              >
+                JUN 2026
+              </span>
+              <h3
+                className="mb-3"
+                style={{
+                  fontFamily: "'Newsreader', Georgia, serif",
+                  fontSize: '1.5rem',
+                  fontWeight: 400,
+                  color: ink,
+                }}
+              >
+                Ben Affleck on AI Infrastructure
+              </h3>
+              <p style={{ fontSize: '0.9375rem', fontWeight: 300, lineHeight: 1.7, color: inkSoft }}>
+                Reading the Sam Altman forum speech. Where cinema keeps misreading the
+                moment — and what an AI-native studio actually looks like.
+              </p>
+              <Link
+                to="/signal"
+                className="inline-flex items-center gap-2 hover:gap-3 transition-all duration-500 mt-4"
+                style={bronzeLabel}
+              >
+                Read on Signal <span aria-hidden="true">→</span>
+              </Link>
+            </article>
+          </div>
+        </section>
+
+        {/* E · FINAL CTA · fecho silencioso */}
+        <section
+          className="px-6 md:px-12 py-24 md:py-32 text-center"
+          style={{ borderTop: '1px solid hsl(30 14% 15% / 0.1)' }}
+        >
+          <div className="max-w-[640px] mx-auto">
+            <p
+              className="mb-8"
+              style={{
+                fontFamily: "'Newsreader', Georgia, serif",
+                fontSize: 'clamp(1.375rem, 2.4vw, 1.875rem)',
+                fontWeight: 300,
+                lineHeight: 1.4,
+                color: ink,
+              }}
+            >
+              Read the chapter. Join the readers shaping what comes next.
+            </p>
+            <Link
+              to="/library/direction-over-prompt"
+              onClick={() => track('dop_library_closing_click')}
+              className="inline-block px-9 py-3.5 transition-all duration-300 hover:opacity-85"
+              style={{
+                backgroundColor: ink,
+                color: 'hsl(var(--background))',
+                borderRadius: '9999px',
+                fontSize: '0.7rem',
+                fontWeight: 500,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Open Direction Over Prompt →
+            </Link>
+          </div>
+        </section>
       </main>
-      <Footer />
+      <Footer hideNewsletter />
     </>
   );
 };

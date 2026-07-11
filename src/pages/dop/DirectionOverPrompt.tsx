@@ -1,0 +1,877 @@
+/**
+ * Direction Over Prompt · Capítulo 01 (Wave DOP CH01 · 11/jul/2026)
+ * Rotas: neutra (escolha de edição), landings PT-BR/EN, leitura integral,
+ * confirmação (double opt-in) e interesse ES. Página editorial: sem navbar
+ * completa — header mínimo LolaLab. / Library + seletor PT · EN.
+ */
+import { useEffect, useMemo, useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { CH01_PT } from '@/content/dop/ch01-pt';
+import { CH01_EN } from '@/content/dop/ch01-en';
+import { track } from '@/lib/analytics';
+
+type Loc = 'pt-BR' | 'en';
+
+const ink = 'hsl(30 14% 15%)';
+const inkSoft = 'hsl(30 10% 38%)';
+const bronze = 'hsl(28 35% 45%)';
+const label = {
+  color: bronze,
+  fontSize: '0.7rem',
+  fontWeight: 500,
+  letterSpacing: '0.24em',
+  textTransform: 'uppercase' as const,
+};
+const serif = "'Newsreader', Georgia, serif";
+
+const COPY = {
+  'pt-BR': {
+    eyebrow: 'DIRECTION OVER PROMPT · CAPÍTULO 01',
+    title: 'Quando Tudo Pode Ser Feito',
+    subtitle: 'O que se torna escasso quando criar se torna abundante?',
+    description:
+      'Um ensaio de Gessika Olivieri sobre direção, julgamento e autoria na era das mídias sintéticas.',
+    cta: 'LER O CAPÍTULO 01',
+    note: 'Leitura gratuita · edição em português brasileiro',
+    thesis: ['As ferramentas geram possibilidades.', 'A direção escolhe significado.'],
+    formTitle: 'Abra a edição de leitura',
+    consentEditorial:
+      'Concordo em receber o Capítulo 01 e comunicações editoriais relacionadas a Direction Over Prompt. Posso cancelar a qualquer momento.',
+    consentGeneral:
+      'Também quero receber novos ensaios, ferramentas e lançamentos da LolaLab Library.',
+    formCta: 'ABRIR MEU CAPÍTULO',
+    micro: 'Sem spam. Sem venda de dados. Cancelamento disponível em todos os e-mails.',
+    firstName: 'Primeiro nome (opcional)',
+    checkEmail:
+      'Quase lá. Enviamos um link de confirmação para o seu e-mail — abra-o para liberar a leitura.',
+    content: CH01_PT,
+    readPath: '/pt-br/library/direction-over-prompt/read',
+    landingPath: '/pt-br/library/direction-over-prompt',
+  },
+  en: {
+    eyebrow: 'DIRECTION OVER PROMPT · CHAPTER 01',
+    title: 'When Everything Can Be Made',
+    subtitle: 'What becomes scarce when making becomes abundant?',
+    description:
+      'An essay by Gessika Olivieri on direction, judgment and authorship in the age of synthetic media.',
+    cta: 'READ CHAPTER 01',
+    note: 'Complimentary reading · English edition',
+    thesis: ['Tools generate possibilities.', 'Direction chooses meaning.'],
+    formTitle: 'Open the reader edition',
+    consentEditorial:
+      'I agree to receive Chapter 01 and editorial communications related to Direction Over Prompt. I can unsubscribe at any time.',
+    consentGeneral:
+      'I would also like to receive new essays, tools and releases from the LolaLab Library.',
+    formCta: 'OPEN MY CHAPTER',
+    micro: 'No spam. No data sales. Unsubscribe at any time.',
+    firstName: 'First name (optional)',
+    checkEmail:
+      'Almost there. We sent a confirmation link to your email — open it to unlock the reading.',
+    content: CH01_EN,
+    readPath: '/en/library/direction-over-prompt/read',
+    landingPath: '/en/library/direction-over-prompt',
+  },
+} as const;
+
+function useSeo(title: string, description: string, path: string, loc?: Loc | 'neutral') {
+  useEffect(() => {
+    document.title = title;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', description);
+    document.documentElement.lang = loc === 'pt-BR' ? 'pt-BR' : 'en';
+    // canonical + hreflang (runtime · SPA — pré-render é pendência registrada)
+    document.querySelectorAll('link[data-dop-seo]').forEach((n) => n.remove());
+    const base = window.location.origin;
+    const add = (rel: string, href: string, hreflang?: string) => {
+      const l = document.createElement('link');
+      l.rel = rel;
+      l.href = href;
+      if (hreflang) l.setAttribute('hreflang', hreflang);
+      l.setAttribute('data-dop-seo', '1');
+      document.head.appendChild(l);
+    };
+    add('canonical', `${base}${path}`);
+    add('alternate', `${base}/pt-br/library/direction-over-prompt`, 'pt-BR');
+    add('alternate', `${base}/en/library/direction-over-prompt`, 'en');
+    add('alternate', `${base}/library/direction-over-prompt`, 'x-default');
+    window.scrollTo(0, 0);
+  }, [title, description, path, loc]);
+}
+
+const DopHeader = ({ current }: { current?: Loc }) => (
+  <header
+    className="px-6 md:px-12 py-6 flex items-center justify-between"
+    style={{ borderBottom: '1px solid hsl(30 14% 15% / 0.1)' }}
+  >
+    <Link to="/" className="flex items-baseline gap-3" style={{ color: ink }}>
+      <span style={{ fontWeight: 800, fontSize: '1.125rem', letterSpacing: '-0.02em' }}>
+        LolaLab.
+      </span>
+      <span style={{ ...label, fontSize: '0.6rem' }}>Library</span>
+    </Link>
+    <nav className="flex items-center gap-4" aria-label="Reading edition">
+      <Link
+        to="/pt-br/library/direction-over-prompt"
+        style={{
+          ...label,
+          fontSize: '0.65rem',
+          color: current === 'pt-BR' ? ink : bronze,
+          borderBottom: current === 'pt-BR' ? `1px solid ${ink}` : 'none',
+        }}
+      >
+        PT
+      </Link>
+      <span style={{ color: inkSoft }}>·</span>
+      <Link
+        to="/en/library/direction-over-prompt"
+        style={{
+          ...label,
+          fontSize: '0.65rem',
+          color: current === 'en' ? ink : bronze,
+          borderBottom: current === 'en' ? `1px solid ${ink}` : 'none',
+        }}
+      >
+        EN
+      </Link>
+    </nav>
+  </header>
+);
+
+/* ───────────────────────── Rota neutra ───────────────────────── */
+export const DopNeutral = () => {
+  useSeo(
+    'Direction Over Prompt · Chapter 01 · LolaLab Library',
+    'Choose your reading edition — Português or English.',
+    '/library/direction-over-prompt',
+    'neutral',
+  );
+  useEffect(() => track('dop_landing_view', { route: 'neutral' }), []);
+  const suggestPt = (navigator.language || '').toLowerCase().startsWith('pt');
+
+  return (
+    <main className="min-h-screen" style={{ backgroundColor: 'hsl(var(--background))', color: ink }}>
+      <DopHeader />
+      <section className="px-6 md:px-12 pt-28 md:pt-40 pb-24 text-center">
+        <span className="block mb-6" style={label}>
+          DIRECTION OVER PROMPT · CHAPTER 01
+        </span>
+        <h1
+          className="mb-10"
+          style={{
+            fontFamily: serif,
+            fontSize: 'clamp(2rem, 4vw, 3.25rem)',
+            fontWeight: 400,
+            letterSpacing: '-0.02em',
+            color: ink,
+          }}
+        >
+          Choose your reading edition.
+        </h1>
+        <div className="flex flex-wrap justify-center gap-4">
+          {(
+            [
+              ['pt-BR', 'Português', '/pt-br/library/direction-over-prompt', suggestPt],
+              ['en', 'English', '/en/library/direction-over-prompt', !suggestPt],
+            ] as const
+          ).map(([loc, name, path, suggested]) => (
+            <Link
+              key={loc}
+              to={path}
+              onClick={() => track('dop_language_selected', { locale: loc })}
+              className="px-10 py-4 transition-all duration-300 hover:opacity-85"
+              style={{
+                backgroundColor: suggested ? ink : 'transparent',
+                color: suggested ? 'hsl(var(--background))' : ink,
+                border: `1px solid ${ink}`,
+                borderRadius: '9999px',
+                fontSize: '0.75rem',
+                fontWeight: 500,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+              }}
+            >
+              {name}
+            </Link>
+          ))}
+        </div>
+        {suggestPt !== undefined && (
+          <p className="mt-6" style={{ fontSize: '0.8125rem', fontWeight: 300, color: inkSoft }}>
+            {suggestPt
+              ? 'Seu navegador sugere português — a escolha é sua.'
+              : 'Your browser suggests English — the choice is yours.'}
+          </p>
+        )}
+      </section>
+    </main>
+  );
+};
+
+/* ───────────────────────── Landing por idioma ───────────────────────── */
+export const DopLanding = ({ loc }: { loc: Loc }) => {
+  const c = COPY[loc];
+  const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [consentEd, setConsentEd] = useState(false);
+  const [consentGen, setConsentGen] = useState(false);
+  const [website, setWebsite] = useState(''); // honeypot
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [devConfirm, setDevConfirm] = useState<string | null>(null);
+
+  useSeo(`${c.title} · Direction Over Prompt · LolaLab`, c.description, c.landingPath, loc);
+  useEffect(() => track('dop_landing_view', { locale: loc }), [loc]);
+
+  // já confirmado neste navegador? oferecer leitura direta
+  const alreadyConfirmed = useMemo(
+    () => localStorage.getItem('dop_confirmed') === 'true',
+    [],
+  );
+
+  const preview = c.content.sections[0];
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (status === 'sending') return;
+    if (!consentEd) return;
+    setStatus('sending');
+    try {
+      const { data, error } = await supabase.functions.invoke('dop', {
+        body: {
+          action: 'subscribe',
+          email,
+          first_name: firstName || undefined,
+          locale: loc,
+          source: 'dop_landing',
+          utm_source: params.get('utm_source') ?? undefined,
+          utm_medium: params.get('utm_medium') ?? undefined,
+          utm_campaign: params.get('utm_campaign') ?? undefined,
+          utm_content: params.get('utm_content') ?? undefined,
+          referrer: document.referrer || undefined,
+          consent_editorial: consentEd,
+          consent_general: consentGen,
+          website, // honeypot
+        },
+      });
+      if (error) throw error;
+      setStatus('sent');
+      track('dop_form_submitted', { locale: loc });
+      if (data?.confirm_url) setDevConfirm(data.confirm_url); // DOP_DEV_MODE (staging QA)
+    } catch {
+      setStatus('error');
+    }
+  };
+
+  return (
+    <main className="min-h-screen" style={{ backgroundColor: 'hsl(var(--background))', color: ink }}>
+      <DopHeader current={loc} />
+
+      {/* Abertura editorial */}
+      <section className="px-6 md:px-12 pt-24 md:pt-36 pb-16 text-center">
+        <span className="block mb-6" style={label}>
+          {c.eyebrow}
+        </span>
+        <h1
+          className="mb-5 mx-auto max-w-[16ch]"
+          style={{
+            fontFamily: serif,
+            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+            fontWeight: 400,
+            letterSpacing: '-0.025em',
+            lineHeight: 1.05,
+            color: ink,
+          }}
+        >
+          {c.title}
+        </h1>
+        <p
+          className="mb-6 mx-auto max-w-[46ch]"
+          style={{ fontFamily: serif, fontStyle: 'italic', fontSize: '1.25rem', color: inkSoft }}
+        >
+          {c.subtitle}
+        </p>
+        <p
+          className="mb-10 mx-auto max-w-[52ch]"
+          style={{ fontSize: '1rem', fontWeight: 300, lineHeight: 1.7, color: inkSoft }}
+        >
+          {c.description}
+        </p>
+        <a
+          href="#preview"
+          onClick={() => track('dop_preview_started', { locale: loc })}
+          className="inline-block px-10 py-4 transition-all duration-300 hover:opacity-85"
+          style={{
+            backgroundColor: ink,
+            color: 'hsl(var(--background))',
+            borderRadius: '9999px',
+            fontSize: '0.75rem',
+            fontWeight: 500,
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+          }}
+        >
+          {c.cta}
+        </a>
+        <p className="mt-4" style={{ fontSize: '0.8125rem', fontWeight: 300, color: inkSoft }}>
+          {c.note}
+        </p>
+      </section>
+
+      {/* Preview · primeira seção integral (corte narrativo natural) */}
+      <section id="preview" className="px-6 md:px-12 py-16 md:py-24">
+        <article
+          className="mx-auto max-w-[680px]"
+          style={{ fontFamily: serif, fontSize: '1.1875rem', fontWeight: 400, lineHeight: 1.85 }}
+        >
+          <p className="mb-10 text-center" style={{ ...label, fontSize: '0.6rem' }}>
+            {c.content.edition}
+          </p>
+          <h2 className="mb-8" style={{ ...label, fontSize: '0.75rem', color: ink }}>
+            {preview.heading}
+          </h2>
+          {preview.paragraphs.map((p, i) => (
+            <p key={i} className="mb-6">
+              {p}
+            </p>
+          ))}
+        </article>
+      </section>
+
+      {/* Tese em grande escala */}
+      <section
+        className="px-6 md:px-12 py-24 md:py-36 text-center"
+        style={{ backgroundColor: 'hsl(var(--ink))' }}
+      >
+        <p
+          style={{
+            fontFamily: serif,
+            fontSize: 'clamp(1.75rem, 4.2vw, 3.25rem)',
+            fontWeight: 300,
+            lineHeight: 1.3,
+            letterSpacing: '-0.015em',
+            color: '#FFFFFF',
+          }}
+        >
+          {c.thesis[0]}
+          <br />
+          <span style={{ color: 'hsl(var(--bronze-soft))' }}>{c.thesis[1]}</span>
+        </p>
+      </section>
+
+      {/* Formulário de leitores */}
+      <section className="px-6 md:px-12 py-20 md:py-28">
+        <div className="mx-auto max-w-[560px]">
+          {alreadyConfirmed ? (
+            <div className="text-center">
+              <p className="mb-6" style={{ fontFamily: serif, fontSize: '1.25rem', color: ink }}>
+                {loc === 'pt-BR' ? 'Seu acesso já está aberto.' : 'Your access is already open.'}
+              </p>
+              <Link
+                to={c.readPath}
+                className="inline-block px-10 py-4 transition-all duration-300 hover:opacity-85"
+                style={{
+                  backgroundColor: ink,
+                  color: 'hsl(var(--background))',
+                  borderRadius: '9999px',
+                  fontSize: '0.75rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {loc === 'pt-BR' ? 'CONTINUAR LENDO' : 'CONTINUE READING'}
+              </Link>
+            </div>
+          ) : status === 'sent' ? (
+            <div className="text-center">
+              <p className="mb-4" style={{ fontFamily: serif, fontSize: '1.25rem', lineHeight: 1.6, color: ink }}>
+                {c.checkEmail}
+              </p>
+              {devConfirm && (
+                <a
+                  href={devConfirm}
+                  className="inline-block mt-2"
+                  style={{ ...label, fontSize: '0.65rem', textDecoration: 'underline' }}
+                >
+                  [staging] open confirmation link
+                </a>
+              )}
+            </div>
+          ) : (
+            <form onSubmit={submit}>
+              <p className="mb-8 text-center" style={{ ...label, color: ink }}>
+                {c.formTitle}
+              </p>
+              {/* honeypot — invisível para humanos */}
+              <input
+                type="text"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                style={{ position: 'absolute', left: '-5000px', height: 0, width: 0, opacity: 0 }}
+              />
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@domain.com"
+                className="w-full py-3.5 px-5 mb-3 focus:outline-none"
+                style={{
+                  backgroundColor: 'transparent',
+                  color: ink,
+                  border: '1px solid hsl(30 14% 15% / 0.25)',
+                  borderRadius: '9999px',
+                  fontSize: '0.9375rem',
+                  fontWeight: 300,
+                }}
+              />
+              <input
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder={c.firstName}
+                className="w-full py-3.5 px-5 mb-5 focus:outline-none"
+                style={{
+                  backgroundColor: 'transparent',
+                  color: ink,
+                  border: '1px solid hsl(30 14% 15% / 0.18)',
+                  borderRadius: '9999px',
+                  fontSize: '0.9375rem',
+                  fontWeight: 300,
+                }}
+              />
+              <label
+                className="flex items-start gap-3 mb-3 cursor-pointer"
+                style={{ fontSize: '0.8125rem', fontWeight: 300, lineHeight: 1.55, color: inkSoft }}
+              >
+                <input
+                  type="checkbox"
+                  checked={consentEd}
+                  onChange={(e) => setConsentEd(e.target.checked)}
+                  className="mt-1"
+                  required
+                />
+                <span>{c.consentEditorial}</span>
+              </label>
+              <label
+                className="flex items-start gap-3 mb-7 cursor-pointer"
+                style={{ fontSize: '0.8125rem', fontWeight: 300, lineHeight: 1.55, color: inkSoft }}
+              >
+                <input
+                  type="checkbox"
+                  checked={consentGen}
+                  onChange={(e) => setConsentGen(e.target.checked)}
+                  className="mt-1"
+                />
+                <span>{c.consentGeneral}</span>
+              </label>
+              <button
+                type="submit"
+                disabled={status === 'sending' || !consentEd}
+                className="w-full py-4 transition-all duration-300 hover:opacity-85 disabled:opacity-40"
+                style={{
+                  backgroundColor: ink,
+                  color: 'hsl(var(--background))',
+                  borderRadius: '9999px',
+                  fontSize: '0.75rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {c.formCta}
+              </button>
+              <p className="mt-4 text-center" style={{ fontSize: '0.75rem', fontWeight: 300, color: inkSoft }}>
+                {c.micro}
+              </p>
+              {status === 'error' && (
+                <p className="mt-3 text-center" style={{ fontSize: '0.8125rem', color: bronze }}>
+                  {loc === 'pt-BR' ? 'Algo falhou — tente de novo.' : 'Something slipped — try again.'}
+                </p>
+              )}
+            </form>
+          )}
+        </div>
+      </section>
+    </main>
+  );
+};
+
+/* ───────────────────────── Confirmação ───────────────────────── */
+export const DopConfirmed = ({ loc }: { loc: Loc }) => {
+  const c = COPY[loc];
+  const [params] = useSearchParams();
+  const [state, setState] = useState<'working' | 'ok' | 'expired' | 'invalid'>('working');
+  useSeo(`Confirmed · Direction Over Prompt · LolaLab`, c.description, c.landingPath, loc);
+
+  useEffect(() => {
+    const token = params.get('token') ?? '';
+    (async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke('dop', {
+          body: { action: 'confirm', token },
+        });
+        if (error) throw error;
+        if (data?.ok) {
+          localStorage.setItem('dop_confirmed', 'true');
+          setState('ok');
+          track('dop_email_confirmed', { locale: loc });
+        } else setState('invalid');
+      } catch (e: any) {
+        setState(/410|expired/i.test(String(e?.message)) ? 'expired' : 'invalid');
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <main className="min-h-screen" style={{ backgroundColor: 'hsl(var(--background))', color: ink }}>
+      <DopHeader current={loc} />
+      <section className="px-6 md:px-12 pt-32 pb-24 text-center">
+        {state === 'working' && (
+          <p style={{ fontFamily: serif, fontSize: '1.25rem', color: inkSoft }}>…</p>
+        )}
+        {state === 'ok' && (
+          <>
+            <p className="mb-8" style={{ fontFamily: serif, fontSize: '1.5rem', color: ink }}>
+              {loc === 'pt-BR' ? 'Seu acesso está aberto.' : 'Your access is open.'}
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link
+                to={c.readPath}
+                onClick={() => track('dop_reader_opened', { locale: loc, via: 'confirmed' })}
+                className="px-10 py-4 transition-all duration-300 hover:opacity-85"
+                style={{
+                  backgroundColor: ink,
+                  color: 'hsl(var(--background))',
+                  borderRadius: '9999px',
+                  fontSize: '0.75rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {loc === 'pt-BR' ? 'LER NO NAVEGADOR' : 'READ ONLINE'}
+              </Link>
+              <a
+                href={
+                  loc === 'pt-BR'
+                    ? '/downloads/Direction_Over_Prompt_CH01_PT-BR_Reader_Edition_v1.pdf'
+                    : '/downloads/Direction_Over_Prompt_CH01_EN_Reader_Edition_v1.pdf'
+                }
+                onClick={() => track('dop_pdf_downloaded', { locale: loc })}
+                className="px-10 py-4 transition-all duration-300 hover:opacity-85"
+                style={{
+                  backgroundColor: 'transparent',
+                  color: ink,
+                  border: `1px solid ${ink}`,
+                  borderRadius: '9999px',
+                  fontSize: '0.75rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {loc === 'pt-BR' ? 'BAIXAR O PDF' : 'DOWNLOAD THE PDF'}
+              </a>
+            </div>
+          </>
+        )}
+        {(state === 'expired' || state === 'invalid') && (
+          <>
+            <p className="mb-6" style={{ fontFamily: serif, fontSize: '1.25rem', color: ink }}>
+              {state === 'expired'
+                ? loc === 'pt-BR'
+                  ? 'Este link expirou.'
+                  : 'This link has expired.'
+                : loc === 'pt-BR'
+                  ? 'Link inválido.'
+                  : 'Invalid link.'}
+            </p>
+            <Link to={c.landingPath} style={{ ...label, textDecoration: 'underline' }}>
+              {loc === 'pt-BR' ? 'Pedir um novo link' : 'Request a new link'}
+            </Link>
+          </>
+        )}
+      </section>
+    </main>
+  );
+};
+
+/* ───────────────────────── Leitura integral ───────────────────────── */
+export const DopRead = ({ loc }: { loc: Loc }) => {
+  const c = COPY[loc];
+  const navigate = useNavigate();
+  const confirmed = localStorage.getItem('dop_confirmed') === 'true';
+  useSeo(`${c.title} · Reader · LolaLab`, c.description, c.readPath, loc);
+
+  useEffect(() => {
+    if (!confirmed) navigate(c.landingPath, { replace: true });
+    else track('dop_reader_opened', { locale: loc });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!confirmed) return null;
+  const ch = c.content;
+
+  return (
+    <main className="min-h-screen" style={{ backgroundColor: 'hsl(var(--background))', color: ink }}>
+      <DopHeader current={loc} />
+      <article className="px-6 md:px-12 py-20 md:py-28">
+        <div className="mx-auto max-w-[680px]">
+          <p className="mb-3 text-center" style={{ ...label, fontSize: '0.6rem' }}>
+            {ch.edition}
+          </p>
+          <h1
+            className="mb-3 text-center"
+            style={{
+              fontFamily: serif,
+              fontSize: 'clamp(2.25rem, 5vw, 3.5rem)',
+              fontWeight: 400,
+              letterSpacing: '-0.02em',
+              lineHeight: 1.08,
+            }}
+          >
+            {ch.title}
+          </h1>
+          <p className="mb-2 text-center" style={{ ...label, fontSize: '0.65rem', color: inkSoft }}>
+            {ch.chapter}
+          </p>
+          <p
+            className="mb-16 text-center"
+            style={{ fontFamily: serif, fontStyle: 'italic', fontSize: '1.125rem', color: inkSoft }}
+          >
+            {ch.question}
+          </p>
+
+          <div style={{ fontFamily: serif, fontSize: '1.1875rem', lineHeight: 1.85 }}>
+            {ch.sections.map((s, i) => (
+              <section key={i} className="mb-14">
+                {s.heading && (
+                  <h2 className="mb-6" style={{ ...label, fontSize: '0.75rem', color: ink }}>
+                    {s.heading}
+                  </h2>
+                )}
+                {s.paragraphs.map((p, j) => (
+                  <p
+                    key={j}
+                    className="mb-6"
+                    style={
+                      s.heading === 'NOTAS' || s.heading === 'NOTES'
+                        ? { fontSize: '0.9375rem', color: inkSoft, fontFamily: 'Inter, sans-serif', fontWeight: 300, lineHeight: 1.6 }
+                        : undefined
+                    }
+                  >
+                    {p}
+                  </p>
+                ))}
+              </section>
+            ))}
+          </div>
+
+          {/* Página final canônica */}
+          <div
+            className="mt-20 pt-12 text-center"
+            style={{ borderTop: '1px solid hsl(30 14% 15% / 0.15)' }}
+          >
+            <p
+              className="mx-auto mb-8 max-w-[52ch]"
+              style={{ fontFamily: serif, fontSize: '1.125rem', lineHeight: 1.7, color: inkSoft }}
+            >
+              {ch.closing}
+            </p>
+            <p style={{ ...label, fontSize: '0.65rem' }}>
+              Gessika Olivieri · LolaLab
+            </p>
+            <p className="mt-2" style={{ fontSize: '0.7rem', fontWeight: 300, color: inkSoft }}>
+              © 2026 LolaLab · Direction Over Prompt
+            </p>
+            <div className="mt-10 flex flex-wrap justify-center gap-5">
+              <a
+                href={
+                  loc === 'pt-BR'
+                    ? '/downloads/Direction_Over_Prompt_CH01_PT-BR_Reader_Edition_v1.pdf'
+                    : '/downloads/Direction_Over_Prompt_CH01_EN_Reader_Edition_v1.pdf'
+                }
+                onClick={() => track('dop_pdf_downloaded', { locale: loc, via: 'reader' })}
+                style={{ ...label, textDecoration: 'underline' }}
+              >
+                {loc === 'pt-BR' ? 'Baixar o PDF' : 'Download the PDF'}
+              </a>
+              <button
+                onClick={async () => {
+                  const url = window.location.origin + c.landingPath;
+                  try {
+                    if (navigator.share) await navigator.share({ title: 'Direction Over Prompt', url });
+                    else await navigator.clipboard.writeText(url);
+                    track('dop_shared', { locale: loc });
+                  } catch {
+                    /* cancelado */
+                  }
+                }}
+                style={{ ...label, textDecoration: 'underline', background: 'none' }}
+              >
+                {loc === 'pt-BR' ? 'Compartilhar' : 'Share'}
+              </button>
+              <Link
+                to={loc === 'pt-BR' ? '/en/library/direction-over-prompt/read' : '/pt-br/library/direction-over-prompt/read'}
+                style={{ ...label, textDecoration: 'underline' }}
+              >
+                {loc === 'pt-BR' ? 'Read in English' : 'Ler em português'}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </article>
+    </main>
+  );
+};
+
+/* ───────────────────────── Interesse ES ───────────────────────── */
+export const DopSpanish = () => {
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [consent, setConsent] = useState(false);
+  const [website, setWebsite] = useState('');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  useSeo(
+    'Direction Over Prompt · Edición en español · LolaLab',
+    'La edición en español todavía está en preparación.',
+    '/es/library/direction-over-prompt',
+  );
+  useEffect(() => track('dop_spanish_interest', { stage: 'view' }), []);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!consent || status === 'sending') return;
+    setStatus('sending');
+    try {
+      const { error } = await supabase.functions.invoke('dop', {
+        body: {
+          action: 'subscribe',
+          email,
+          first_name: firstName || undefined,
+          locale: 'es',
+          locale_interest: 'es',
+          source: 'dop_es_interest',
+          consent_editorial: consent,
+          website,
+        },
+      });
+      if (error) throw error;
+      setStatus('sent');
+      track('dop_spanish_interest', { stage: 'submitted' });
+    } catch {
+      setStatus('error');
+    }
+  };
+
+  return (
+    <main className="min-h-screen" style={{ backgroundColor: 'hsl(var(--background))', color: ink }}>
+      <DopHeader />
+      <section className="px-6 md:px-12 pt-28 md:pt-40 pb-24 text-center">
+        <span className="block mb-6" style={label}>
+          DIRECTION OVER PROMPT
+        </span>
+        <h1
+          className="mb-6"
+          style={{ fontFamily: serif, fontSize: 'clamp(1.75rem, 3.6vw, 2.75rem)', fontWeight: 400, color: ink }}
+        >
+          ¿Prefieres leerlo en español?
+        </h1>
+        <p className="mb-10" style={{ fontSize: '1rem', fontWeight: 300, color: inkSoft }}>
+          La edición en español todavía está en preparación.
+        </p>
+        {status === 'sent' ? (
+          <p style={{ fontFamily: serif, fontSize: '1.125rem', color: ink }}>
+            Gracias. Te avisaremos cuando la edición esté lista.
+          </p>
+        ) : (
+          <form onSubmit={submit} className="mx-auto max-w-[480px]">
+            <input
+              type="text"
+              value={website}
+              onChange={(e) => setWebsite(e.target.value)}
+              tabIndex={-1}
+              aria-hidden="true"
+              style={{ position: 'absolute', left: '-5000px', height: 0, width: 0, opacity: 0 }}
+            />
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="tu@dominio.com"
+              className="w-full py-3.5 px-5 mb-3 focus:outline-none"
+              style={{
+                backgroundColor: 'transparent',
+                color: ink,
+                border: '1px solid hsl(30 14% 15% / 0.25)',
+                borderRadius: '9999px',
+                fontSize: '0.9375rem',
+                fontWeight: 300,
+              }}
+            />
+            <input
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="Nombre (opcional)"
+              className="w-full py-3.5 px-5 mb-5 focus:outline-none"
+              style={{
+                backgroundColor: 'transparent',
+                color: ink,
+                border: '1px solid hsl(30 14% 15% / 0.18)',
+                borderRadius: '9999px',
+                fontSize: '0.9375rem',
+                fontWeight: 300,
+              }}
+            />
+            <label
+              className="flex items-start gap-3 mb-7 cursor-pointer text-left"
+              style={{ fontSize: '0.8125rem', fontWeight: 300, lineHeight: 1.55, color: inkSoft }}
+            >
+              <input
+                type="checkbox"
+                checked={consent}
+                onChange={(e) => setConsent(e.target.checked)}
+                className="mt-1"
+                required
+              />
+              <span>
+                Acepto recibir el aviso de disponibilidad y comunicaciones editoriales de
+                Direction Over Prompt. Puedo cancelar en cualquier momento.
+              </span>
+            </label>
+            <button
+              type="submit"
+              disabled={status === 'sending' || !consent}
+              className="w-full py-4 transition-all duration-300 hover:opacity-85 disabled:opacity-40"
+              style={{
+                backgroundColor: ink,
+                color: 'hsl(var(--background))',
+                borderRadius: '9999px',
+                fontSize: '0.75rem',
+                fontWeight: 500,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+              }}
+            >
+              AVÍSAME CUANDO ESTÉ DISPONIBLE
+            </button>
+            {status === 'error' && (
+              <p className="mt-3" style={{ fontSize: '0.8125rem', color: bronze }}>
+                Algo falló — inténtalo de nuevo.
+              </p>
+            )}
+          </form>
+        )}
+      </section>
+    </main>
+  );
+};
