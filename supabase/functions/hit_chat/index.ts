@@ -9,6 +9,12 @@ const corsHeaders = {
 };
 
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
+// Multi-modelo (canon Gé 11/jul): slots para Anthropic e Gemini — ativam
+// sozinhos quando as chaves forem adicionadas como secrets.
+const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY") ?? "";
+const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY") ?? "";
+// Créditos de degustação por conta (tunável via secret FREE_CREDITS).
+const FREE_CREDITS = parseInt(Deno.env.get("FREE_CREDITS") ?? "20", 10);
 // V2 do prompt (secret LOLALAB_FILTER_PROMPT_V2) tem precedência quando setada.
 // Rollback instantâneo: apagar o secret V2 e a V1 volta a valer.
 const FILTER_PROMPT =
@@ -74,15 +80,49 @@ Deno.serve(async (req) => {
 
     const userId = await getUserIdFromAuth(req);
 
+    // Ambiente fechado (canon Gé 11/jul): login vem antes de conversar.
+    if (!userId) {
+      return json({ error: "auth_required" }, 401);
+    }
+
     // Entitlement (Founding/Personal/Studio): controla o frost-glass do Pack no frontend.
     let entitled = false;
-    if (userId) {
+    {
       const { data: ent } = await admin
         .from("entitlements")
         .select("user_id")
         .eq("user_id", userId)
         .maybeSingle();
       entitled = !!ent;
+    }
+
+    // Créditos de degustação: cada conta nasce com FREE_CREDITS; assinante
+    // não consome. Saudações de abertura não descontam (são cortesia).
+    let credits: number | null = null;
+    if (!entitled) {
+      // cria a carteira na primeira conversa (sem tocar em carteiras existentes)
+      await admin
+        .from("user_credits")
+        .upsert(
+          { user_id: userId, credits: FREE_CREDITS },
+          { onConflict: "user_id", ignoreDuplicates: true },
+        );
+      const { data: row } = await admin
+        .from("user_credits")
+        .select("credits")
+        .eq("user_id", userId)
+        .maybeSingle();
+      credits = row?.credits ?? FREE_CREDITS;
+      if (credits <= 0) {
+        return json({
+          ai_response:
+            "Your tasting credits are spent — and the spine of this conversation stays saved. To keep working with Walter (and unlock the technical layer, exports and long-term memory), join the Founding Access: hello@lolalabstudio.com.",
+          message_id: null,
+          latency_ms: 0,
+          credits_remaining: 0,
+          credits_exhausted: true,
+        });
+      }
     }
 
     const ip =
@@ -163,7 +203,13 @@ Deno.serve(async (req) => {
         })
         .select("id")
         .single();
-      return json({ ai_response, message_id: inserted?.id ?? null, latency_ms: 0 });
+      // saudação é cortesia: não desconta crédito
+      return json({
+        ai_response,
+        message_id: inserted?.id ?? null,
+        latency_ms: 0,
+        credits_remaining: credits,
+      });
     }
 
     const started = Date.now();
@@ -219,6 +265,100 @@ Deno.serve(async (req) => {
       if (!modelMissing) break; // erro real (quota, auth): não adianta trocar de modelo
     }
 
+    // Slot Anthropic (Claude): entra em cena quando ANTHROPIC_API_KEY existir.
+    if (!data && ANTHROPIC_API_KEY) {
+      for (const model of ["claude-sonnet-5", "claude-opus-4-8"]) {
+        const anthMessages = messages.slice(1).map((m: any) =>
+          typeof m.content === "string"
+            ? { role: m.role, content: m.content }
+            : {
+                role: m.role,
+                content: m.content.map((c: any) =>
+                  c.type === "text"
+                    ? { type: "text", text: c.text }
+                    : {
+                        type: "image",
+                        source: {
+                          type: "base64",
+                          media_type: c.image_url.url.slice(5, c.image_url.url.indexOf(";")),
+                          data: c.image_url.url.split(",")[1],
+                        },
+                      },
+                ),
+              },
+        );
+        const r = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            "x-api-key": ANTHROPIC_API_KEY,
+            "anthropic-version": "2023-06-01",
+          },
+          body: JSON.stringify({
+            model,
+            system: FILTER_PROMPT,
+            max_tokens: 2048,
+            messages: anthMessages,
+          }),
+        });
+        if (r.ok) {
+          const j = await r.json();
+          const text = j?.content?.[0]?.text ?? "";
+          if (text) {
+            data = { choices: [{ message: { content: text } }] };
+            usedModel = model;
+            break;
+          }
+        } else {
+          console.error("anthropic error", model, r.status, (await r.text()).slice(0, 200));
+        }
+      }
+    }
+
+    // Slot Gemini: idem, quando GEMINI_API_KEY existir.
+    if (!data && GEMINI_API_KEY) {
+      for (const model of ["gemini-2.5-pro", "gemini-2.0-flash"]) {
+        const contents = messages.slice(1).map((m: any) => ({
+          role: m.role === "assistant" ? "model" : "user",
+          parts:
+            typeof m.content === "string"
+              ? [{ text: m.content }]
+              : m.content.map((c: any) =>
+                  c.type === "text"
+                    ? { text: c.text }
+                    : {
+                        inline_data: {
+                          mime_type: c.image_url.url.slice(5, c.image_url.url.indexOf(";")),
+                          data: c.image_url.url.split(",")[1],
+                        },
+                      },
+                ),
+        }));
+        const r = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`,
+          {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+              system_instruction: { parts: [{ text: FILTER_PROMPT }] },
+              contents,
+            }),
+          },
+        );
+        if (r.ok) {
+          const j = await r.json();
+          const text = j?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+          if (text) {
+            data = { choices: [{ message: { content: text } }] };
+            usedModel = model;
+            break;
+          }
+        } else {
+          console.error("gemini error", model, r.status, (await r.text()).slice(0, 200));
+        }
+      }
+    }
+
     if (!data) {
       return json(
         {
@@ -268,6 +408,17 @@ Deno.serve(async (req) => {
 
     if (insErr) console.error("insert error", insErr);
 
+    // Desconta 1 crédito por resposta do modelo (assinante não consome).
+    let credits_remaining: number | null = null;
+    if (!entitled && credits !== null) {
+      credits_remaining = Math.max(0, credits - 1);
+      const { error: credErr } = await admin
+        .from("user_credits")
+        .update({ credits: credits_remaining })
+        .eq("user_id", userId);
+      if (credErr) console.error("credit decrement error", credErr);
+    }
+
     // Paywall de utilidade: a camada 6 (prompts técnicos) só sai da API para
     // assinantes. O texto completo fica no banco — vira histórico/contexto e é
     // liberado quando o entitlement chegar. Enforcement no servidor, não no CSS.
@@ -288,6 +439,7 @@ Deno.serve(async (req) => {
       is_pack,
       entitled,
       tech_locked,
+      credits_remaining,
     });
   } catch (e) {
     console.error(e);

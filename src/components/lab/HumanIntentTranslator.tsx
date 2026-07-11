@@ -40,6 +40,7 @@ const HumanIntentTranslator = ({ initialIntent, onConversationChange }: Props) =
   // Voz (ditado nativo do navegador) e imagem de referência
   const [listening, setListening] = useState(false);
   const [attachedImage, setAttachedImage] = useState<string | null>(null);
+  const [credits, setCredits] = useState<number | null>(null);
   const recognitionRef = useRef<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -138,6 +139,8 @@ const HumanIntentTranslator = ({ initialIntent, onConversationChange }: Props) =
           tech_locked: data?.tech_locked === true,
         },
       ]);
+      if (typeof data?.credits_remaining === 'number') setCredits(data.credits_remaining);
+      if (data?.entitled === true) setCredits(null);
     } catch (e) {
       setMessages((m) => [
         ...m,
@@ -287,6 +290,58 @@ const HumanIntentTranslator = ({ initialIntent, onConversationChange }: Props) =
         </div>
       </div>
 
+      {/* Ambiente fechado (canon Gé 11/jul): o login vem antes da conversa. */}
+      {!user ? (
+        <div
+          className="mt-8 px-8 py-12 text-center"
+          style={{
+            border: '1px solid hsl(var(--background) / 0.14)',
+            backgroundColor: 'hsl(var(--background) / 0.03)',
+            borderRadius: '2px',
+          }}
+        >
+          <p
+            className="mb-3"
+            style={{
+              fontFamily: "'Newsreader', Georgia, serif",
+              fontSize: '1.375rem',
+              fontWeight: 300,
+              lineHeight: 1.5,
+              color: 'hsl(var(--background) / 0.95)',
+            }}
+          >
+            Walter works in a closed room.
+          </p>
+          <p
+            className="mb-8 max-w-[440px] mx-auto"
+            style={{
+              fontSize: '0.9375rem',
+              fontWeight: 300,
+              lineHeight: 1.65,
+              color: 'hsl(var(--cool-gray-secondary))',
+            }}
+          >
+            Sign in to enter — just your email, no password. Your conversations stay
+            saved, and LolaLab gives you tasting credits to try the instrument.
+          </p>
+          <Link
+            to="/auth"
+            className="inline-block px-9 py-3.5 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
+            style={{
+              backgroundColor: 'hsl(var(--bronze-soft))',
+              color: 'hsl(var(--ink))',
+              borderRadius: '9999px',
+              fontSize: '0.7rem',
+              fontWeight: 500,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+            }}
+          >
+            Enter the room →
+          </Link>
+        </div>
+      ) : (
+      <>
       {user && (
         <PastConversations onResume={resumeSession} currentSessionId={sessionId} />
       )}
@@ -527,6 +582,26 @@ const HumanIntentTranslator = ({ initialIntent, onConversationChange }: Props) =
           <ArrowRight className="w-5 h-5" />
         </button>
       </div>
+
+      {/* Contador de créditos (canon Gé 11/jul): a degustação é transparente. */}
+      {credits !== null && (
+        <p
+          className="mt-3 text-center"
+          style={{
+            fontSize: '0.7rem',
+            fontWeight: 400,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: credits <= 3 ? 'hsl(var(--bronze-soft))' : 'hsl(var(--background) / 0.4)',
+          }}
+        >
+          {credits === 0
+            ? 'Tasting credits spent · Founding Access is unlimited'
+            : `LolaLab gives you ${credits} tasting credit${credits === 1 ? '' : 's'} · Founding Access is unlimited`}
+        </p>
+      )}
+      </>
+      )}
     </div>
   );
 };
