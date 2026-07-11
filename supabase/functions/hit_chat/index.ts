@@ -167,45 +167,59 @@ Deno.serve(async (req) => {
     }
 
     const started = Date.now();
-    const r = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        // upgrade p/ frontier: o comportamento conversacional do V2 (pergunta única,
-        // não-colonização) exige instruction-following que o 4o-mini não sustenta.
-        // Margem já modelada no Deal Memo p/ modelo frontier (80%+ a €19).
-        model: "gpt-4.1",
-        messages: [
-          { role: "system", content: FILTER_PROMPT },
-          // v4 — últimos ~12 turnos como contexto (cap pra controlar custo/token)
-          ...priorTurns.slice(-12).flatMap((h) => [
-            { role: "user", content: h.user_message },
-            { role: "assistant", content: h.ai_response },
-          ]),
-          // Imagem de referência: entra como conteúdo multimodal (detail low
-          // controla custo). O Walter lê a imagem como material criativo.
-          image
-            ? {
-                role: "user",
-                content: [
-                  { type: "text", text: trimmed },
-                  { type: "image_url", image_url: { url: image, detail: "low" } },
-                ],
-              }
-            : { role: "user", content: trimmed },
-        ],
-        // 0.5–0.6 (QA Mary): acima disso o modelo desobedece a pergunta única
-        // e inventa clichê; abaixo fica robótico. 0.55 = meio-termo calibrado.
-        temperature: 0.55,
-      }),
-    });
+    // Cadeia de modelos: tenta o mais avançado disponível na conta e cai de
+    // volta sozinho se o ID não existir (à prova de futuro — canon Gé 11/jul).
+    const MODEL_CANDIDATES = ["gpt-5.1", "gpt-5", "gpt-4.1"];
+    const messages = [
+      { role: "system", content: FILTER_PROMPT },
+      // v4 — últimos ~12 turnos como contexto (cap pra controlar custo/token)
+      ...priorTurns.slice(-12).flatMap((h) => [
+        { role: "user", content: h.user_message },
+        { role: "assistant", content: h.ai_response },
+      ]),
+      // Imagem de referência: entra como conteúdo multimodal (detail low
+      // controla custo). O Walter lê a imagem como material criativo.
+      image
+        ? {
+            role: "user",
+            content: [
+              { type: "text", text: trimmed },
+              { type: "image_url", image_url: { url: image, detail: "low" } },
+            ],
+          }
+        : { role: "user", content: trimmed },
+    ];
 
-    if (!r.ok) {
+    let data: any = null;
+    let usedModel = "";
+    for (const model of MODEL_CANDIDATES) {
+      const params: Record<string, unknown> = { model, messages };
+      if (!model.startsWith("gpt-5")) {
+        // 0.5–0.6 (QA Mary): acima disso o modelo desobedece a pergunta única
+        // e inventa clichê. Família gpt-5 pode não aceitar temperature — omite.
+        params.temperature = 0.55;
+      }
+      const r = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify(params),
+      });
+      if (r.ok) {
+        data = await r.json();
+        usedModel = model;
+        break;
+      }
       const txt = await r.text();
-      console.error("openai error", r.status, txt);
+      const modelMissing =
+        (r.status === 404 || r.status === 400) && /model/i.test(txt);
+      console.error("openai error", model, r.status, txt.slice(0, 200));
+      if (!modelMissing) break; // erro real (quota, auth): não adianta trocar de modelo
+    }
+
+    if (!data) {
       return json(
         {
           ai_response:
@@ -217,7 +231,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    const data = await r.json();
     const ai_response: string = data?.choices?.[0]?.message?.content?.trim() ?? "";
     const latency_ms = Date.now() - started;
 
@@ -245,7 +258,7 @@ Deno.serve(async (req) => {
         user_message: image ? `${trimmed}\n[reference image attached]` : trimmed,
         ai_response,
         latency_ms,
-        model_used: "gpt-4.1",
+        model_used: usedModel,
         ip_hash,
         is_pack,
         generic_adjective_hits,
