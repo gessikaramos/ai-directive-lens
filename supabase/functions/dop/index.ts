@@ -300,6 +300,22 @@ async function sendConfirmation(reader: ReaderRow, confirmUrl: string) {
 // estado pending impede envio duplo em confirmações concorrentes; Idempotency-Key
 // dop-delivery-<reader.id>-a<N> protege na camada do provedor; máx 3 tentativas.
 async function sendDelivery(reader: ReaderRow) {
+  try {
+    return await sendDeliveryInner(reader);
+  } catch (e) {
+    // Rede de segurança: qualquer exceção não prevista fica registrada no
+    // leitor (visível via delivery_email_last_error) em vez de falhar calada.
+    const msg = String(e).slice(0, 300);
+    console.error("sendDelivery threw", msg);
+    await admin
+      .from("direction_over_prompt_readers")
+      .update({ delivery_email_last_error: msg, updated_at: new Date().toISOString() })
+      .eq("id", reader.id);
+    return { state: "threw", error: msg };
+  }
+}
+
+async function sendDeliveryInner(reader: ReaderRow) {
   if (reader.locale === "es") return { state: "na_es" };
   if (!canEmail(reader)) return { state: "suppressed" };
   if (reader.delivery_email_status === "sent" || reader.delivery_email_status === "delivered") {
@@ -316,9 +332,14 @@ async function sendDelivery(reader: ReaderRow) {
     return { state: "pending_no_provider" };
   }
 
-  // claim atômico: só um processo passa de null/pending/failed → pending
+  // claim: só um processo passa de null/failed → pending. Achado no live QA
+  // (12/jul): encadear .select() depois de .update()+.or() quebra a query do
+  // supabase-js contra este projeto ("column ... does not exist" — a coluna
+  // existe; é a geração da query que falha, mesmo bug já visto com dois
+  // .eq() encadeados). O padrão SEM .select() já funciona comprovadamente no
+  // branch sem provedor logo acima — replicado aqui.
   const attempt = reader.delivery_email_attempts + 1;
-  const { data: claimed } = await admin
+  const { error: claimError } = await admin
     .from("direction_over_prompt_readers")
     .update({
       delivery_email_status: "pending",
@@ -326,10 +347,11 @@ async function sendDelivery(reader: ReaderRow) {
       updated_at: new Date().toISOString(),
     })
     .eq("id", reader.id)
-    .eq("delivery_email_attempts", reader.delivery_email_attempts)
-    .or("delivery_email_status.is.null,delivery_email_status.eq.pending,delivery_email_status.eq.failed")
-    .select("id");
-  if (!claimed || claimed.length === 0) return { state: "claim_lost" };
+    .or("delivery_email_status.is.null,delivery_email_status.eq.failed");
+  if (claimError) {
+    console.error("claim update error", claimError.message);
+    return { state: "claim_error", error: claimError.message };
+  }
 
   const p = reader.locale === "pt-BR" ? "pt-br" : "en";
   const pdf = reader.locale === "pt-BR"
@@ -631,10 +653,16 @@ Deno.serve(async (req) => {
         return json({ ok: true, state: "already_confirmed", locale: reader.locale });
       }
       if (reader.status === "confirmed") {
-        // reclique no link: oportunidade de retry se o e-mail 2 falhou antes
-        sendDelivery(reader as ReaderRow).catch((e) =>
-          console.error("delivery retry failed", String(e).slice(0, 120)),
-        );
+        // reclique no link: oportunidade de retry se o e-mail 2 falhou antes.
+        // AGUARDADO: um disparo "fire-and-forget" sem await nem waitUntil
+        // (e mesmo com EdgeRuntime.waitUntil, neste ambiente) foi morto pela
+        // runtime antes do fetch ao Resend terminar — bug real achado no live
+        // QA. Aguardar aqui é a mesma garantia que já existe no e-mail 1.
+        try {
+          await sendDelivery(reader as ReaderRow);
+        } catch (e) {
+          console.error("delivery retry failed", String(e).slice(0, 120));
+        }
         return json({ ok: true, state: "already_confirmed", locale: reader.locale });
       }
       if (reader.token_expires_at && new Date(reader.token_expires_at) < new Date()) {
@@ -651,12 +679,15 @@ Deno.serve(async (req) => {
         })
         .eq("id", reader.id);
 
-      // E-MAIL 2 (entrega permanente · spec §14). Assíncrono: se falhar, a página
-      // de confirmação segue permitindo leitura/download; o estado fica registrado
-      // e o reclique do link de confirmação re-tenta (máx 3 tentativas).
-      sendDelivery({ ...(reader as ReaderRow), status: "confirmed" }).catch((e) =>
-        console.error("delivery send failed", String(e).slice(0, 120)),
-      );
+      // E-MAIL 2 (entrega permanente · spec §14). AGUARDADO (ver nota acima —
+      // fire-and-forget é morto pela runtime antes do fetch terminar). Se
+      // falhar, a página de confirmação segue permitindo leitura/download; o
+      // estado fica registrado e o reclique do link re-tenta (máx 3 tentativas).
+      try {
+        await sendDelivery({ ...(reader as ReaderRow), status: "confirmed" });
+      } catch (e) {
+        console.error("delivery send failed", String(e).slice(0, 120));
+      }
 
       return json({ ok: true, state: "confirmed", locale: reader.locale });
     }
