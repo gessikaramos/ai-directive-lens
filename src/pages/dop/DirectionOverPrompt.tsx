@@ -6,11 +6,12 @@
  */
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { CH01_PT } from '@/content/dop/ch01-pt';
 import { CH01_EN } from '@/content/dop/ch01-en';
 import { track } from '@/lib/analytics';
-import { WALTER_WAITLIST_ENABLED, DOP_PDF_DOWNLOAD_ENABLED } from '@/lib/flags';
+import { WALTER_WAITLIST_ENABLED, DOP_PDF_DOWNLOAD_ENABLED, LIBRARY_CHECKOUT_ENABLED } from '@/lib/flags';
 
 type Loc = 'pt-BR' | 'en';
 
@@ -680,6 +681,110 @@ export const DopConfirmed = ({ loc }: { loc: Loc }) => {
   );
 };
 
+/* ───────────────────────── Comprar o livro completo ─────────────────────────
+   CTA logo após o Capítulo 1 (pedido Gé 12/jul, alinhado com a sugestão da
+   Mary de vender a v1.0 já). Checkout real quando LIBRARY_CHECKOUT_ENABLED;
+   senão, mesma captura de e-mail do Compendiums (signal_opt_in). */
+const BuyBookCTA = ({ loc }: { loc: Loc }) => {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'form' | 'sending' | 'done' | 'error'>('idle');
+  const slug = 'book_direction_over_prompt';
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim() || status === 'sending') return;
+    setStatus('sending');
+    if (LIBRARY_CHECKOUT_ENABLED) {
+      const { data, error } = await supabase.functions.invoke('library', {
+        body: { action: 'checkout', email: email.trim(), book_slug: slug, product_tier: 'digital' },
+      });
+      if (error || !data?.ok || !data?.url) {
+        setStatus('error');
+        return;
+      }
+      window.location.href = data.url;
+      return;
+    }
+    const { error } = await supabase.from('signal_opt_in').insert({ email: email.trim(), source: slug });
+    setStatus(error && error.code !== '23505' ? 'error' : 'done');
+  };
+
+  return (
+    <div className="mt-16 pt-12 text-center" style={{ borderTop: '1px solid hsl(30 14% 15% / 0.15)' }}>
+      <p
+        className="mx-auto mb-6 max-w-[40ch]"
+        style={{ fontFamily: serif, fontSize: '1.0625rem', lineHeight: 1.5, color: inkSoft }}
+      >
+        {loc === 'pt-BR'
+          ? 'Gostou do Capítulo 1? O livro completo — 16 capítulos, arquivos de caso e instrumentos de campo — já está disponível.'
+          : 'Enjoyed Chapter 1? The complete book — 16 chapters, case files and field instruments — is available now.'}
+      </p>
+
+      {status === 'done' ? (
+        <p style={{ fontSize: '0.8125rem', fontWeight: 300, color: 'hsl(28 35% 45%)' }}>
+          {loc === 'pt-BR' ? 'Prontinho — avisamos assim que abrir.' : "Done — we'll write when it opens."}
+        </p>
+      ) : status === 'idle' ? (
+        <button
+          onClick={() => setStatus('form')}
+          className="px-8 py-3.5 transition-all duration-300 hover:opacity-85"
+          style={{
+            backgroundColor: ink,
+            color: 'hsl(var(--background))',
+            borderRadius: '9999px',
+            fontSize: '0.7rem',
+            fontWeight: 500,
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+          }}
+        >
+          {loc === 'pt-BR' ? 'Comprar Direction Over Prompt · €29' : 'Buy Direction Over Prompt · €29'}
+        </button>
+      ) : (
+        <form onSubmit={submit} className="flex flex-wrap justify-center gap-3 max-w-[440px] mx-auto">
+          <input
+            type="email"
+            required
+            autoFocus
+            value={email}
+            onChange={(ev) => setEmail(ev.target.value)}
+            placeholder="you@domain.com"
+            className="flex-1 min-w-[200px] py-3 px-4 focus:outline-none"
+            style={{
+              backgroundColor: 'transparent',
+              color: ink,
+              border: '1px solid hsl(30 14% 15% / 0.25)',
+              fontSize: '0.875rem',
+              fontWeight: 300,
+            }}
+          />
+          <button
+            type="submit"
+            disabled={status === 'sending'}
+            className="px-7 py-3 transition-all duration-300 hover:opacity-85 disabled:opacity-40"
+            style={{
+              backgroundColor: ink,
+              color: 'hsl(var(--background))',
+              borderRadius: '9999px',
+              fontSize: '0.65rem',
+              fontWeight: 500,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+            }}
+          >
+            {LIBRARY_CHECKOUT_ENABLED ? (loc === 'pt-BR' ? 'Continuar' : 'Continue') : (loc === 'pt-BR' ? 'Avisem-me' : 'Notify me')}
+          </button>
+          {status === 'error' && (
+            <span style={{ fontSize: '0.75rem', color: 'hsl(28 35% 45%)' }}>
+              {loc === 'pt-BR' ? 'Algo falhou — tenta de novo.' : 'Something slipped — try again.'}
+            </span>
+          )}
+        </form>
+      )}
+    </div>
+  );
+};
+
 /* ───────────────────────── Leitura integral ───────────────────────── */
 export const DopRead = ({ loc }: { loc: Loc }) => {
   const c = COPY[loc];
@@ -822,11 +927,18 @@ export const DopRead = ({ loc }: { loc: Loc }) => {
                 onClick={async () => {
                   const url = window.location.origin + c.landingPath;
                   try {
-                    if (navigator.share) await navigator.share({ title: 'Direction Over Prompt', url });
-                    else await navigator.clipboard.writeText(url);
+                    if (navigator.share) {
+                      await navigator.share({ title: 'Direction Over Prompt', url });
+                    } else {
+                      await navigator.clipboard.writeText(url);
+                      toast(loc === 'pt-BR' ? 'Link copiado!' : 'Link copied!');
+                    }
                     track('dop_shared', { locale: loc });
-                  } catch {
-                    /* cancelado */
+                  } catch (e) {
+                    // AbortError = usuário cancelou o share sheet nativo — não é erro
+                    if ((e as Error)?.name !== 'AbortError') {
+                      toast(loc === 'pt-BR' ? 'Não deu pra copiar o link.' : "Couldn't copy the link.");
+                    }
                   }
                 }}
                 style={{ ...label, textDecoration: 'underline', background: 'none' }}
@@ -841,6 +953,12 @@ export const DopRead = ({ loc }: { loc: Loc }) => {
               </Link>
             </div>
           </div>
+
+          {/* CTA do livro completo, logo após o Capítulo 1 (pedido Gé 12/jul).
+              Reaproveita o mesmo par checkout/reserva do BookCard — quando
+              LIBRARY_CHECKOUT_ENABLED está ligado chama o checkout real;
+              senão cai em captura de e-mail, igual ao Compendiums. */}
+          <BuyBookCTA loc={loc} />
 
           {/* Conversion Patch (canon Gé 11/jul): CTA secundário para a lista
               do Walter — desligado até WALTER_WAITLIST_ENABLED=true. */}
