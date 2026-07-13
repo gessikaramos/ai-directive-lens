@@ -102,5 +102,5 @@ export const CH01_PT = {
     }
   ],
   "edition": "EDIÇÃO DE LEITURA · JULHO DE 2026",
-  "closing": "Você leu o capítulo de abertura de Direction Over Prompt. A edição completa está em desenvolvimento. Leitores fundadores serão os primeiros a receber novos capítulos, notas da autora e acesso à pré-venda."
+  "closing": "Você leu o capítulo de abertura de Direction Over Prompt. O livro completo já está disponível — quem compra agora garante todas as atualizações de capítulos e notas da autora, sem custo adicional."
 } as const;
