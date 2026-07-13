@@ -1,9 +1,13 @@
 /**
  * Library · Wave DOP CH01 (11/jul/2026) · reconstrução editorial cream/paper.
  * Canon: LOLALAB_LIBRARY_VISUAL_WIREFRAME_v2_APPROVED (estrutura/tipografia/motion)
- * + Wave spec (conteúdo): SEM loja, SEM preços, SEM pré-venda. DOP CH01 é o
- * único lançamento ativo; Tactility = IN DEVELOPMENT; ensaios reais apenas.
  * "Papel para explicar": fundo cream, texto ink, bronze contido.
+ *
+ * ATUALIZAÇÃO (13/jul): a spec original desta wave era "SEM loja, SEM preços,
+ * SEM pré-venda" — revertida por pedido explícito da Gé, que passa a incluir
+ * os Compendiums (venda do livro) nesta página. Checkout real fica atrás de
+ * LIBRARY_CHECKOUT_ENABLED (ver Compendiums.tsx); Tactility segue sem venda
+ * (manuscrito não pronto).
  */
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
@@ -11,6 +15,7 @@ import { LanguageProvider } from '@/hooks/use-language';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { track } from '@/lib/analytics';
+import Compendiums from '@/components/library/Compendiums';
 
 const ink = 'hsl(30 14% 15%)';
 const inkSoft = 'hsl(30 10% 38%)';
@@ -234,37 +239,13 @@ const LibraryContent = () => {
           </div>
         </section>
 
-        {/* C · THE BOOK OF TACTILITY · in development · sem comércio */}
-        <section
-          className="px-6 md:px-12 py-16 md:py-24"
-          style={{ borderTop: '1px solid hsl(30 14% 15% / 0.1)' }}
-        >
-          <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-baseline">
-            <div className="md:col-span-4">
-              <span className="block mb-3" style={bronzeLabel}>
-                IN DEVELOPMENT
-              </span>
-              <h3
-                style={{
-                  fontFamily: "'Newsreader', Georgia, serif",
-                  fontSize: 'clamp(1.5rem, 2.4vw, 2rem)',
-                  fontWeight: 400,
-                  letterSpacing: '-0.015em',
-                  color: ink,
-                }}
-              >
-                The Book of Tactility
-              </h3>
-            </div>
-            <p
-              className="md:col-span-8 max-w-[60ch]"
-              style={{ fontSize: '1rem', fontWeight: 300, lineHeight: 1.7, color: inkSoft }}
-            >
-              A future LolaLab compendium on materiality, imperfection and visual evidence
-              in the synthetic age.
-            </p>
-          </div>
-        </section>
+        {/* C · THE LOLALAB COMPENDIUMS · venda dos livros (13/jul, pedido Gé).
+            Compendiums.tsx foi desenhado pra fundo escuro (texto branco) —
+            a Library é cream, então a seção vira uma faixa escura de
+            propósito (contraste editorial), não bug de estilo. */}
+        <div style={{ backgroundColor: '#0B0B0C' }}>
+          <Compendiums />
+        </div>
 
         {/* D · ESSAYS · somente conteúdo real */}
         <section
