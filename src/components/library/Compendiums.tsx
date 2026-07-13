@@ -3,7 +3,7 @@
  * Capas tipográficas em CSS (sem imagem), tom coffee-table book.
  * Pré-lançamento: captura de e-mail via signal_opt_in (source = slug do livro).
  * Com LIBRARY_CHECKOUT_ENABLED=true, "Digital Edition" chama a Edge Function
- * library (Stripe Checkout hospedado) para o livro ativo no catálogo
+ * library (Lemon Squeezy Checkout hospedado) para o livro ativo no catálogo
  * (hoje só Direction Over Prompt); os demais botões (hardcover/Amazon KDP,
  * livros ainda "in development") continuam em captura de e-mail — a Amazon
  * cuida do próprio checkout físico, não faz parte deste fluxo.

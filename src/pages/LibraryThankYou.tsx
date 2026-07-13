@@ -1,5 +1,5 @@
 /**
- * Library Thank You · redirect de sucesso do Stripe Checkout. Não consulta
+ * Library Thank You · redirect de sucesso do Lemon Squeezy Checkout. Não consulta
  * nada — a entrega real (link de acesso) chega por e-mail assim que o
  * webhook processar o pagamento, o que pode levar alguns segundos.
  */

@@ -1,6 +1,6 @@
 /**
  * Library Access · destino do link seguro enviado no e-mail de recibo
- * (Camada C, checkout Stripe). O token não abre o arquivo diretamente —
+ * (Camada C, checkout Lemon Squeezy). O token não abre o arquivo diretamente —
  * troca por uma URL assinada e temporária do Storage (10min), sempre gerada
  * na hora pela Edge Function library/access. Link pessoal: não compartilhar.
  */

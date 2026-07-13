@@ -1,11 +1,18 @@
 // The LolaLab Compendiums · checkout, webhook e entrega segura dos livros
-// pagos (Direction Over Prompt · The Book of Tactility). Camada C do plano
-// da Mary (11/jul): Stripe Checkout hospedado (nunca coletamos cartão aqui),
-// webhook grava o pedido pago e libera o direito de acesso, e a entrega do
-// arquivo sai por URL assinada e temporária do Storage — nunca link estático.
+// pagos (Direction Over Prompt · The Book of Tactility). Lemon Squeezy
+// Checkout hospedado (nunca coletamos cartão aqui; Lemon Squeezy é o
+// Merchant of Record — recolhe/remete VAT por nós, canon legal 7/jul em
+// LOLALAB_LEGAL_MINIMUM_PACK_LIBRARY_v1_REVISED.md). Webhook grava o pedido
+// pago e libera o direito de acesso; a entrega do arquivo sai por URL
+// assinada e temporária do Storage — nunca link estático.
+//
+// Migrado de Stripe pra Lemon Squeezy em 13/jul (conflito de canon achado
+// pelo Cláudio/Cowork: o documento legal já assumia Lemon Squeezy desde
+// 7/jul, antes da implementação Stripe existir — Stripe nunca chegou a ir
+// ao ar, nenhuma venda real foi afetada pela troca).
 //
 // Ações JSON (POST): checkout · access
-// Ação por query string (sem JWT, Stripe chama direto): ?action=webhook
+// Ação por query string (sem JWT, Lemon Squeezy chama direto): ?action=webhook
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const ORIGIN_EXACT = new Set([
@@ -32,8 +39,13 @@ function corsFor(req: Request) {
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const SITE = Deno.env.get("DOP_SITE_URL") ?? "https://wave-dop-ch01.ai-directive-lens.pages.dev";
-const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY") ?? "";
-const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET") ?? "";
+const LEMONSQUEEZY_API_KEY = Deno.env.get("LEMONSQUEEZY_API_KEY") ?? "";
+const LEMONSQUEEZY_WEBHOOK_SECRET = Deno.env.get("LEMONSQUEEZY_WEBHOOK_SECRET") ?? "";
+const LEMONSQUEEZY_STORE_ID = Deno.env.get("LEMONSQUEEZY_STORE_ID") ?? "";
+// IDs de variante por produto+tier — preço é definido no painel da Lemon
+// Squeezy (não dá pra mandar preço dinâmico igual fazíamos no Stripe).
+const LEMONSQUEEZY_VARIANT_DIGITAL = Deno.env.get("LEMONSQUEEZY_VARIANT_DIGITAL") ?? "";
+const LEMONSQUEEZY_VARIANT_BUNDLE = Deno.env.get("LEMONSQUEEZY_VARIANT_BUNDLE") ?? "";
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
 const MAIL_FROM = "LolaLab Library <library@letters.lolalabstudio.com>";
 const MAIL_REPLY_TO = "hello@lolalabstudio.com";
@@ -45,13 +57,17 @@ const BUNDLE_ENABLED = (Deno.env.get("LIBRARY_BUNDLE_ENABLED") ?? "false") === "
 
 const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
 
-// Catálogo: preço em centavos por produto. "active:false" = manuscrito ainda
-// não pronto (ex.: The Book of Tactility) — checkout recusa com clareza.
+// Catálogo: "active:false" = manuscrito ainda não pronto (ex.: The Book of
+// Tactility) — checkout recusa com clareza. Preço fica no painel da LS.
 const CATALOG: Record<string, { title: string; active: boolean }> = {
   book_direction_over_prompt: { title: "Direction Over Prompt", active: true },
   book_tactility: { title: "The Book of Tactility", active: false },
 };
 const PRICE_CENTS: Record<"digital" | "bundle", number> = { digital: 2900, bundle: 4900 };
+const VARIANT_BY_TIER: Record<"digital" | "bundle", string> = {
+  digital: LEMONSQUEEZY_VARIANT_DIGITAL,
+  bundle: LEMONSQUEEZY_VARIANT_BUNDLE,
+};
 
 function json(body: unknown, status = 200, extra: Record<string, string> = {}) {
   return new Response(JSON.stringify(body), {
@@ -72,55 +88,56 @@ async function hmacHex(key: string, message: string) {
   return Array.from(new Uint8Array(sig)).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-// ---------- Stripe (fetch cru, form-urlencoded — sem SDK) ----------
+// ---------- Lemon Squeezy (fetch cru, JSON:API — sem SDK) ----------
 
-function flattenForm(obj: Record<string, unknown>, prefix = "", out: string[] = []) {
-  for (const [k, v] of Object.entries(obj)) {
-    const key = prefix ? `${prefix}[${k}]` : k;
-    if (v === undefined || v === null) continue;
-    if (typeof v === "object" && !Array.isArray(v)) {
-      flattenForm(v as Record<string, unknown>, key, out);
-    } else if (Array.isArray(v)) {
-      v.forEach((item, i) => {
-        if (typeof item === "object") flattenForm(item as Record<string, unknown>, `${key}[${i}]`, out);
-        else out.push(`${encodeURIComponent(`${key}[${i}]`)}=${encodeURIComponent(String(item))}`);
-      });
-    } else {
-      out.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(v))}`);
-    }
-  }
-  return out;
-}
-
-async function stripeCreateCheckoutSession(params: Record<string, unknown>) {
-  const body = flattenForm(params).join("&");
-  const r = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+async function lsCreateCheckout(params: {
+  variantId: string;
+  email: string;
+  custom: Record<string, string>;
+  redirectUrl: string;
+}) {
+  const body = {
+    data: {
+      type: "checkouts",
+      attributes: {
+        checkout_data: {
+          email: params.email,
+          custom: params.custom,
+        },
+        product_options: {
+          redirect_url: params.redirectUrl,
+        },
+      },
+      relationships: {
+        store: { data: { type: "stores", id: LEMONSQUEEZY_STORE_ID } },
+        variant: { data: { type: "variants", id: params.variantId } },
+      },
+    },
+  };
+  const r = await fetch("https://api.lemonsqueezy.com/v1/checkouts", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
-      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Bearer ${LEMONSQUEEZY_API_KEY}`,
+      "Content-Type": "application/vnd.api+json",
+      Accept: "application/vnd.api+json",
     },
-    body,
+    body: JSON.stringify(body),
   });
   const data = await r.json();
-  if (!r.ok) throw new Error(data?.error?.message ?? `stripe_${r.status}`);
-  return data as { id: string; url: string; payment_intent?: string };
+  if (!r.ok) throw new Error(data?.errors?.[0]?.detail ?? `lemonsqueezy_${r.status}`);
+  return { id: String(data.data.id), url: String(data.data.attributes.url) };
 }
 
-// Verificação de assinatura Stripe: header "t=<ts>,v1=<hex>" sobre "<ts>.<payload>".
-// Mesma janela anti-replay de 5min já usada no webhook do Resend.
-async function verifyStripeSignature(payload: string, sigHeader: string): Promise<boolean> {
-  const parts = Object.fromEntries(
-    sigHeader.split(",").map((p) => p.split("=") as [string, string]),
-  );
-  const t = parts["t"];
-  const v1 = parts["v1"];
-  if (!t || !v1) return false;
-  if (Math.abs(Date.now() / 1000 - Number(t)) > 300) return false;
-  const expected = await hmacHex(STRIPE_WEBHOOK_SECRET, `${t}.${payload}`);
-  if (expected.length !== v1.length) return false;
+// Verificação de assinatura: header X-Signature = HMAC-SHA256(corpo cru, secret).
+// Sem componente de timestamp (diferente do Stripe) — a própria LS não expõe
+// um anti-replay por timestamp nesse header; mitigamos com o UNIQUE em
+// lemonsqueezy_order_id (replay vira upsert idempotente, não duplica).
+async function verifyLemonSqueezySignature(payload: string, sigHeader: string): Promise<boolean> {
+  if (!sigHeader) return false;
+  const expected = await hmacHex(LEMONSQUEEZY_WEBHOOK_SECRET, payload);
+  if (expected.length !== sigHeader.length) return false;
   let diff = 0;
-  for (let i = 0; i < expected.length; i++) diff |= expected.charCodeAt(i) ^ v1.charCodeAt(i);
+  for (let i = 0; i < expected.length; i++) diff |= expected.charCodeAt(i) ^ sigHeader.charCodeAt(i);
   return diff === 0;
 }
 
@@ -167,27 +184,20 @@ async function actionCheckout(payload: any, req: Request) {
   const book = CATALOG[bookSlug];
   if (!book || !book.active) return json({ ok: false, error: "book_unavailable" }, 400);
   if (tier === "bundle" && !BUNDLE_ENABLED) return json({ ok: false, error: "bundle_unavailable" }, 400);
-  if (!STRIPE_SECRET_KEY) return json({ ok: false, error: "checkout_not_configured" }, 503);
+  const variantId = VARIANT_BY_TIER[tier as "digital" | "bundle"];
+  if (!LEMONSQUEEZY_API_KEY || !LEMONSQUEEZY_STORE_ID || !variantId) {
+    return json({ ok: false, error: "checkout_not_configured" }, 503);
+  }
 
   const origin = isAllowedOrigin(req.headers.get("origin") ?? "") ? req.headers.get("origin")! : SITE;
   const amount = PRICE_CENTS[tier as "digital" | "bundle"];
-  const productName = tier === "bundle" ? `${book.title} — Atelier Bundle (PDF + Audiobook)` : `${book.title} — Digital Edition`;
 
   try {
-    const session = await stripeCreateCheckoutSession({
-      mode: "payment",
-      customer_email: email,
-      success_url: `${origin}/library/thank-you?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/library`,
-      line_items: [{
-        price_data: {
-          currency: "eur",
-          unit_amount: amount,
-          product_data: { name: productName },
-        },
-        quantity: 1,
-      }],
-      metadata: { book_slug: bookSlug, product_tier: tier, email },
+    const checkout = await lsCreateCheckout({
+      variantId,
+      email,
+      custom: { book_slug: bookSlug, product_tier: tier, email },
+      redirectUrl: `${origin}/library/thank-you`,
     });
 
     await admin.from("library_orders").insert({
@@ -196,11 +206,11 @@ async function actionCheckout(payload: any, req: Request) {
       product_tier: tier,
       amount_cents: amount,
       currency: "eur",
-      stripe_checkout_session_id: session.id,
+      lemonsqueezy_checkout_id: checkout.id,
       status: "pending",
     });
 
-    return json({ ok: true, url: session.url });
+    return json({ ok: true, url: checkout.url });
   } catch (e) {
     console.error("checkout error", String(e).slice(0, 200));
     return json({ ok: false, error: "checkout_failed" }, 502);
@@ -210,30 +220,50 @@ async function actionCheckout(payload: any, req: Request) {
 async function actionWebhook(req: Request) {
   const raw = await req.text();
   if (raw.length > MAX_WEBHOOK_BODY) return json({ ok: false }, 413);
-  if (!STRIPE_WEBHOOK_SECRET) return json({ ok: false, error: "webhook_not_configured" }, 503);
-  const sig = req.headers.get("stripe-signature") ?? "";
-  if (!(await verifyStripeSignature(raw, sig))) return json({ ok: false, error: "bad_signature" }, 400);
+  if (!LEMONSQUEEZY_WEBHOOK_SECRET) return json({ ok: false, error: "webhook_not_configured" }, 503);
+  const sig = req.headers.get("x-signature") ?? "";
+  if (!(await verifyLemonSqueezySignature(raw, sig))) return json({ ok: false, error: "bad_signature" }, 400);
 
   const event = JSON.parse(raw);
-  if (event.type !== "checkout.session.completed") return json({ ok: true, ignored: true });
+  if (event.meta?.event_name !== "order_created") return json({ ok: true, ignored: true });
 
-  const session = event.data.object;
-  const email = String(session.metadata?.email ?? session.customer_email ?? "").toLowerCase();
-  const bookSlug = String(session.metadata?.book_slug ?? "");
-  const tier = session.metadata?.product_tier === "bundle" ? "bundle" : "digital";
-  if (!email || !bookSlug) return json({ ok: false, error: "missing_metadata" }, 400);
+  const attrs = event.data?.attributes ?? {};
+  const custom = event.meta?.custom_data ?? {};
+  const email = String(custom.email ?? attrs.user_email ?? "").toLowerCase();
+  const bookSlug = String(custom.book_slug ?? "");
+  const tier = custom.product_tier === "bundle" ? "bundle" : "digital";
+  const orderId = String(event.data?.id ?? "");
+  if (!email || !bookSlug || !orderId) return json({ ok: false, error: "missing_metadata" }, 400);
+  // status "paid" = pagamento único confirmado (produto digital, sem assinatura aqui)
+  if (attrs.status !== "paid") return json({ ok: true, ignored: true, status: attrs.status });
 
-  const { data: order } = await admin
+  const { data: dbOrder, error: orderErr } = await admin
     .from("library_orders")
-    .update({ status: "paid", paid_at: new Date().toISOString(), stripe_payment_intent_id: session.payment_intent ?? null })
-    .eq("stripe_checkout_session_id", session.id)
+    .upsert(
+      {
+        email,
+        book_slug: bookSlug,
+        product_tier: tier,
+        amount_cents: PRICE_CENTS[tier as "digital" | "bundle"],
+        currency: "eur",
+        lemonsqueezy_order_id: orderId,
+        status: "paid",
+        paid_at: new Date().toISOString(),
+      },
+      { onConflict: "lemonsqueezy_order_id" },
+    )
     .select("id")
-    .maybeSingle();
+    .single();
+
+  if (orderErr) {
+    console.error("order upsert error", orderErr.message);
+    return json({ ok: false, error: "order_failed" }, 500);
+  }
 
   const { data: entitlement, error: entError } = await admin
     .from("library_entitlements")
     .upsert(
-      { email, book_slug: bookSlug, product_tier: tier, order_id: order?.id ?? null },
+      { email, book_slug: bookSlug, product_tier: tier, order_id: dbOrder?.id ?? null },
       { onConflict: "email,book_slug" },
     )
     .select("delivery_token")

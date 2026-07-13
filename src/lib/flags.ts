@@ -28,7 +28,7 @@ export const DOP_PDF_DOWNLOAD_ENABLED =
   import.meta.env.VITE_DOP_PDF_DOWNLOAD_ENABLED === 'true';
 
 /**
- * LIBRARY_CHECKOUT_ENABLED: checkout real (Stripe) para os Compendiums.
+ * LIBRARY_CHECKOUT_ENABLED: checkout real (Lemon Squeezy) para os Compendiums.
  * Default false — Library.tsx documenta a spec desta wave como "SEM loja,
  * SEM preços, SEM pré-venda" (DOP CH01 é o único lançamento ativo). Esta
  * flag existe pra quando a Gé decidir abrir a venda dos livros como uma
