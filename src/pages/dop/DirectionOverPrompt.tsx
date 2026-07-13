@@ -716,8 +716,8 @@ const BuyBookCTA = ({ loc }: { loc: Loc }) => {
         style={{ fontFamily: serif, fontSize: '1.0625rem', lineHeight: 1.5, color: inkSoft }}
       >
         {loc === 'pt-BR'
-          ? 'Gostou do Capítulo 1? O livro completo — 16 capítulos, arquivos de caso e instrumentos de campo — já está disponível.'
-          : 'Enjoyed Chapter 1? The complete book — 16 chapters, case files and field instruments — is available now.'}
+          ? 'Gostou do Capítulo 1? O livro completo — 16 capítulos, arquivos de caso e instrumentos de campo — está em produção.'
+          : 'Enjoyed Chapter 1? The complete book — 16 chapters, case files and field instruments — is in progress.'}
       </p>
 
       {status === 'done' ? (
@@ -738,7 +738,7 @@ const BuyBookCTA = ({ loc }: { loc: Loc }) => {
             textTransform: 'uppercase',
           }}
         >
-          {loc === 'pt-BR' ? 'Comprar Direction Over Prompt · €29' : 'Buy Direction Over Prompt · €29'}
+          {loc === 'pt-BR' ? 'Avise-me quando o livro estiver pronto' : 'Notify me when the book is ready'}
         </button>
       ) : (
         <form onSubmit={submit} className="flex flex-wrap justify-center gap-3 max-w-[440px] mx-auto">

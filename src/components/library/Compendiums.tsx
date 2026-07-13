@@ -169,7 +169,9 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
 
         {status === 'done' ? (
           <p style={{ fontSize: '0.8125rem', fontWeight: 300, color: 'hsl(var(--bronze-soft))' }}>
-            Reserved. Your copy is held for the first printing — we'll write when it opens.
+            {checkoutReady
+              ? "Reserved. Your copy is held for the first printing — we'll write when it opens."
+              : "Got it — we'll email you the moment this book is ready."}
           </p>
         ) : status === 'idle' ? (
           <div className="flex flex-wrap gap-3">
@@ -186,7 +188,7 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
                 textTransform: 'uppercase',
               }}
             >
-              {checkoutReady ? 'Buy Digital Edition' : 'Pre-order Digital Edition'} · {book.digital}
+              {checkoutReady ? `Buy Digital Edition · ${book.digital}` : 'Notify Me — Digital Edition'}
             </button>
             <button
               onClick={() => setStatus('form')}
@@ -202,7 +204,7 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
                 textTransform: 'uppercase',
               }}
             >
-              Reserve Hardcover · {book.hardcover}
+              {checkoutReady ? `Reserve Hardcover · ${book.hardcover}` : 'Notify Me — Hardcover'}
             </button>
           </div>
         ) : (
@@ -237,7 +239,7 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
                 textTransform: 'uppercase',
               }}
             >
-              {checkoutReady ? 'Continue to payment' : 'Hold my copy'}
+              {checkoutReady ? 'Continue to payment' : 'Notify me'}
             </button>
             {status === 'error' && (
               <span style={{ fontSize: '0.75rem', color: 'hsl(var(--bronze-soft))' }}>

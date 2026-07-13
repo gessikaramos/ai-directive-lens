@@ -96,5 +96,5 @@ export const CH01_EN = {
     }
   ],
   "edition": "READER EDITION · JULY 2026",
-  "closing": "You have read the opening chapter of Direction Over Prompt. The complete book is available now — buy today and every chapter update and author's note comes to you at no extra cost."
+  "closing": "You have read the opening chapter of Direction Over Prompt. The complete book — 16 chapters, case files and field instruments — is in progress. Sign up to be the first to know when it's ready."
 } as const;
