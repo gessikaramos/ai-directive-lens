@@ -14,7 +14,7 @@ import Studio from "./pages/Studio.tsx";
 import About from "./pages/About.tsx";
 import Contact from "./pages/Contact.tsx";
 import Auth from "./pages/Auth.tsx";
-import Signal from "./pages/Signal.tsx";
+import Collective from "./pages/Collective.tsx";
 import {
   DopNeutral,
   DopLanding,
@@ -40,7 +40,9 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/lab" element={<Lab />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/signal" element={<Signal />} />
+            <Route path="/collective" element={<Collective />} />
+            {/* Legacy: página se chamava "Signal" antes de 13/jul, alias pra não quebrar links antigos */}
+            <Route path="/signal" element={<Collective />} />
             {/* Direction Over Prompt · Wave DOP CH01 */}
             <Route path="/library/direction-over-prompt" element={<DopNeutral />} />
             <Route path="/pt-br/library/direction-over-prompt" element={<DopLanding loc="pt-BR" />} />

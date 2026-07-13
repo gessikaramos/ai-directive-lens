@@ -200,7 +200,11 @@ async function actionCheckout(payload: any, req: Request) {
       redirectUrl: `${origin}/library/thank-you`,
     });
 
-    await admin.from("library_orders").insert({
+    // Lição do bug do e-mail 2 (dop/index.ts): SEMPRE checar error do
+    // supabase-js, mesmo em insert "não deveria falhar". Não bloqueia o
+    // checkout (o cliente já tem a URL da LS) mas registra alto e claro —
+    // sem isso, a entitlement do webhook não teria como bater com nada.
+    const { error: insertError } = await admin.from("library_orders").insert({
       email,
       book_slug: bookSlug,
       product_tier: tier,
@@ -209,6 +213,9 @@ async function actionCheckout(payload: any, req: Request) {
       lemonsqueezy_checkout_id: checkout.id,
       status: "pending",
     });
+    if (insertError) {
+      console.error("library_orders insert error", insertError.message, "checkout_id", checkout.id);
+    }
 
     return json({ ok: true, url: checkout.url });
   } catch (e) {

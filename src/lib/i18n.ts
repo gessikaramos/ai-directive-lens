@@ -5,7 +5,7 @@ export const translations: Record<string, Record<Lang, string>> = {
   // Walter público desde 10/jul (decisão Gé) · rota continua /lab
   'nav.lab': { en: 'WALTER', pt: 'WALTER' },
   'nav.library': { en: 'LIBRARY', pt: 'LIBRARY' },
-  'nav.signal': { en: 'SIGNAL', pt: 'SIGNAL' },
+  'nav.collective': { en: 'COLLECTIVE', pt: 'COLLECTIVE' },
   'nav.studio': { en: 'STUDIO', pt: 'STUDIO' },
   'nav.about': { en: 'ABOUT', pt: 'SOBRE' },
   'nav.contact': { en: 'CONTACT', pt: 'CONTATO' },

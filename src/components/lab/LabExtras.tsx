@@ -362,7 +362,7 @@ const SignalReads = () => {
       setErr('Enter a valid email.');
       return;
     }
-    const { error } = await supabase.from('signal_opt_in').insert({ email, source: 'signal' });
+    const { error } = await supabase.from('signal_opt_in').insert({ email, source: 'collective' });
     if (error && !/duplicate/i.test(error.message)) {
       setErr('Something went wrong. Try again.');
       return;
@@ -396,7 +396,7 @@ const SignalReads = () => {
     >
       <div className="max-w-[1200px] mx-auto">
         <span className="block mb-6" style={labelStyle}>
-          SIGNAL · READS FROM THE STUDIO
+          READS FROM THE STUDIO
         </span>
         <p
           className="mb-10 max-w-2xl"
