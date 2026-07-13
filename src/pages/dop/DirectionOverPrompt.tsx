@@ -693,6 +693,21 @@ export const DopRead = ({ loc }: { loc: Loc }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // ElevenLabs Audio Native: o helper script escaneia o DOM uma vez ao
+  // carregar e substitui a div pelo player. Recriando o <script> a cada
+  // montagem garante que ele rode de novo se o leitor navegar entre
+  // idiomas via SPA (sem reload de página).
+  useEffect(() => {
+    if (!confirmed) return;
+    const script = document.createElement('script');
+    script.src = 'https://elevenlabs.io/player/audioNativeHelper.js';
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, [confirmed]);
+
   if (!confirmed) return null;
   const ch = c.content;
 
@@ -725,6 +740,25 @@ export const DopRead = ({ loc }: { loc: Loc }) => {
           >
             {ch.question}
           </p>
+
+          {/* ElevenLabs Audio Native · narração do capítulo. Voz padrão até
+              a Gé escolher/clonar uma voz no dashboard da ElevenLabs. */}
+          <div
+            id="elevenlabs-audionative-widget"
+            data-height="90"
+            data-width="100%"
+            data-frameborder="no"
+            data-scrolling="no"
+            data-publicuserid="48dc7f8a140033cadd77ddf36248b76857034b724b7d006d48d86e28c9588712"
+            data-playerurl="https://elevenlabs.io/player/index.html"
+            className="mb-14"
+          >
+            Loading the{' '}
+            <a href="https://elevenlabs.io/text-to-speech" target="_blank" rel="noopener noreferrer">
+              ElevenLabs Text to Speech
+            </a>{' '}
+            AudioNative Player...
+          </div>
 
           <div style={{ fontFamily: serif, fontSize: '1.1875rem', lineHeight: 1.85 }}>
             {ch.sections.map((s, i) => (

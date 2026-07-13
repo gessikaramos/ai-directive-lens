@@ -2,10 +2,17 @@
  * The LolaLab Compendiums · seção de livros da /library (briefing Mary 10/jul).
  * Capas tipográficas em CSS (sem imagem), tom coffee-table book.
  * Pré-lançamento: captura de e-mail via signal_opt_in (source = slug do livro).
- * Quando Stripe/Amazon entrarem: botões viram checkout digital €29 / capa dura €59.
+ * Com LIBRARY_CHECKOUT_ENABLED=true, "Digital Edition" chama a Edge Function
+ * library (Stripe Checkout hospedado) para o livro ativo no catálogo
+ * (hoje só Direction Over Prompt); os demais botões (hardcover/Amazon KDP,
+ * livros ainda "in development") continuam em captura de e-mail — a Amazon
+ * cuida do próprio checkout físico, não faz parte deste fluxo.
  */
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { LIBRARY_CHECKOUT_ENABLED } from '@/lib/flags';
+
+const CHECKOUT_READY_SLUGS = new Set(['book_direction_over_prompt']);
 
 const label = {
   color: 'hsl(var(--bronze-soft))',
@@ -33,17 +40,30 @@ const BOOKS = [
     desc: 'Prompt engineering is a career with a six-month shelf life. Repertoire is not. How directors think, why aesthetic restriction extracts genius from machines, and the method behind the Creative Direction Pack.',
     digital: '€29',
     hardcover: '€59',
+    cover: '/covers/direction-over-prompt-cover-en.png',
   },
 ];
 
 const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'form' | 'sending' | 'done' | 'error'>('idle');
+  const checkoutReady = LIBRARY_CHECKOUT_ENABLED && CHECKOUT_READY_SLUGS.has(book.slug);
 
   const reserve = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() || status === 'sending') return;
     setStatus('sending');
+    if (checkoutReady) {
+      const { data, error } = await supabase.functions.invoke('library', {
+        body: { action: 'checkout', email: email.trim(), book_slug: book.slug, product_tier: 'digital' },
+      });
+      if (error || !data?.ok || !data?.url) {
+        setStatus('error');
+        return;
+      }
+      window.location.href = data.url;
+      return;
+    }
     const { error } = await supabase
       .from('signal_opt_in')
       .insert({ email: email.trim(), source: book.slug });
@@ -54,46 +74,58 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 py-12 md:py-16"
       style={{ borderBottom: '1px solid #1C1C1E' }}>
-      {/* Capa tipográfica (5/12) */}
+      {/* Capa (5/12) — arte final quando existir, senão placeholder tipográfico */}
       <div className="md:col-span-5 flex justify-center md:justify-start">
-        <div
-          className="w-[240px] h-[340px] px-7 py-9 flex flex-col justify-between"
-          style={{
-            border: '1px solid hsl(var(--background) / 0.25)',
-            backgroundColor: '#101012',
-            boxShadow: '14px 18px 40px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(255,255,255,0.02)',
-          }}
-        >
-          <span style={{ ...label, fontSize: '0.55rem' }}>{book.roman}</span>
-          <div>
-            <h4
-              style={{
-                fontFamily: "'Newsreader', Georgia, serif",
-                fontSize: '1.75rem',
-                fontWeight: 400,
-                lineHeight: 1.15,
-                letterSpacing: '-0.01em',
-                color: '#FFFFFF',
-              }}
-            >
-              {book.title}
-            </h4>
+        {book.cover ? (
+          <img
+            src={book.cover}
+            alt={`${book.title} — cover`}
+            className="w-[240px] h-auto"
+            style={{
+              border: '1px solid hsl(var(--background) / 0.25)',
+              boxShadow: '14px 18px 40px rgba(0,0,0,0.55)',
+            }}
+          />
+        ) : (
+          <div
+            className="w-[240px] h-[340px] px-7 py-9 flex flex-col justify-between"
+            style={{
+              border: '1px solid hsl(var(--background) / 0.25)',
+              backgroundColor: '#101012',
+              boxShadow: '14px 18px 40px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(255,255,255,0.02)',
+            }}
+          >
+            <span style={{ ...label, fontSize: '0.55rem' }}>{book.roman}</span>
+            <div>
+              <h4
+                style={{
+                  fontFamily: "'Newsreader', Georgia, serif",
+                  fontSize: '1.75rem',
+                  fontWeight: 400,
+                  lineHeight: 1.15,
+                  letterSpacing: '-0.01em',
+                  color: '#FFFFFF',
+                }}
+              >
+                {book.title}
+              </h4>
+            </div>
+            <div>
+              <span
+                className="block"
+                style={{
+                  color: 'hsl(var(--background) / 0.45)',
+                  fontSize: '0.55rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.24em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                LolaLab Studio
+              </span>
+            </div>
           </div>
-          <div>
-            <span
-              className="block"
-              style={{
-                color: 'hsl(var(--background) / 0.45)',
-                fontSize: '0.55rem',
-                fontWeight: 500,
-                letterSpacing: '0.24em',
-                textTransform: 'uppercase',
-              }}
-            >
-              LolaLab Studio
-            </span>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Texto + reserva (7/12) */}
@@ -154,7 +186,7 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
                 textTransform: 'uppercase',
               }}
             >
-              Pre-order Digital Edition · {book.digital}
+              {checkoutReady ? 'Buy Digital Edition' : 'Pre-order Digital Edition'} · {book.digital}
             </button>
             <button
               onClick={() => setStatus('form')}
@@ -205,7 +237,7 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
                 textTransform: 'uppercase',
               }}
             >
-              Hold my copy
+              {checkoutReady ? 'Continue to payment' : 'Hold my copy'}
             </button>
             {status === 'error' && (
               <span style={{ fontSize: '0.75rem', color: 'hsl(var(--bronze-soft))' }}>

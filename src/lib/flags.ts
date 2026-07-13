@@ -26,3 +26,14 @@ export const WALTER_WAITLIST_ENABLED =
  */
 export const DOP_PDF_DOWNLOAD_ENABLED =
   import.meta.env.VITE_DOP_PDF_DOWNLOAD_ENABLED === 'true';
+
+/**
+ * LIBRARY_CHECKOUT_ENABLED: checkout real (Stripe) para os Compendiums.
+ * Default false — Library.tsx documenta a spec desta wave como "SEM loja,
+ * SEM preços, SEM pré-venda" (DOP CH01 é o único lançamento ativo). Esta
+ * flag existe pra quando a Gé decidir abrir a venda dos livros como uma
+ * wave própria; até lá, Compendiums.tsx continua no modo reserva por e-mail
+ * mesmo com o backend de checkout já pronto.
+ */
+export const LIBRARY_CHECKOUT_ENABLED =
+  import.meta.env.VITE_LIBRARY_CHECKOUT_ENABLED === 'true';

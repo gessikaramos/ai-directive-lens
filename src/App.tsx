@@ -8,6 +8,8 @@ import NotFound from "./pages/NotFound.tsx";
 import HunterRedirect from "./pages/HunterRedirect.tsx";
 import Lab from "./pages/Lab.tsx";
 import Library from "./pages/Library.tsx";
+import LibraryAccess from "./pages/LibraryAccess.tsx";
+import LibraryThankYou from "./pages/LibraryThankYou.tsx";
 import Studio from "./pages/Studio.tsx";
 import About from "./pages/About.tsx";
 import Contact from "./pages/Contact.tsx";
@@ -52,6 +54,8 @@ const App = () => (
             <Route path="/en/library/direction-over-prompt/unsubscribe" element={<DopUnsubscribe loc="en" />} />
             {/* Wave 1 Foundations · canon Fred v1 · 4 rotas novas */}
             <Route path="/library" element={<Library />} />
+            <Route path="/library/access" element={<LibraryAccess />} />
+            <Route path="/library/thank-you" element={<LibraryThankYou />} />
             <Route path="/studio" element={<Studio />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
