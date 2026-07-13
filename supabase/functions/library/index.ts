@@ -18,10 +18,11 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 const ORIGIN_EXACT = new Set([
   "http://localhost:5173",
   "http://localhost:8080",
+  "https://www.lolalabstudio.com",
 ]);
 const ORIGIN_PATTERN = /^https:\/\/[a-z0-9-]+\.ai-directive-lens\.pages\.dev$/;
 
-// Mesmo princípio do DOP-QA-ENV-001: allowlist única, produção entra só no GO.
+// Mesmo princípio do DOP-QA-ENV-001: produção liberada no GO de 14/jul.
 function isAllowedOrigin(origin: string) {
   return ORIGIN_EXACT.has(origin) || ORIGIN_PATTERN.test(origin);
 }

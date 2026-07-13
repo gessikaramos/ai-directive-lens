@@ -4,29 +4,27 @@
 // Com DOP_DEV_MODE=true e sem envio real, a resposta expõe confirm_url/unsubscribe_url para QA.
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-// CORS mínimo (§8 + condição Gé 11/jul): STAGING é a única origem permitida
-// enquanto a Wave não vai a produção. Domínios de produção entram só no GO.
+// CORS (§8 + GO de produção 14/jul, autorizado pela Gé): staging E produção
+// agora coexistem no mesmo projeto Supabase, cada um com seu site_origin.
 const ORIGIN_EXACT = new Set([
   "http://localhost:5173",
   "http://localhost:8080",
+  "https://www.lolalabstudio.com",
 ]);
 const ORIGIN_PATTERN = /^https:\/\/[a-z0-9-]+\.ai-directive-lens\.pages\.dev$/;
 
 // DOP-QA-ENV-001 (fechado): CORS e environment/site_origin derivam da MESMA
 // função — nunca de um header aceito livremente do cliente. Um cliente
-// não-browser (curl) que force `Origin: https://www.lolalabstudio.com` não
-// consegue se marcar como produção: essa origem não existe em nenhuma regra
-// abaixo até a Gé autorizar o GO. Sem isso, site_origin seria um open redirect.
+// não-browser (curl) que force `Origin: https://www.lolalabstudio.com` só
+// consegue se marcar como produção porque essa origem está, agora sim,
+// autorizada explicitamente abaixo (GO de produção, não mais open redirect).
 function matchOrigin(origin: string): { environment: string; site_origin: string } | null {
+  if (origin === "https://www.lolalabstudio.com") {
+    return { environment: "production", site_origin: origin };
+  }
   if (ORIGIN_EXACT.has(origin) || ORIGIN_PATTERN.test(origin)) {
     return { environment: "staging", site_origin: SITE };
   }
-  // Produção: NÃO ativa ainda. No GO, adicionar "https://www.lolalabstudio.com"
-  // a ORIGIN_EXACT E descomentar a linha abaixo — as duas mudanças autorizam
-  // CORS e origem de link ao mesmo tempo, pela mesma allowlist.
-  // if (origin === "https://www.lolalabstudio.com") {
-  //   return { environment: "production", site_origin: origin };
-  // }
   return null;
 }
 
