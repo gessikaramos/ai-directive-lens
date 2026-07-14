@@ -9,9 +9,9 @@
  * LIBRARY_CHECKOUT_ENABLED (ver Compendiums.tsx); Tactility segue sem venda
  * (manuscrito não pronto).
  */
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { LanguageProvider } from '@/hooks/use-language';
+import { useSeo } from '@/hooks/use-seo';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { track } from '@/lib/analytics';
@@ -28,16 +28,12 @@ const bronzeLabel = {
 };
 
 const LibraryContent = () => {
-  useEffect(() => {
-    document.title = 'Library · LolaLab';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta)
-      meta.setAttribute(
-        'content',
-        'Essays, books and working methods on direction, authorship and creative systems. From LolaLab.',
-      );
-    window.scrollTo(0, 0);
-  }, []);
+  useSeo({
+    title: 'Library · LolaLab',
+    description:
+      'Essays, books and working methods on direction, authorship and creative systems. From LolaLab.',
+    path: '/library',
+  });
 
   return (
     <>

@@ -79,12 +79,24 @@ const COPY = {
 function useSeo(title: string, description: string, path: string, loc?: Loc | 'neutral') {
   useEffect(() => {
     document.title = title;
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', description);
+    const setMeta = (selector: string, content: string) => {
+      const el = document.querySelector(selector);
+      if (el) el.setAttribute('content', content);
+    };
+    setMeta('meta[name="description"]', description);
     document.documentElement.lang = loc === 'pt-BR' ? 'pt-BR' : 'en';
     // canonical + hreflang (runtime · SPA — pré-render é pendência registrada)
     document.querySelectorAll('link[data-dop-seo]').forEach((n) => n.remove());
     const base = window.location.origin;
+    const url = `${base}${path}`;
+    const cover = `${base}/covers/direction-over-prompt-cover-${loc === 'pt-BR' ? 'pt' : 'en'}.png`;
+    setMeta('meta[property="og:title"]', title);
+    setMeta('meta[property="og:description"]', description);
+    setMeta('meta[property="og:url"]', url);
+    setMeta('meta[property="og:image"]', cover);
+    setMeta('meta[name="twitter:title"]', title);
+    setMeta('meta[name="twitter:description"]', description);
+    setMeta('meta[name="twitter:image"]', cover);
     const add = (rel: string, href: string, hreflang?: string) => {
       const l = document.createElement('link');
       l.rel = rel;
@@ -93,7 +105,7 @@ function useSeo(title: string, description: string, path: string, loc?: Loc | 'n
       l.setAttribute('data-dop-seo', '1');
       document.head.appendChild(l);
     };
-    add('canonical', `${base}${path}`);
+    add('canonical', url);
     add('alternate', `${base}/pt-br/library/direction-over-prompt`, 'pt-BR');
     add('alternate', `${base}/en/library/direction-over-prompt`, 'en');
     add('alternate', `${base}/library/direction-over-prompt`, 'x-default');

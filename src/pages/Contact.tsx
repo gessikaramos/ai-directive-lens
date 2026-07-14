@@ -4,8 +4,8 @@
  * Atmosfera canon Mary: escrever ao estúdio.
  * Fundo #0B0B0C · email principal branco puro grande · social discreto → hover branco.
  */
-import { useEffect } from 'react';
 import { LanguageProvider, useLanguage } from '@/hooks/use-language';
+import { useSeo } from '@/hooks/use-seo';
 import { t } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -22,12 +22,11 @@ const SOCIALS = [
 const ContactContent = () => {
   const { lang } = useLanguage();
 
-  useEffect(() => {
-    document.title = 'Contact · LolaLab';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', 'Write to the studio.');
-    window.scrollTo(0, 0);
-  }, []);
+  useSeo({
+    title: 'Contact · LolaLab',
+    description: 'Write to the studio.',
+    path: '/contact',
+  });
 
   return (
     <>

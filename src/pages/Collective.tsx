@@ -10,8 +10,8 @@
  * hideNewsletter no Footer, seguindo a regra "UMA captura por jornada" que
  * toda outra página já respeita (ver Footer.tsx).
  */
-import { useEffect } from 'react';
 import { LanguageProvider } from '@/hooks/use-language';
+import { useSeo } from '@/hooks/use-seo';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { CollectiveForm, SignalReads } from '@/components/lab/LabExtras';
@@ -25,13 +25,11 @@ const labelStyle = {
 };
 
 const CollectiveContent = () => {
-  useEffect(() => {
-    document.title = 'Collective · LolaLab';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta)
-      meta.setAttribute('content', 'Reads, newsletter and the Collective — the quiet network of LolaLab.');
-    window.scrollTo(0, 0);
-  }, []);
+  useSeo({
+    title: 'Collective · LolaLab',
+    description: 'Reads, newsletter and the Collective — the quiet network of LolaLab.',
+    path: '/collective',
+  });
 
   return (
     <>

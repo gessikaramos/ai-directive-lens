@@ -14,6 +14,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { LanguageProvider } from '@/hooks/use-language';
+import { useSeo } from '@/hooks/use-seo';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import HumanIntentTranslator from '@/components/lab/HumanIntentTranslator';
@@ -116,15 +117,14 @@ const LabContent = () => {
   // dá lugar ao diálogo — manifesto, Cast e Signal saem de cena.
   const [immersed, setImmersed] = useState(false);
 
+  useSeo({
+    title: 'Walter · LolaLab',
+    description:
+      'Walter listens before the machines produce. A human intent translator under private refinement.',
+    path: '/lab',
+  });
+
   useEffect(() => {
-    document.title = 'Walter · LolaLab';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta)
-      meta.setAttribute(
-        'content',
-        'Walter listens before the machines produce. A human intent translator under private refinement.',
-      );
-    window.scrollTo(0, 0);
     if (!PUBLIC_WALTER_ENABLED) track('walter_public_page_view');
   }, []);
 

@@ -1,24 +1,27 @@
 /**
  * Camada mínima de analytics (Wave DOP CH01).
- * Auditoria 11/jul: index.html tem preconnect ao googletagmanager, mas nenhum
- * container GTM/GA instalado no runtime. Regra da Wave: NÃO instalar plataforma
- * nova sem aprovação. Estratégia: empurrar para window.dataLayer quando existir;
- * caso contrário, buffer local + console.debug (QA-visível, zero rede).
+ * Auditoria 14/jul: GA4 (gtag.js, G-PYNR9F0L5L) está instalado em index.html.
+ * gtag.js só processa eventos disparados via window.gtag('event', ...) — pushes
+ * genéricos de {event, ...} no dataLayer são convenção do Google Tag Manager,
+ * que não está instalado aqui, então ficavam mudos. Envia pelo gtag quando
+ * existe; sempre mantém o buffer local + console.debug (QA-visível).
  */
 type EventProps = Record<string, string | number | boolean | undefined>;
 
 declare global {
   interface Window {
     dataLayer?: Array<Record<string, unknown>>;
+    gtag?: (...args: unknown[]) => void;
     __lolalabEvents?: Array<{ event: string; props?: EventProps; at: string }>;
   }
 }
 
 export function track(event: string, props?: EventProps) {
   try {
-    const payload = { event, ...props };
-    if (Array.isArray(window.dataLayer)) {
-      window.dataLayer.push(payload);
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', event, props ?? {});
+    } else if (Array.isArray(window.dataLayer)) {
+      window.dataLayer.push({ event, ...props });
     }
     (window.__lolalabEvents ??= []).push({ event, props, at: new Date().toISOString() });
     if (import.meta.env.DEV) console.debug('[track]', event, props ?? {});

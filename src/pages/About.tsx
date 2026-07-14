@@ -6,9 +6,9 @@
  * Retrato Gé (asset em public/images/about/gessika-portrait.png · profilepicture canon 8/jul).
  * Manifesto em 4 blocos escalonados · primeiro branco puro · demais cinza secondary.
  */
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { LanguageProvider } from '@/hooks/use-language';
+import { useSeo } from '@/hooks/use-seo';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/PageHero';
@@ -34,12 +34,11 @@ const MANIFESTO_PARAGRAPHS = [
 ];
 
 const AboutContent = () => {
-  useEffect(() => {
-    document.title = 'About · LolaLab';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', 'LolaLab translates human intention into form.');
-    window.scrollTo(0, 0);
-  }, []);
+  useSeo({
+    title: 'About · LolaLab',
+    description: 'LolaLab translates human intention into form.',
+    path: '/about',
+  });
 
   return (
     <>

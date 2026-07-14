@@ -10,8 +10,8 @@
  *
  * Atmosfera canon Mary: mesa de luz de diretor de criação · dark ink.
  */
-import { useEffect } from 'react';
-import { LanguageProvider, useLanguage } from '@/hooks/use-language';
+import { useLanguage, LanguageProvider } from '@/hooks/use-language';
+import { useSeo } from '@/hooks/use-seo';
 import { t } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -40,12 +40,11 @@ const labelStyle = {
 const StudioContent = () => {
   const { lang } = useLanguage();
 
-  useEffect(() => {
-    document.title = 'Studio · LolaLab';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', 'We make the work that moves culture.');
-    window.scrollTo(0, 0);
-  }, []);
+  useSeo({
+    title: 'Studio · LolaLab',
+    description: 'We make the work that moves culture.',
+    path: '/studio',
+  });
 
   return (
     <>

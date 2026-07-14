@@ -21,6 +21,7 @@
 import { LanguageProvider } from '@/hooks/use-language';
 import { useLenis } from '@/hooks/use-lenis';
 import { useScrollAnimations } from '@/hooks/use-scroll-animations';
+import { useSeo } from '@/hooks/use-seo';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import DopLaunchBlock from '@/components/DopLaunchBlock';
@@ -35,6 +36,12 @@ import Footer from '@/components/Footer';
 const IndexContent = () => {
   useLenis();
   useScrollAnimations();
+  useSeo({
+    title: 'LolaLab — AI-Native Editorial Film Studio · Direction over prompt',
+    description:
+      'Translating human intention into form. AI-native editorial film studio for brand films, character-driven series, and persistent visual worlds.',
+    path: '/',
+  });
 
   return (
     <>
