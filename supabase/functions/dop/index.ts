@@ -174,9 +174,15 @@ function deliveryTemplates(
     ? "Você pode ler no navegador ou guardar a edição em PDF."
     : "You can read it online or keep the PDF reader edition.";
   const onlineOnlyLine = pt ? "Você pode ler no navegador." : "You can read it online.";
+  // Pedido Gé 14/jul: deixar explícito que o mesmo consentimento já cobre
+  // avisos de capítulos futuros — antes não existia nenhuma confirmação
+  // disso, e parecia que nada tinha acontecido.
+  const nextChapterLine = pt
+    ? "Você também está inscrita para receber os próximos capítulos assim que forem lançados — não precisa fazer mais nada."
+    : "You're also signed up to hear about the next chapters as they're released — no further action needed.";
   const text = pt
-    ? `Seu capítulo está pronto.\n\n${pdfEnabled ? bodyLine : onlineOnlyLine}\n\nLer no navegador: ${readUrl}${pdfEnabled ? `\nBaixar o PDF: ${pdfUrl}` : ""}\n\n— LolaLab Library\n\n${unsub.text}`
-    : `Your chapter is ready.\n\n${pdfEnabled ? bodyLine : onlineOnlyLine}\n\nRead online: ${readUrl}${pdfEnabled ? `\nDownload the PDF: ${pdfUrl}` : ""}\n\n— LolaLab Library\n\n${unsub.text}`;
+    ? `Seu capítulo está pronto.\n\n${pdfEnabled ? bodyLine : onlineOnlyLine}\n\nLer no navegador: ${readUrl}${pdfEnabled ? `\nBaixar o PDF: ${pdfUrl}` : ""}\n\n${nextChapterLine}\n\n— LolaLab Library\n\n${unsub.text}`
+    : `Your chapter is ready.\n\n${pdfEnabled ? bodyLine : onlineOnlyLine}\n\nRead online: ${readUrl}${pdfEnabled ? `\nDownload the PDF: ${pdfUrl}` : ""}\n\n${nextChapterLine}\n\n— LolaLab Library\n\n${unsub.text}`;
   const btn = (href: string, labelTxt: string, solid: boolean) =>
     `<a href="${href}" style="${solid
       ? "background:#2A2520;color:#F7F3EA;"
@@ -187,6 +193,7 @@ function deliveryTemplates(
     <h1 style="font-weight:400;font-size:24px;line-height:1.3;">${pt ? "Seu capítulo está pronto." : "Your chapter is ready."}</h1>
     <p style="font-size:16px;line-height:1.7;">${pdfEnabled ? bodyLine : onlineOnlyLine}</p>
     <p style="margin:32px 0;">${btn(readUrl, pt ? "Ler no navegador" : "Read online", true)}${pdfEnabled ? btn(pdfUrl, pt ? "Baixar o PDF" : "Download the PDF", false) : ""}</p>
+    <p style="font-size:13px;color:#6E6257;line-height:1.6;">${nextChapterLine}</p>
     <hr style="border:none;border-top:1px solid #E4DCCB;margin:32px 0;">
     ${unsub.html}
   </div></body></html>`;

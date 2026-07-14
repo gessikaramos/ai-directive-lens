@@ -658,6 +658,14 @@ export const DopConfirmed = ({ loc }: { loc: Loc }) => {
                 </a>
               )}
             </div>
+            {/* Pedido Gé 14/jul: confirmar explicitamente que o consentimento
+                já dado cobre avisos de capítulos futuros — sem isso parecia
+                que nada tinha acontecido. */}
+            <p className="mt-10" style={{ fontSize: '0.8125rem', fontWeight: 300, color: inkSoft }}>
+              {loc === 'pt-BR'
+                ? 'Você também está inscrita para receber os próximos capítulos assim que forem lançados.'
+                : "You're also signed up to hear about the next chapters as they're released."}
+            </p>
           </>
         )}
         {(state === 'expired' || state === 'invalid') && (
