@@ -50,6 +50,11 @@ const COPY = {
     content: CH01_PT,
     readPath: '/pt-br/library/direction-over-prompt/read',
     landingPath: '/pt-br/library/direction-over-prompt',
+    backCoverHeadline: 'Quando tudo pode ser feito, decidir é o que faz importar.',
+    backCoverBody:
+      'A IA generativa tornou a execução abundante. Não tornou o significado abundante. À medida que as interfaces absorvem mais do trabalho técnico de prompt, o valor criativo migra para a intenção humana, o repertório, a seleção, a restrição, a continuidade e a autoria responsável. Direção não é uma camada estética aplicada depois da geração. É o sistema de decisões que determina o que merece existir, como deve se sustentar e por que importa.',
+    backCoverPromise:
+      'Parte manifesto. Parte manual de campo. Um mapa para diretores criativos, diretores de arte, designers e produtores construindo trabalho que importa na era da IA.',
   },
   en: {
     eyebrow: 'DIRECTION OVER PROMPT · CHAPTER 01',
@@ -73,6 +78,11 @@ const COPY = {
     content: CH01_EN,
     readPath: '/en/library/direction-over-prompt/read',
     landingPath: '/en/library/direction-over-prompt',
+    backCoverHeadline: 'When everything can be made, deciding is what makes it matter.',
+    backCoverBody:
+      'Generative AI has made execution abundant. It has not made meaning abundant. As interfaces absorb more of the technical work of prompting, creative value migrates toward human intention, repertoire, selection, constraint, continuity and accountable authorship. Direction is not a stylistic layer applied after generation. It is the system of decisions that determines what deserves to exist, how it should hold together and why it matters.',
+    backCoverPromise:
+      'Part manifesto. Part field manual. A map for creative leaders, directors, designers and producers building meaningful work in the age of AI.',
   },
 } as const;
 
@@ -393,6 +403,40 @@ export const DopLanding = ({ loc }: { loc: Loc }) => {
         <p className="mt-4" style={{ fontSize: '0.8125rem', fontWeight: 300, color: inkSoft }}>
           {c.note}
         </p>
+      </section>
+
+      {/* Contracapa · texto de posicionamento do livro (pedido Gé 17/jul) */}
+      <section className="px-6 md:px-12 py-16 md:py-24" style={{ backgroundColor: 'hsl(30 14% 15% / 0.03)' }}>
+        <div className="max-w-[640px] mx-auto text-center">
+          <p
+            className="mb-8"
+            style={{
+              fontFamily: serif,
+              fontSize: 'clamp(1.375rem, 3vw, 1.875rem)',
+              fontWeight: 500,
+              lineHeight: 1.3,
+              color: ink,
+            }}
+          >
+            {c.backCoverHeadline}
+          </p>
+          <p
+            className="mb-8"
+            style={{ fontSize: '1.0625rem', fontWeight: 300, lineHeight: 1.8, color: inkSoft }}
+          >
+            {c.backCoverBody}
+          </p>
+          <p
+            style={{
+              fontFamily: serif,
+              fontStyle: 'italic',
+              fontSize: '1.0625rem',
+              color: inkSoft,
+            }}
+          >
+            {c.backCoverPromise}
+          </p>
+        </div>
       </section>
 
       {/* Preview · primeira seção integral (corte narrativo natural) */}
