@@ -47,6 +47,12 @@ const LEMONSQUEEZY_STORE_ID = Deno.env.get("LEMONSQUEEZY_STORE_ID") ?? "";
 // Squeezy (não dá pra mandar preço dinâmico igual fazíamos no Stripe).
 const LEMONSQUEEZY_VARIANT_DIGITAL = Deno.env.get("LEMONSQUEEZY_VARIANT_DIGITAL") ?? "";
 const LEMONSQUEEZY_VARIANT_BUNDLE = Deno.env.get("LEMONSQUEEZY_VARIANT_BUNDLE") ?? "";
+// Venda por capítulo avulso (pivô 18/jul — sem verba pra lançar o livro
+// inteiro agora; pílulas de áudio no Spotify levam pra cá). Cada capítulo é
+// seu próprio book_slug (entitlement e arquivo isolados do manuscrito
+// completo), começando "active:false" até: variante criada na LS, PDF
+// publicado no vault, e conteúdo aprovado por Gé/Fred.
+const LEMONSQUEEZY_VARIANT_CH01 = Deno.env.get("LEMONSQUEEZY_VARIANT_CH01") ?? "";
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
 const MAIL_FROM = "LolaLab Library <library@letters.lolalabstudio.com>";
 const MAIL_REPLY_TO = "hello@lolalabstudio.com";
@@ -58,16 +64,32 @@ const BUNDLE_ENABLED = (Deno.env.get("LIBRARY_BUNDLE_ENABLED") ?? "false") === "
 
 const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
 
-// Catálogo: "active:false" = manuscrito ainda não pronto (ex.: The Book of
-// Tactility) — checkout recusa com clareza. Preço fica no painel da LS.
-const CATALOG: Record<string, { title: string; active: boolean }> = {
-  book_direction_over_prompt: { title: "Direction Over Prompt", active: true },
-  book_tactility: { title: "The Book of Tactility", active: false },
-};
-const PRICE_CENTS: Record<"digital" | "bundle", number> = { digital: 2900, bundle: 4900 };
-const VARIANT_BY_TIER: Record<"digital" | "bundle", string> = {
-  digital: LEMONSQUEEZY_VARIANT_DIGITAL,
-  bundle: LEMONSQUEEZY_VARIANT_BUNDLE,
+// Catálogo: "active:false" = produto ainda não pronto pra vender (manuscrito
+// incompleto, variante não criada, ou arquivo ainda não publicado no vault)
+// — checkout recusa com clareza nesses casos. Preço/variante ficam por tier
+// dentro de cada entrada, não mais globais, pra suportar capítulos avulsos
+// com preço próprio ao lado do livro completo.
+const CATALOG: Record<
+  string,
+  { title: string; active: boolean; tiers: Partial<Record<string, { priceCents: number; variantId: string }>> }
+> = {
+  book_direction_over_prompt: {
+    title: "Direction Over Prompt",
+    active: true,
+    tiers: {
+      digital: { priceCents: 2900, variantId: LEMONSQUEEZY_VARIANT_DIGITAL },
+      bundle: { priceCents: 4900, variantId: LEMONSQUEEZY_VARIANT_BUNDLE },
+    },
+  },
+  dop_ch01: {
+    title: "Direction Over Prompt — Capítulo 1",
+    // Ativar só quando as 3 condições abaixo estiverem verdadeiras:
+    active: false, // 1) LEMONSQUEEZY_VARIANT_CH01 setado  2) PDF em dop_ch01/manuscript_*.pdf no vault  3) conteúdo aprovado
+    tiers: {
+      digital: { priceCents: 290, variantId: LEMONSQUEEZY_VARIANT_CH01 },
+    },
+  },
+  book_tactility: { title: "The Book of Tactility", active: false, tiers: {} },
 };
 
 function json(body: unknown, status = 200, extra: Record<string, string> = {}) {
@@ -180,18 +202,19 @@ async function sendReceiptEmail(email: string, bookTitle: string, accessUrl: str
 async function actionCheckout(payload: any, req: Request) {
   const email = String(payload?.email ?? "").trim().toLowerCase();
   const bookSlug = String(payload?.book_slug ?? "");
-  const tier = payload?.product_tier === "bundle" ? "bundle" : "digital";
+  const tier = String(payload?.product_tier ?? "digital");
   if (!email.includes("@")) return json({ ok: false, error: "invalid_email" }, 400);
   const book = CATALOG[bookSlug];
   if (!book || !book.active) return json({ ok: false, error: "book_unavailable" }, 400);
   if (tier === "bundle" && !BUNDLE_ENABLED) return json({ ok: false, error: "bundle_unavailable" }, 400);
-  const variantId = VARIANT_BY_TIER[tier as "digital" | "bundle"];
-  if (!LEMONSQUEEZY_API_KEY || !LEMONSQUEEZY_STORE_ID || !variantId) {
+  const tierConfig = book.tiers[tier];
+  if (!tierConfig || !LEMONSQUEEZY_API_KEY || !LEMONSQUEEZY_STORE_ID || !tierConfig.variantId) {
     return json({ ok: false, error: "checkout_not_configured" }, 503);
   }
+  const variantId = tierConfig.variantId;
 
   const origin = isAllowedOrigin(req.headers.get("origin") ?? "") ? req.headers.get("origin")! : SITE;
-  const amount = PRICE_CENTS[tier as "digital" | "bundle"];
+  const amount = tierConfig.priceCents;
 
   try {
     const checkout = await lsCreateCheckout({
@@ -239,11 +262,17 @@ async function actionWebhook(req: Request) {
   const custom = event.meta?.custom_data ?? {};
   const email = String(custom.email ?? attrs.user_email ?? "").toLowerCase();
   const bookSlug = String(custom.book_slug ?? "");
-  const tier = custom.product_tier === "bundle" ? "bundle" : "digital";
+  const tier = String(custom.product_tier ?? "digital");
   const orderId = String(event.data?.id ?? "");
   if (!email || !bookSlug || !orderId) return json({ ok: false, error: "missing_metadata" }, 400);
   // status "paid" = pagamento único confirmado (produto digital, sem assinatura aqui)
   if (attrs.status !== "paid") return json({ ok: true, ignored: true, status: attrs.status });
+
+  const tierConfig = CATALOG[bookSlug]?.tiers[tier];
+  if (!tierConfig) {
+    console.error("webhook: tier/book desconhecido", bookSlug, tier);
+    return json({ ok: false, error: "unknown_product" }, 400);
+  }
 
   const { data: dbOrder, error: orderErr } = await admin
     .from("library_orders")
@@ -252,7 +281,7 @@ async function actionWebhook(req: Request) {
         email,
         book_slug: bookSlug,
         product_tier: tier,
-        amount_cents: PRICE_CENTS[tier as "digital" | "bundle"],
+        amount_cents: tierConfig.priceCents,
         currency: "eur",
         lemonsqueezy_order_id: orderId,
         status: "paid",
