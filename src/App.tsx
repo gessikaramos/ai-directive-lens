@@ -13,6 +13,7 @@ import LibraryThankYou from "./pages/LibraryThankYou.tsx";
 import Studio from "./pages/Studio.tsx";
 import About from "./pages/About.tsx";
 import Contact from "./pages/Contact.tsx";
+import Legal from "./pages/Legal.tsx";
 import Auth from "./pages/Auth.tsx";
 import Collective from "./pages/Collective.tsx";
 import {
@@ -61,6 +62,7 @@ const App = () => (
             <Route path="/studio" element={<Studio />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/legal" element={<Legal />} />
             {/* Legacy redirect · invisível no menu · não remover sem confirmação Fred/Gé */}
             <Route path="/lolalab_hunter" element={<HunterRedirect />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
