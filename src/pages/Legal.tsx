@@ -86,9 +86,11 @@ const ContentPT = () => (
     </Section>
     <Section title="2. Preço e pagamento">
       <P>
-        O preço apresentado no checkout já inclui, quando aplicável, o IVA/VAT do seu país,
-        calculado e cobrado automaticamente pela Gumroad enquanto Merchant of Record. A Gumroad
-        processa o pagamento e emite o recibo — a LolaLab não tem acesso aos dados do seu cartão.
+        O preço de €29 anunciado no site não inclui impostos. No checkout, a Gumroad calcula e
+        acrescenta o IVA/VAT do seu país automaticamente (enquanto Merchant of Record), antes do
+        pagamento final — o valor total a pagar aparece claramente antes de você confirmar a
+        compra. A Gumroad processa o pagamento e emite o recibo — a LolaLab não tem acesso aos
+        dados do seu cartão.
       </P>
     </Section>
     <Section title="3. Entrega">
@@ -158,8 +160,9 @@ const ContentEN = () => (
     </Section>
     <Section title="2. Price and payment">
       <P>
-        The price shown at checkout includes VAT/sales tax for your country where applicable,
-        calculated and collected automatically by Gumroad as Merchant of Record. Gumroad
+        The €29 price shown on the site does not include tax. At checkout, Gumroad calculates
+        and adds VAT/sales tax for your country automatically (as Merchant of Record), before
+        final payment — the full total is shown clearly before you confirm the purchase. Gumroad
         processes your payment and issues the receipt — LolaLab never has access to your card
         details.
       </P>
