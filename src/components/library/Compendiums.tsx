@@ -2,11 +2,12 @@
  * The LolaLab Compendiums · seção de livros da /library (briefing Mary 10/jul).
  * Capas tipográficas em CSS (sem imagem), tom coffee-table book.
  * Pré-lançamento: captura de e-mail via signal_opt_in (source = slug do livro).
- * Com LIBRARY_CHECKOUT_ENABLED=true, "Digital Edition" chama a Edge Function
- * library (Lemon Squeezy Checkout hospedado) para o livro ativo no catálogo
- * (hoje só Direction Over Prompt); os demais botões (hardcover/Amazon KDP,
- * livros ainda "in development") continuam em captura de e-mail — a Amazon
- * cuida do próprio checkout físico, não faz parte deste fluxo.
+ *
+ * Pivô 22/jul: venda de Direction Over Prompt migrou de Lemon Squeezy (via
+ * Edge Function `library`, LIBRARY_CHECKOUT_ENABLED) para Gumroad — link
+ * direto (book.gumroadUrl), sem passar pelo checkout customizado antigo, que
+ * fica dormente/desconectado. Hardcover e os demais livros continuam em
+ * captura de e-mail; Amazon cuida do próprio checkout físico à parte.
  */
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -41,6 +42,7 @@ const BOOKS = [
     digital: '€29',
     hardcover: '€59',
     cover: '/covers/direction-over-prompt-cover-en.png',
+    gumroadUrl: 'https://lola182.gumroad.com/l/ffaxv',
   },
 ];
 
@@ -175,21 +177,41 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
           </p>
         ) : status === 'idle' ? (
           <div className="flex flex-wrap gap-3">
-            <button
-              onClick={() => setStatus('form')}
-              className="px-7 py-3 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
-              style={{
-                backgroundColor: 'hsl(var(--bronze-soft))',
-                color: 'hsl(var(--ink))',
-                borderRadius: '9999px',
-                fontSize: '0.65rem',
-                fontWeight: 500,
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-              }}
-            >
-              {checkoutReady ? `Buy Digital Edition · ${book.digital}` : 'Notify Me — Digital Edition'}
-            </button>
+            {book.gumroadUrl ? (
+              <a
+                href={book.gumroadUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-7 py-3 transition-all duration-300 hover:opacity-85 hover:scale-[1.02] inline-block"
+                style={{
+                  backgroundColor: 'hsl(var(--bronze-soft))',
+                  color: 'hsl(var(--ink))',
+                  borderRadius: '9999px',
+                  fontSize: '0.65rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {`Buy Digital Edition · ${book.digital}`}
+              </a>
+            ) : (
+              <button
+                onClick={() => setStatus('form')}
+                className="px-7 py-3 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
+                style={{
+                  backgroundColor: 'hsl(var(--bronze-soft))',
+                  color: 'hsl(var(--ink))',
+                  borderRadius: '9999px',
+                  fontSize: '0.65rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {checkoutReady ? `Buy Digital Edition · ${book.digital}` : 'Notify Me — Digital Edition'}
+              </button>
+            )}
             <button
               onClick={() => setStatus('form')}
               className="px-7 py-3 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"

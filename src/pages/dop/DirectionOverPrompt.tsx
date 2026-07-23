@@ -747,32 +747,12 @@ export const DopConfirmed = ({ loc }: { loc: Loc }) => {
 
 /* ───────────────────────── Comprar o livro completo ─────────────────────────
    CTA logo após o Capítulo 1 (pedido Gé 12/jul, alinhado com a sugestão da
-   Mary de vender a v1.0 já). Checkout real quando LIBRARY_CHECKOUT_ENABLED;
-   senão, mesma captura de e-mail do Compendiums (signal_opt_in). */
+   Mary de vender a v1.0 já). Pivô 22/jul: livro completo já está à venda de
+   verdade no Gumroad — link direto, sem captura de e-mail nem o checkout
+   customizado antigo (Lemon Squeezy / LIBRARY_CHECKOUT_ENABLED, dormente). */
+const GUMROAD_DOP_URL = 'https://lola182.gumroad.com/l/ffaxv';
+
 const BuyBookCTA = ({ loc }: { loc: Loc }) => {
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'form' | 'sending' | 'done' | 'error'>('idle');
-  const slug = 'book_direction_over_prompt';
-
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim() || status === 'sending') return;
-    setStatus('sending');
-    if (LIBRARY_CHECKOUT_ENABLED) {
-      const { data, error } = await supabase.functions.invoke('library', {
-        body: { action: 'checkout', email: email.trim(), book_slug: slug, product_tier: 'digital' },
-      });
-      if (error || !data?.ok || !data?.url) {
-        setStatus('error');
-        return;
-      }
-      window.location.href = data.url;
-      return;
-    }
-    const { error } = await supabase.from('signal_opt_in').insert({ email: email.trim(), source: slug });
-    setStatus(error && error.code !== '23505' ? 'error' : 'done');
-  };
-
   return (
     <div className="mt-16 pt-12 text-center" style={{ borderTop: '1px solid hsl(30 14% 15% / 0.15)' }}>
       <p
@@ -780,71 +760,27 @@ const BuyBookCTA = ({ loc }: { loc: Loc }) => {
         style={{ fontFamily: serif, fontSize: '1.0625rem', lineHeight: 1.5, color: inkSoft }}
       >
         {loc === 'pt-BR'
-          ? 'Gostou do Capítulo 1? O livro completo — 16 capítulos, arquivos de caso e instrumentos de campo — está em produção.'
-          : 'Enjoyed Chapter 1? The complete book — 16 chapters, case files and field instruments — is in progress.'}
+          ? 'Gostou do Capítulo 1? O livro completo — 16 capítulos, arquivos de caso e instrumentos de campo — já está disponível.'
+          : 'Enjoyed Chapter 1? The complete book — 16 chapters, case files and field instruments — is available now.'}
       </p>
 
-      {status === 'done' ? (
-        <p style={{ fontSize: '0.8125rem', fontWeight: 300, color: 'hsl(28 35% 45%)' }}>
-          {loc === 'pt-BR' ? 'Prontinho — avisamos assim que abrir.' : "Done — we'll write when it opens."}
-        </p>
-      ) : status === 'idle' ? (
-        <button
-          onClick={() => setStatus('form')}
-          className="px-8 py-3.5 transition-all duration-300 hover:opacity-85"
-          style={{
-            backgroundColor: ink,
-            color: 'hsl(var(--background))',
-            borderRadius: '9999px',
-            fontSize: '0.7rem',
-            fontWeight: 500,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-          }}
-        >
-          {loc === 'pt-BR' ? 'Avise-me quando o livro estiver pronto' : 'Notify me when the book is ready'}
-        </button>
-      ) : (
-        <form onSubmit={submit} className="flex flex-wrap justify-center gap-3 max-w-[440px] mx-auto">
-          <input
-            type="email"
-            required
-            autoFocus
-            value={email}
-            onChange={(ev) => setEmail(ev.target.value)}
-            placeholder="you@domain.com"
-            className="flex-1 min-w-[200px] py-3 px-4 focus:outline-none"
-            style={{
-              backgroundColor: 'transparent',
-              color: ink,
-              border: '1px solid hsl(30 14% 15% / 0.25)',
-              fontSize: '0.875rem',
-              fontWeight: 300,
-            }}
-          />
-          <button
-            type="submit"
-            disabled={status === 'sending'}
-            className="px-7 py-3 transition-all duration-300 hover:opacity-85 disabled:opacity-40"
-            style={{
-              backgroundColor: ink,
-              color: 'hsl(var(--background))',
-              borderRadius: '9999px',
-              fontSize: '0.65rem',
-              fontWeight: 500,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-            }}
-          >
-            {LIBRARY_CHECKOUT_ENABLED ? (loc === 'pt-BR' ? 'Continuar' : 'Continue') : (loc === 'pt-BR' ? 'Avisem-me' : 'Notify me')}
-          </button>
-          {status === 'error' && (
-            <span style={{ fontSize: '0.75rem', color: 'hsl(28 35% 45%)' }}>
-              {loc === 'pt-BR' ? 'Algo falhou — tenta de novo.' : 'Something slipped — try again.'}
-            </span>
-          )}
-        </form>
-      )}
+      <a
+        href={GUMROAD_DOP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-block px-8 py-3.5 transition-all duration-300 hover:opacity-85"
+        style={{
+          backgroundColor: ink,
+          color: 'hsl(var(--background))',
+          borderRadius: '9999px',
+          fontSize: '0.7rem',
+          fontWeight: 500,
+          letterSpacing: '0.18em',
+          textTransform: 'uppercase',
+        }}
+      >
+        {loc === 'pt-BR' ? 'Comprar o livro · €29' : 'Buy the book · €29'}
+      </a>
     </div>
   );
 };
