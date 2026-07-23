@@ -40,6 +40,7 @@ export const translations: Record<string, Record<Lang, string>> = {
   'hero.book.eyebrow': { en: 'FROM THE BOOK', pt: 'DO LIVRO' },
   'hero.book.title': { en: 'Direction Over Prompt', pt: 'Direction Over Prompt' },
   'hero.cta.buy': { en: 'Buy the Book · €29', pt: 'Comprar o Livro · €29' },
+  'buy.usdNote': { en: 'Charged in USD + tax, via Gumroad', pt: 'Cobrado em USD + impostos, via Gumroad' },
   // Wave 1.1 · Fred v1 canon · CTA secondary Explore the Library
   'hero.cta.library': { en: 'Partner with the Studio ↗', pt: 'Trabalhar com o Studio ↗' },
 

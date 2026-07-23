@@ -180,6 +180,7 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
               : "Got it — we'll email you the moment this book is ready."}
           </p>
         ) : status === 'idle' ? (
+          <>
           <div className="flex flex-wrap gap-3">
             {book.gumroadUrl ? (
               <a
@@ -234,6 +235,12 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
               {checkoutReady ? `Reserve Hardcover · ${book.hardcover}` : 'Notify Me — Hardcover'}
             </button>
           </div>
+          {book.gumroadUrl && (
+            <p className="mt-3" style={{ fontSize: '0.7rem', fontWeight: 300, color: 'hsl(var(--cool-gray-secondary))' }}>
+              Charged in USD + tax, via Gumroad
+            </p>
+          )}
+          </>
         ) : (
           <form onSubmit={reserve} className="flex flex-wrap gap-3 items-center max-w-[540px]">
             <input

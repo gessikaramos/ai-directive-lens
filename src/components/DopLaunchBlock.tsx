@@ -109,6 +109,9 @@ export default function DopLaunchBlock() {
               {pt ? 'Ler o Capítulo 01 grátis →' : 'Read Chapter 01 free →'}
             </Link>
           </div>
+          <p className="mt-4" style={{ fontSize: '0.7rem', fontWeight: 300, color: 'hsl(var(--cool-gray-tertiary) / 0.7)' }}>
+            {pt ? 'Cobrado em USD + impostos, via Gumroad' : 'Charged in USD + tax, via Gumroad'}
+          </p>
         </div>
 
         {/* Coluna prova material: página do manuscrito em fragmento tipográfico */}

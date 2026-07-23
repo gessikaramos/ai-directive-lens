@@ -184,6 +184,12 @@ export default function HeroSection() {
             {t('hero.cta.lab', lang)}
           </Link>
         </div>
+        <p
+          className="mt-4"
+          style={{ fontSize: '0.7rem', fontWeight: 300, color: 'hsl(var(--background) / 0.5)' }}
+        >
+          {t('buy.usdNote', lang)}
+        </p>
       </div>
 
       {/* Wave 3.1.1 · canon Mary QA · SCROLL indicator removido · deixar layout induzir orgânico A24 */}

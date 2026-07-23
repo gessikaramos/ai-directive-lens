@@ -431,6 +431,9 @@ export const DopLanding = ({ loc }: { loc: Loc }) => {
         <p className="mt-4" style={{ fontSize: '0.8125rem', fontWeight: 300, color: inkSoft }}>
           {c.note}
         </p>
+        <p className="mt-1" style={{ fontSize: '0.7rem', fontWeight: 300, color: inkSoft }}>
+          {loc === 'pt-BR' ? 'Cobrado em USD + impostos, via Gumroad' : 'Charged in USD + tax, via Gumroad'}
+        </p>
       </section>
 
       {/* Contracapa · texto de posicionamento do livro (pedido Gé 17/jul) */}
@@ -808,6 +811,9 @@ const BuyBookCTA = ({ loc }: { loc: Loc }) => {
       >
         {loc === 'pt-BR' ? 'Comprar o livro · €29' : 'Buy the book · €29'}
       </a>
+      <p className="mt-3" style={{ fontSize: '0.7rem', fontWeight: 300, color: inkSoft }}>
+        {loc === 'pt-BR' ? 'Cobrado em USD + impostos, via Gumroad' : 'Charged in USD + tax, via Gumroad'}
+      </p>
     </div>
   );
 };
