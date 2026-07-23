@@ -12,6 +12,7 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { LIBRARY_CHECKOUT_ENABLED } from '@/lib/flags';
+import { track } from '@/lib/analytics';
 
 const CHECKOUT_READY_SLUGS = new Set(['book_direction_over_prompt']);
 
@@ -182,6 +183,7 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
                 href={book.gumroadUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => track('buy_book_click', { book_slug: book.slug, source: 'library_compendiums' })}
                 className="px-7 py-3 transition-all duration-300 hover:opacity-85 hover:scale-[1.02] inline-block"
                 style={{
                   backgroundColor: 'hsl(var(--bronze-soft))',

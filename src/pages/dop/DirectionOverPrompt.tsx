@@ -768,6 +768,7 @@ const BuyBookCTA = ({ loc }: { loc: Loc }) => {
         href={GUMROAD_DOP_URL}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => track('buy_book_click', { book_slug: 'book_direction_over_prompt', source: 'dop_chapter1_cta', locale: loc })}
         className="inline-block px-8 py-3.5 transition-all duration-300 hover:opacity-85"
         style={{
           backgroundColor: ink,

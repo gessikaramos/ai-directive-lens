@@ -214,7 +214,7 @@ const ContentEN = () => (
 );
 
 const LegalContent = () => {
-  const { lang } = useLanguage();
+  const { lang, toggleLang } = useLanguage();
 
   useSeo({
     title: 'Terms & Privacy · LolaLab',
@@ -237,9 +237,23 @@ const LegalContent = () => {
         />
         <section className="px-6 md:px-12 py-16 md:py-24">
           <div className="max-w-[720px] mx-auto">
-            <span className="block mb-6" style={labelStyle}>
-              {lang === 'pt' ? 'Documento' : 'Document'}
-            </span>
+            <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+              <span style={labelStyle}>{lang === 'pt' ? 'Documento' : 'Document'}</span>
+              <button
+                onClick={toggleLang}
+                style={{
+                  ...labelStyle,
+                  border: '1px solid hsl(var(--bronze-soft) / 0.4)',
+                  borderRadius: '9999px',
+                  padding: '0.4rem 0.9rem',
+                  cursor: 'pointer',
+                  background: 'transparent',
+                }}
+                aria-label={lang === 'pt' ? 'Switch to English' : 'Mudar para Português'}
+              >
+                {lang === 'pt' ? 'Read in English' : 'Ler em Português'}
+              </button>
+            </div>
             {lang === 'pt' ? <ContentPT /> : <ContentEN />}
           </div>
         </section>
