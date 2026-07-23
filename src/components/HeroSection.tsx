@@ -14,6 +14,9 @@ import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
+import { track } from '@/lib/analytics';
+
+const GUMROAD_DOP_URL = 'https://lola182.gumroad.com/l/ffaxv';
 
 export default function HeroSection() {
   const { lang } = useLanguage();
@@ -85,6 +88,37 @@ export default function HeroSection() {
         data-anim="hero-content"
         className="relative z-10 text-center px-6 max-w-5xl mx-auto"
       >
+        {/* Pivô 23/jul: autoridade + instigação no primeiro fold — o livro é
+            o ativo principal agora, não pode ficar só implícito no botão de
+            leitura grátis. Liga a manchete (que já ecoa a tese do livro) ao
+            livro real e nomeado, antes mesmo do H1. */}
+        <Link
+          to="/library/direction-over-prompt"
+          className="inline-flex items-center gap-2 mb-6 transition-opacity duration-300 hover:opacity-80"
+        >
+          <span
+            style={{
+              color: 'hsl(var(--bronze-soft))',
+              fontSize: '0.7rem',
+              fontWeight: 500,
+              letterSpacing: '0.24em',
+              textTransform: 'uppercase',
+            }}
+          >
+            {t('hero.book.eyebrow', lang)}
+          </span>
+          <span
+            style={{
+              fontFamily: "'Newsreader', Georgia, serif",
+              fontStyle: 'italic',
+              fontSize: '0.9375rem',
+              color: 'hsl(var(--background) / 0.85)',
+              borderBottom: '1px solid hsl(var(--bronze-soft) / 0.5)',
+            }}
+          >
+            {t('hero.book.title', lang)}
+          </span>
+        </Link>
         <h1
           className="mb-6"
           style={{
@@ -110,11 +144,16 @@ export default function HeroSection() {
           {t('hero.support', lang)}
         </p>
 
-        {/* Os DOIS caminhos vivem AQUI no hero (canon Gé 10/jul) — os botões
-            duplicados do Statement foram removidos. Pills canon Vision Pro. */}
+        {/* Pivô 23/jul: compra lidera (ativo principal, pedido Gé — vendável
+            vem sempre primeiro). "Partner with the Studio" sai do hero (não
+            é o objetivo agora) mas continua existindo no Choose Path logo
+            abaixo — não foi removido do site, só perdeu prioridade do 1º fold. */}
         <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
-            to="/library/direction-over-prompt"
+          <a
+            href={GUMROAD_DOP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track('buy_book_click', { book_slug: 'book_direction_over_prompt', source: 'hero' })}
             className="px-9 py-3.5 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
             style={{
               backgroundColor: 'hsl(var(--bronze-soft))',
@@ -126,10 +165,10 @@ export default function HeroSection() {
               textTransform: 'uppercase',
             }}
           >
-            {t('hero.cta.lab', lang)}
-          </Link>
+            {t('hero.cta.buy', lang)}
+          </a>
           <Link
-            to="/contact"
+            to="/library/direction-over-prompt"
             className="px-9 py-3.5 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
             style={{
               backgroundColor: 'transparent',
@@ -142,7 +181,7 @@ export default function HeroSection() {
               textTransform: 'uppercase',
             }}
           >
-            {t('hero.cta.library', lang)}
+            {t('hero.cta.lab', lang)}
           </Link>
         </div>
       </div>

@@ -35,6 +35,11 @@ export const translations: Record<string, Record<Lang, string>> = {
   'hero.scroll': { en: 'SCROLL', pt: 'SCROLL' },
   'hero.cta.selected': { en: 'View selected work', pt: 'Ver trabalhos selecionados' },
   'hero.cta.lab': { en: 'Read Chapter 01 →', pt: 'Ler o Capítulo 01 →' },
+  // Pivô 23/jul: livro é o ativo principal hoje — precisa de autoridade E
+  // instigação logo no primeiro fold, não só menção mais abaixo (pedido Gé).
+  'hero.book.eyebrow': { en: 'FROM THE BOOK', pt: 'DO LIVRO' },
+  'hero.book.title': { en: 'Direction Over Prompt', pt: 'Direction Over Prompt' },
+  'hero.cta.buy': { en: 'Buy the Book · €29', pt: 'Comprar o Livro · €29' },
   // Wave 1.1 · Fred v1 canon · CTA secondary Explore the Library
   'hero.cta.library': { en: 'Partner with the Studio ↗', pt: 'Trabalhar com o Studio ↗' },
 
