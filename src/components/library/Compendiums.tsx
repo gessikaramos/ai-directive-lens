@@ -26,17 +26,11 @@ const label = {
 
 const BOOKS = [
   {
-    slug: 'book_tactility',
-    roman: 'COMPENDIUM I',
-    title: 'The Book of Tactility',
-    subtitle: 'The LolaLab Manual of Aesthetics, Texture & Imperfection in the Synthetic Era',
-    desc: 'Why the human eye rejects digital perfection — and how grain, friction and deliberate imperfection became the proof of life that validates luxury. The grammar of matter, from 35mm noise to Nordic chiaroscuro.',
-    digital: '€29',
-    hardcover: '€59',
-  },
-  {
+    // Pivô 22/jul: à venda de verdade agora — vem primeiro (era Compendium II,
+    // depois do Tactility, que nem está à venda ainda). Ordem de exibição
+    // reflete o que existe pra comprar, não a ordem de concepção editorial.
     slug: 'book_direction_over_prompt',
-    roman: 'COMPENDIUM II',
+    roman: 'COMPENDIUM I',
     title: 'Direction Over Prompt',
     subtitle: 'The Art of Human Translation & the Recovery of Creative Repertoire',
     desc: 'Prompt engineering is a career with a six-month shelf life. Repertoire is not. How directors think, why aesthetic restriction extracts genius from machines, and the method behind the Creative Direction Pack.',
@@ -44,6 +38,15 @@ const BOOKS = [
     hardcover: '€59',
     cover: '/covers/direction-over-prompt-cover-en.png',
     gumroadUrl: 'https://lola182.gumroad.com/l/ffaxv',
+  },
+  {
+    slug: 'book_tactility',
+    roman: 'COMPENDIUM II',
+    title: 'The Book of Tactility',
+    subtitle: 'The LolaLab Manual of Aesthetics, Texture & Imperfection in the Synthetic Era',
+    desc: 'Why the human eye rejects digital perfection — and how grain, friction and deliberate imperfection became the proof of life that validates luxury. The grammar of matter, from 35mm noise to Nordic chiaroscuro.',
+    digital: '€29',
+    hardcover: '€59',
   },
 ];
 

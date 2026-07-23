@@ -18,6 +18,10 @@ type Loc = 'pt-BR' | 'en';
 const ink = 'hsl(30 14% 15%)';
 const inkSoft = 'hsl(30 10% 38%)';
 const bronze = 'hsl(28 35% 45%)';
+// Livro completo à venda no Gumroad desde 22/jul — usado tanto no CTA de
+// topo da landing (tráfego pago/externo com intenção de compra) quanto no
+// CTA de fechamento do Capítulo 1 (leitor que terminou o gancho grátis).
+const GUMROAD_DOP_URL = 'https://lola182.gumroad.com/l/ffaxv';
 const label = {
   color: bronze,
   fontSize: '0.7rem',
@@ -384,22 +388,46 @@ export const DopLanding = ({ loc }: { loc: Loc }) => {
         >
           {c.description}
         </p>
-        <a
-          href="#preview"
-          onClick={() => track('dop_preview_started', { locale: loc })}
-          className="inline-block px-10 py-4 transition-all duration-300 hover:opacity-85"
-          style={{
-            backgroundColor: ink,
-            color: 'hsl(var(--background))',
-            borderRadius: '9999px',
-            fontSize: '0.75rem',
-            fontWeight: 500,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-          }}
-        >
-          {c.cta}
-        </a>
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <a
+            href="#preview"
+            onClick={() => track('dop_preview_started', { locale: loc })}
+            className="inline-block px-10 py-4 transition-all duration-300 hover:opacity-85"
+            style={{
+              backgroundColor: ink,
+              color: 'hsl(var(--background))',
+              borderRadius: '9999px',
+              fontSize: '0.75rem',
+              fontWeight: 500,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+            }}
+          >
+            {c.cta}
+          </a>
+          {/* Pivô 22/jul: já sabe que quer? não obriga a ler o capítulo grátis
+              primeiro pra achar o preço — tráfego pago/externo já vem com
+              intenção de compra e precisa do caminho mais curto até ela. */}
+          <a
+            href={GUMROAD_DOP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => track('buy_book_click', { book_slug: 'book_direction_over_prompt', source: 'dop_landing_hero', locale: loc })}
+            className="inline-block px-10 py-4 transition-all duration-300 hover:opacity-85"
+            style={{
+              backgroundColor: 'transparent',
+              color: ink,
+              border: `1px solid ${ink}`,
+              borderRadius: '9999px',
+              fontSize: '0.75rem',
+              fontWeight: 500,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+            }}
+          >
+            {loc === 'pt-BR' ? 'Já decidido? Comprar o livro · €29' : 'Already sure? Buy the book · €29'}
+          </a>
+        </div>
         <p className="mt-4" style={{ fontSize: '0.8125rem', fontWeight: 300, color: inkSoft }}>
           {c.note}
         </p>
@@ -750,8 +778,6 @@ export const DopConfirmed = ({ loc }: { loc: Loc }) => {
    Mary de vender a v1.0 já). Pivô 22/jul: livro completo já está à venda de
    verdade no Gumroad — link direto, sem captura de e-mail nem o checkout
    customizado antigo (Lemon Squeezy / LIBRARY_CHECKOUT_ENABLED, dormente). */
-const GUMROAD_DOP_URL = 'https://lola182.gumroad.com/l/ffaxv';
-
 const BuyBookCTA = ({ loc }: { loc: Loc }) => {
   return (
     <div className="mt-16 pt-12 text-center" style={{ borderTop: '1px solid hsl(30 14% 15% / 0.15)' }}>
