@@ -1,11 +1,19 @@
 /**
  * DopLaunchBlock · lançamento editorial do Capítulo 01 na Home (Wave DOP CH01).
  * Deve parecer um lançamento de publicação, não banner: fragmento REAL do
- * manuscrito em grande escala como prova material, tese, e um único CTA.
+ * manuscrito em grande escala como prova material, tese, e CTA.
+ *
+ * Pivô 23/jul: livro completo à venda de verdade (Gumroad) — pedido explícito
+ * da Gé de expor a compra na Home, "a primeira coisa que bate o olho", com
+ * registro editorial-confiante (não promocional/gritado — ver rationale na
+ * conversa: público de €29/manifesto desconfia de site que grita desconto).
+ * O item vendável vem sempre primeiro na lista de CTAs, nunca por último.
  */
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/hooks/use-language';
 import { track } from '@/lib/analytics';
+
+const GUMROAD_DOP_URL = 'https://lola182.gumroad.com/l/ffaxv';
 
 const label = {
   color: 'hsl(var(--bronze-soft))',
@@ -28,7 +36,7 @@ export default function DopLaunchBlock() {
         {/* Coluna texto */}
         <div className="md:col-span-6">
           <span className="block mb-5" style={label}>
-            {pt ? 'NOVO NA LOLALAB LIBRARY' : 'NEW FROM LOLALAB LIBRARY'}
+            {pt ? 'O LIVRO ESTÁ À VENDA' : 'THE BOOK IS OUT NOW'}
           </span>
           {/* Composition Pass: o capítulo é o ACONTECIMENTO da Home — escala
               de manchete, não de anúncio (uma ideia dominante por viewport). */}
@@ -64,22 +72,43 @@ export default function DopLaunchBlock() {
               ? 'Quando criar se torna abundante, o julgamento se torna escasso.'
               : 'When creating becomes abundant, judgment becomes scarce.'}
           </p>
-          <Link
-            to="/library/direction-over-prompt"
-            onClick={() => track('dop_home_block_click')}
-            className="inline-block px-9 py-3.5 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
-            style={{
-              backgroundColor: 'hsl(var(--bronze-soft))',
-              color: 'hsl(var(--ink))',
-              borderRadius: '9999px',
-              fontSize: '0.7rem',
-              fontWeight: 500,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-            }}
-          >
-            {pt ? 'Ler o Capítulo 01 →' : 'Read Chapter 01 →'}
-          </Link>
+          <div className="flex flex-wrap items-center gap-4">
+            <a
+              href={GUMROAD_DOP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => track('buy_book_click', { book_slug: 'book_direction_over_prompt', source: 'home_dop_block' })}
+              className="inline-block px-9 py-3.5 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
+              style={{
+                backgroundColor: 'hsl(var(--bronze-soft))',
+                color: 'hsl(var(--ink))',
+                borderRadius: '9999px',
+                fontSize: '0.7rem',
+                fontWeight: 500,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+              }}
+            >
+              {pt ? 'Comprar o livro · €29' : 'Buy the book · €29'}
+            </a>
+            <Link
+              to="/library/direction-over-prompt"
+              onClick={() => track('dop_home_block_click')}
+              className="inline-block px-9 py-3.5 transition-all duration-300 hover:opacity-85"
+              style={{
+                backgroundColor: 'transparent',
+                color: '#FFFFFF',
+                border: '1px solid hsl(0 0% 100% / 0.3)',
+                borderRadius: '9999px',
+                fontSize: '0.7rem',
+                fontWeight: 500,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+              }}
+            >
+              {pt ? 'Ler o Capítulo 01 grátis →' : 'Read Chapter 01 free →'}
+            </Link>
+          </div>
         </div>
 
         {/* Coluna prova material: página do manuscrito em fragmento tipográfico */}

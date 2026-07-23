@@ -4,13 +4,14 @@ import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
 import { getLenis } from '@/hooks/use-lenis';
 import { Menu, X, Globe } from 'lucide-react';
+import { track } from '@/lib/analytics';
 
 // Wave 1.1 hotfix · Fred/Gé 6/jul · Escolha A: esconder PT/EN toggle temporariamente
 // Motivo: toggle traduz só menu, não corpo. Site EN-only até tradução completa futura.
 // Reativar: trocar pra true quando i18n cobrir todas as rotas.
 const SHOW_LANG_TOGGLE = false;
 
-type NavItem = { key: string; href: string; type: 'anchor' | 'route' };
+type NavItem = { key: string; href: string; type: 'anchor' | 'route' | 'external' };
 
 export default function Navbar() {
   const { lang, toggleLang } = useLanguage();
@@ -28,6 +29,7 @@ export default function Navbar() {
   // Wave 2.0 · canon-mestre navigation Fred+Gé 7/jul · Studio · Lab · Library · About · Contact
   // Steve Jobs Lens: quero contratar → Studio · quero explorar ideia → Lab · quero aprender → Library
   const navLinks: NavItem[] = [
+    { key: 'nav.book', href: 'https://lola182.gumroad.com/l/ffaxv', type: 'external' },
     { key: 'nav.studio', href: '/studio', type: 'route' },
     { key: 'nav.lab', href: '/lab', type: 'route' },
     { key: 'nav.library', href: '/library', type: 'route' },
@@ -70,6 +72,24 @@ export default function Navbar() {
         >
           {t(link.key, lang)}
         </Link>
+      );
+    }
+    if (link.type === 'external') {
+      return (
+        <a
+          key={link.key}
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => {
+            track('buy_book_click', { book_slug: 'book_direction_over_prompt', source: 'navbar' });
+            onClick?.();
+          }}
+          className={className}
+          style={{ ...style, color: 'hsl(var(--bronze-soft))' }}
+        >
+          {t(link.key, lang)}
+        </a>
       );
     }
     return (

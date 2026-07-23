@@ -3,6 +3,9 @@ export type Lang = 'en' | 'pt';
 export const translations: Record<string, Record<Lang, string>> = {
   // Nav · canon Fred v1 Wave 1 · Lab · Library · Studio · About · Contact
   // Walter público desde 10/jul (decisão Gé) · rota continua /lab
+  // Pivô 23/jul: item de nav persistente pro livro à venda — pedido Gé de
+  // exposição máxima ("primeiro da lista, nunca o último").
+  'nav.book': { en: 'BOOK', pt: 'LIVRO' },
   'nav.lab': { en: 'WALTER', pt: 'WALTER' },
   'nav.library': { en: 'LIBRARY', pt: 'LIBRARY' },
   'nav.collective': { en: 'COLLECTIVE', pt: 'COLLECTIVE' },
