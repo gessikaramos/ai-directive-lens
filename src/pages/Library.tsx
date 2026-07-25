@@ -120,7 +120,7 @@ const LibraryContent = () => {
                     color: 'hsl(var(--background) / 0.45)',
                   }}
                 >
-                  Gessika Olivieri · LolaLab
+                  Gessika Olivieri Ramos · LolaLab Atelier
                 </span>
               </div>
             </div>
@@ -158,7 +158,7 @@ const LibraryContent = () => {
                 className="mb-8 max-w-[54ch]"
                 style={{ fontSize: '1rem', fontWeight: 300, lineHeight: 1.7, color: inkSoft }}
               >
-                An essay by Gessika Olivieri on direction, judgment and authorship in the
+                An essay by Gessika Olivieri Ramos on direction, judgment and authorship in the
                 age of synthetic media.
               </p>
               <span style={{ ...bronzeLabel, fontSize: '0.6rem' }}>PT-BR · EN</span>

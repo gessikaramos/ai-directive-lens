@@ -19,10 +19,15 @@ import { useState } from 'react';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
 
-const MASTERCHEF_YT_ID = 'MlNSjBN3xbc';
-const MASTERCHEF_POSTER = `https://img.youtube.com/vi/${MASTERCHEF_YT_ID}/maxresdefault.jpg`;
-// Embed URL canon Mary · autoplay + sem sugestões YouTube + modest branding + rel=0 (só do canal)
-const MASTERCHEF_EMBED = `https://www.youtube-nocookie.com/embed/${MASTERCHEF_YT_ID}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+// Swap 24/jul: YouTube placeholder → link Vimeo confirmado pela Gé
+// (https://vimeo.com/1212739896). Poster hardcoded a partir do oEmbed da
+// Vimeo (i.vimeocdn.com não tem endpoint estático previsível por ID como o
+// img.youtube.com/vi/{id} usado antes — precisa da URL real do thumbnail).
+const MASTERCHEF_VIMEO_ID = '1212739896';
+const MASTERCHEF_POSTER =
+  'https://i.vimeocdn.com/video/2183250292-c757a84d4c294bc2f9b4d609ab1d10c71de2485ae9af912ef3a0f6777cd9ff7c-d_1920x1080?region=us';
+// title=0&byline=0&portrait=0 = equivalente Vimeo do modestbranding; dnt=1 desliga tracking
+const MASTERCHEF_EMBED = `https://player.vimeo.com/video/${MASTERCHEF_VIMEO_ID}?autoplay=1&title=0&byline=0&portrait=0&dnt=1&playsinline=1`;
 
 const labelStyle = {
   color: 'hsl(var(--bronze-soft))',

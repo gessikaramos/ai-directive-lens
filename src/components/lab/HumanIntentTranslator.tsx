@@ -513,7 +513,11 @@ const HumanIntentTranslator = ({ initialIntent, onConversationChange }: Props) =
           </div>
         )}
 
+        <label htmlFor="walter-chat-input" className="sr-only">
+          Message
+        </label>
         <textarea
+          id="walter-chat-input"
           value={input}
           onChange={(e) => {
             setInput(e.target.value);
@@ -524,7 +528,7 @@ const HumanIntentTranslator = ({ initialIntent, onConversationChange }: Props) =
           onKeyDown={onKey}
           rows={2}
           placeholder={listening ? 'Listening… speak your intention.' : 'What are you trying to put into the world?'}
-          className="w-full resize-none focus:outline-none py-4 pl-5 pr-14 pb-12 transition-colors"
+          className="w-full resize-none py-4 pl-5 pr-14 pb-12 transition-colors"
           style={{
             backgroundColor: 'hsl(var(--background) / 0.03)',
             color: 'hsl(var(--background))',

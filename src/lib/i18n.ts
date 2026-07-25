@@ -17,11 +17,14 @@ export const translations: Record<string, Record<Lang, string>> = {
   'nav.selected': { en: 'SELECTED', pt: 'SELECIONADOS' },
 
   // Hero
-  'hero.headline': { en: 'Direction Makes It Matter.', pt: 'A Direção Faz a Diferença.' },
-  // Wave 1.1 · Fred v1 canon · Hero support único (substitui tagline+body legacy)
+  // Pivô 24/jul (staging/release-cleanup-01) · arquitetura verbal canônica:
+  // slogan "Human intention, made visible." substitui "Direction Makes It
+  // Matter." — posicionamento no support substitui "AI can generate.
+  // LolaLab directs." (era descrição de produto de IA, não de direção).
+  'hero.headline': { en: 'Human Intention, Made Visible.', pt: 'Intenção Humana, Tornada Visível.' },
   'hero.support': {
-    en: 'AI can generate. LolaLab directs.',
-    pt: 'A IA pode gerar. A LolaLab dirige.',
+    en: 'A creative direction studio and editorial system for deciding what deserves to exist when AI makes production abundant.',
+    pt: 'Um estúdio de direção criativa e sistema editorial para decidir o que merece existir quando a IA torna a produção abundante.',
   },
   // Legacy keys mantidas por retrocompatibilidade — não usadas mais no Hero
   'hero.tagline': {
@@ -29,8 +32,8 @@ export const translations: Record<string, Record<Lang, string>> = {
     pt: 'Traduzindo intenção humana em forma.',
   },
   'hero.body': {
-    en: 'AI-native editorial film studio. Direction is the craft.',
-    pt: 'Estúdio de cinema editorial AI-native. A direção é o ofício.',
+    en: 'AI is the medium. Direction is the craft.',
+    pt: 'A IA é o meio. A direção é o ofício.',
   },
   'hero.scroll': { en: 'SCROLL', pt: 'SCROLL' },
   'hero.cta.selected': { en: 'View selected work', pt: 'Ver trabalhos selecionados' },
@@ -39,8 +42,11 @@ export const translations: Record<string, Record<Lang, string>> = {
   // instigação logo no primeiro fold, não só menção mais abaixo (pedido Gé).
   'hero.book.eyebrow': { en: 'FROM THE BOOK', pt: 'DO LIVRO' },
   'hero.book.title': { en: 'Direction Over Prompt', pt: 'Direction Over Prompt' },
-  'hero.cta.buy': { en: 'Buy the Book · €29', pt: 'Comprar o Livro · €29' },
-  'buy.usdNote': { en: 'Charged in USD + tax, via Gumroad', pt: 'Cobrado em USD + impostos, via Gumroad' },
+  'hero.cta.buy': { en: 'Buy the Book · US$29', pt: 'Comprar o Livro · US$29' },
+  'buy.usdNote': {
+    en: 'Charged in USD + tax, via Gumroad. Your bank or payment provider may apply currency conversion fees.',
+    pt: 'Cobrado em USD + impostos, via Gumroad. Seu banco ou meio de pagamento pode aplicar taxas de conversão de moeda.',
+  },
   // Wave 1.1 · Fred v1 canon · CTA secondary Explore the Library
   'hero.cta.library': { en: 'Partner with the Studio ↗', pt: 'Trabalhar com o Studio ↗' },
 
@@ -135,8 +141,8 @@ export const translations: Record<string, Record<Lang, string>> = {
   // About
   'about.label': { en: 'ABOUT', pt: 'SOBRE' },
   'about.p1': {
-    en: 'LolaLab is an AI-native editorial film studio founded by Gessika Olivieri in Lisbon.',
-    pt: 'A LolaLab é um estúdio de cinema editorial AI-native fundado por Gessika Olivieri em Lisboa.',
+    en: 'LolaLab is a creative direction studio and editorial system founded by Gessika Olivieri Ramos in Lisbon.',
+    pt: 'A LolaLab é um estúdio de direção criativa e sistema editorial fundado por Gessika Olivieri Ramos em Lisboa.',
   },
   'about.p2': {
     en: 'We work at the intersection of cinema, editorial photography, and applied AI. Our craft is direction — not tools.',
@@ -164,7 +170,7 @@ export const translations: Record<string, Record<Lang, string>> = {
 
   // Footer
   'footer.rights': { en: '© 2026 LolaLab. All rights reserved.', pt: '© 2026 LolaLab. Todos os direitos reservados.' },
-  'footer.credit': { en: 'Direction — Gessika Olivieri', pt: 'Direção — Gessika Olivieri' },
+  'footer.credit': { en: 'Direction — Gessika Olivieri Ramos', pt: 'Direção — Gessika Olivieri Ramos' },
   // Wave 2.0 · canon-mestre navigation Fred+Gé 7/jul · nova frase-mãe pública canon
   // Antiga: 'Lab guides. Library teaches. Studio makes.' fica arquivada como canon interno histórico Wave 1
   'footer.line': {
@@ -200,8 +206,8 @@ export const translations: Record<string, Record<Lang, string>> = {
 
   // Wave 1 · Home About preview · canon Fred v1
   'home.about.preview': {
-    en: 'LolaLab is an AI-native creative direction studio translating human intention into visual systems, films and creative tools.',
-    pt: 'A LolaLab é um estúdio de direção criativa AI-native que traduz intenção humana em sistemas visuais, filmes e ferramentas criativas.',
+    en: 'LolaLab is a creative direction studio and editorial system for deciding what deserves to exist when AI makes production abundant.',
+    pt: 'A LolaLab é um estúdio de direção criativa e sistema editorial para decidir o que merece existir quando a IA torna a produção abundante.',
   },
   'home.about.cta': { en: 'Learn more', pt: 'Saiba mais' },
 
@@ -248,8 +254,8 @@ export const translations: Record<string, Record<Lang, string>> = {
     pt: 'A LolaLab traduz intenção humana em forma.',
   },
   'about.hero.sub': {
-    en: 'An AI-native creative direction studio founded by Gessika Olivieri.',
-    pt: 'Um estúdio de direção criativa AI-native fundado por Gessika Olivieri.',
+    en: 'A creative direction studio and editorial system founded by Gessika Olivieri Ramos.',
+    pt: 'Um estúdio de direção criativa e sistema editorial fundado por Gessika Olivieri Ramos.',
   },
 
   // Wave 1 · Contact page skeleton · canon Fred v1

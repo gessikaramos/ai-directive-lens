@@ -6,6 +6,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function useScrollAnimations() {
   useEffect(() => {
+    // Achado do QA de acessibilidade (24/jul): nenhuma dessas animações
+    // respeitava prefers-reduced-motion. Quem tem o ajuste ligado no SO não
+    // recebe nem o parallax nem o "reveal" — cada elemento simplesmente
+    // nunca sai do estado visível natural (os .from() abaixo com
+    // immediateRender:false só escondem o elemento quando de fato rodam).
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const ctx = gsap.context(() => {
       // ── Hero: parallax content on scroll ──
       const heroContent = document.querySelector('[data-anim="hero-content"]');

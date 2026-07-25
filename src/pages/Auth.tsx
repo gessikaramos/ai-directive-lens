@@ -148,18 +148,20 @@ const AuthContent = () => {
 
               <form onSubmit={sendMagicLink}>
                 <label
+                  htmlFor="auth-email"
                   className="block mb-2"
                   style={{ ...labelStyle, color: 'hsl(var(--cool-gray-secondary))' }}
                 >
                   Email
                 </label>
                 <input
+                  id="auth-email"
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@domain.com"
-                  className="w-full py-3 px-4 mb-4 focus:outline-none"
+                  className="w-full py-3 px-4 mb-4"
                   style={{
                     backgroundColor: 'transparent',
                     color: 'hsl(var(--background))',

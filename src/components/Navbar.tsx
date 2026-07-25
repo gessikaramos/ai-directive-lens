@@ -183,6 +183,7 @@ export default function Navbar() {
             className="md:hidden"
             style={{ color: navTextColor }}
             onClick={() => setMobileOpen(true)}
+            aria-label="Open menu"
           >
             <Menu className="w-6 h-6" />
           </button>
@@ -198,6 +199,7 @@ export default function Navbar() {
             className="absolute top-6 right-6"
             style={{ color: 'hsl(var(--background))' }}
             onClick={() => setMobileOpen(false)}
+            aria-label="Close menu"
           >
             <X className="w-6 h-6" />
           </button>

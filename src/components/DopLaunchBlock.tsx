@@ -6,7 +6,7 @@
  * Pivô 23/jul: livro completo à venda de verdade (Gumroad) — pedido explícito
  * da Gé de expor a compra na Home, "a primeira coisa que bate o olho", com
  * registro editorial-confiante (não promocional/gritado — ver rationale na
- * conversa: público de €29/manifesto desconfia de site que grita desconto).
+ * conversa: público de US$29/manifesto desconfia de site que grita desconto).
  * O item vendável vem sempre primeiro na lista de CTAs, nunca por último.
  */
 import { Link } from 'react-router-dom';
@@ -53,6 +53,23 @@ export default function DopLaunchBlock() {
           >
             Direction Over Prompt
           </h2>
+          {/* Linha de campanha (24/jul, canon Gé) — descriptor curto para
+              hero/LinkedIn, não é o subtítulo editorial da Book Bible
+              (esse é "Human Intent, Creative Authority, and the Craft of
+              Direction in the Age of AI", usado no card de venda). */}
+          <p
+            className="mb-5"
+            style={{
+              fontFamily: "'Newsreader', Georgia, serif",
+              fontStyle: 'italic',
+              fontSize: '1.0625rem',
+              color: 'hsl(var(--cool-gray-tertiary) / 0.85)',
+            }}
+          >
+            {pt
+              ? 'Uma teoria em construção sobre criatividade, IA e intenção.'
+              : 'A working theory about creativity, AI and intention.'}
+          </p>
           <p className="mb-6" style={{ ...label, letterSpacing: '0.16em' }}>
             {pt
               ? 'Capítulo 01 · Quando tudo pode ser feito'
@@ -89,7 +106,7 @@ export default function DopLaunchBlock() {
                 textTransform: 'uppercase',
               }}
             >
-              {pt ? 'Comprar o livro · €29' : 'Buy the book · €29'}
+              {pt ? 'Comprar o livro · US$29' : 'Buy the book · US$29'}
             </a>
             <Link
               to="/library/direction-over-prompt"
@@ -110,7 +127,9 @@ export default function DopLaunchBlock() {
             </Link>
           </div>
           <p className="mt-4" style={{ fontSize: '0.7rem', fontWeight: 300, color: 'hsl(var(--cool-gray-tertiary) / 0.7)' }}>
-            {pt ? 'Cobrado em USD + impostos, via Gumroad' : 'Charged in USD + tax, via Gumroad'}
+            {pt
+              ? 'Cobrado em USD + impostos, via Gumroad. Seu banco ou meio de pagamento pode aplicar taxas de conversão de moeda.'
+              : 'Charged in USD + tax, via Gumroad. Your bank or payment provider may apply currency conversion fees.'}
           </p>
         </div>
 

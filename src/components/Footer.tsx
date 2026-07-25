@@ -87,12 +87,16 @@ export default function Footer({ hideNewsletter = false }: { hideNewsletter?: bo
                 <p style={{ color: '#FFFFFF', fontWeight: 300 }}>Received. Thank you.</p>
               ) : (
                 <form onSubmit={submit} className="flex flex-col sm:flex-row gap-3">
+                  <label htmlFor="footer-newsletter-email" className="sr-only">
+                    Email
+                  </label>
                   <input
+                    id="footer-newsletter-email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Get new reads by email"
-                    className="flex-1 focus:outline-none px-4 py-3"
+                    className="flex-1 px-4 py-3"
                     style={{
                       backgroundColor: 'transparent',
                       color: '#FFFFFF',

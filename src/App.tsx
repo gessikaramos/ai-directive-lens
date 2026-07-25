@@ -1,31 +1,47 @@
+import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Index from "./pages/Index.tsx";
-import NotFound from "./pages/NotFound.tsx";
-import HunterRedirect from "./pages/HunterRedirect.tsx";
-import Lab from "./pages/Lab.tsx";
-import Library from "./pages/Library.tsx";
-import LibraryAccess from "./pages/LibraryAccess.tsx";
-import LibraryThankYou from "./pages/LibraryThankYou.tsx";
-import Studio from "./pages/Studio.tsx";
-import About from "./pages/About.tsx";
-import Contact from "./pages/Contact.tsx";
-import Legal from "./pages/Legal.tsx";
-import Auth from "./pages/Auth.tsx";
-import Collective from "./pages/Collective.tsx";
-import {
-  DopNeutral,
-  DopLanding,
-  DopRead,
-  DopConfirmed,
-  DopSpanish,
-  DopUnsubscribe,
-} from "./pages/dop/DirectionOverPrompt.tsx";
 import ScrollToTop from "./components/ScrollToTop.tsx";
 import { AuthProvider } from "./hooks/use-auth";
+
+// Code-split por rota (24/jul, achado do QA em browser: bundle único de
+// 834KB sem divisão nenhuma — toda visita, mesmo em /legal, baixava o JS de
+// todas as páginas). Cada import() vira seu próprio chunk carregado sob
+// demanda; as 6 rotas DOP compartilham um chunk só (mesmo módulo de origem).
+const Index = lazy(() => import("./pages/Index.tsx"));
+const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const HunterRedirect = lazy(() => import("./pages/HunterRedirect.tsx"));
+const Lab = lazy(() => import("./pages/Lab.tsx"));
+const Library = lazy(() => import("./pages/Library.tsx"));
+const LibraryAccess = lazy(() => import("./pages/LibraryAccess.tsx"));
+const LibraryThankYou = lazy(() => import("./pages/LibraryThankYou.tsx"));
+const Studio = lazy(() => import("./pages/Studio.tsx"));
+const About = lazy(() => import("./pages/About.tsx"));
+const Contact = lazy(() => import("./pages/Contact.tsx"));
+const Legal = lazy(() => import("./pages/Legal.tsx"));
+const Auth = lazy(() => import("./pages/Auth.tsx"));
+const Collective = lazy(() => import("./pages/Collective.tsx"));
+const DopNeutral = lazy(() =>
+  import("./pages/dop/DirectionOverPrompt.tsx").then((m) => ({ default: m.DopNeutral })),
+);
+const DopLanding = lazy(() =>
+  import("./pages/dop/DirectionOverPrompt.tsx").then((m) => ({ default: m.DopLanding })),
+);
+const DopRead = lazy(() =>
+  import("./pages/dop/DirectionOverPrompt.tsx").then((m) => ({ default: m.DopRead })),
+);
+const DopConfirmed = lazy(() =>
+  import("./pages/dop/DirectionOverPrompt.tsx").then((m) => ({ default: m.DopConfirmed })),
+);
+const DopSpanish = lazy(() =>
+  import("./pages/dop/DirectionOverPrompt.tsx").then((m) => ({ default: m.DopSpanish })),
+);
+const DopUnsubscribe = lazy(() =>
+  import("./pages/dop/DirectionOverPrompt.tsx").then((m) => ({ default: m.DopUnsubscribe })),
+);
 
 const queryClient = new QueryClient();
 
@@ -37,6 +53,7 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <ScrollToTop />
+          <Suspense fallback={null}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/lab" element={<Lab />} />
@@ -68,6 +85,7 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </Suspense>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

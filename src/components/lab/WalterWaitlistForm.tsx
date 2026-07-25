@@ -81,13 +81,17 @@ export default function WalterWaitlistForm() {
             aria-hidden="true"
             style={{ position: 'absolute', left: '-5000px', height: 0, width: 0, opacity: 0 }}
           />
+          <label htmlFor="walter-waitlist-email" className="sr-only">
+            Email address
+          </label>
           <input
+            id="walter-waitlist-email"
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email address"
-            className="w-full py-3.5 px-5 mb-4 focus:outline-none"
+            className="w-full py-3.5 px-5 mb-4"
             style={{
               backgroundColor: 'transparent',
               color: '#FFFFFF',

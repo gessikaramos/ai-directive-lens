@@ -101,6 +101,7 @@ const SkillModal = ({ open, skillSlug, onClose, children }: SkillModalProps) => 
       <button
         onClick={onClose}
         className="fixed top-6 right-6 z-50 text-foreground/60 hover:text-foreground transition-colors"
+        aria-label="Close"
       >
         <X className="w-6 h-6" />
       </button>

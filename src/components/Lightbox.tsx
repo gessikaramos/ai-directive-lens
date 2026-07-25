@@ -36,6 +36,7 @@ const Lightbox = ({ src, type = 'image', alt = '', onClose }: LightboxProps) => 
       <button
         onClick={onClose}
         className="absolute top-6 right-6 text-foreground/70 hover:text-foreground transition-opacity z-10"
+        aria-label="Close"
       >
         <X className="w-6 h-6" />
       </button>

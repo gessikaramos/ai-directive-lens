@@ -17,7 +17,7 @@ import FooterLine from '@/components/FooterLine';
 const MANIFESTO_PARAGRAPHS = [
   {
     label: 'FOUNDER',
-    text: 'LolaLab is founded by Gessika Olivieri in Lisbon. Editorial studio for AI-native cinema. Direction is the craft. Everything else is infrastructure.',
+    text: 'LolaLab is founded by Gessika Olivieri Ramos in Lisbon. A creative direction studio and editorial system. Direction is the craft. Everything else is infrastructure.',
   },
   {
     label: 'THESIS',
@@ -36,7 +36,7 @@ const MANIFESTO_PARAGRAPHS = [
 const AboutContent = () => {
   useSeo({
     title: 'About · LolaLab',
-    description: 'LolaLab translates human intention into form.',
+    description: 'LolaLab is a creative direction studio and editorial system for deciding what deserves to exist when AI makes production abundant.',
     path: '/about',
   });
 
@@ -46,8 +46,8 @@ const AboutContent = () => {
       <main style={{ backgroundColor: 'hsl(var(--ink))' }}>
         <PageHero
           label="ABOUT"
-          headline="Human intent, in form."
-          sub="LolaLab is an editorial studio for AI-native cinema. We translate human intention into visual systems, films, and creative tools."
+          headline="Human intention, made visible."
+          sub="LolaLab is a creative direction studio and editorial system for deciding what deserves to exist when AI makes production abundant."
         />
 
         {/* Portrait · retrato B&W Gé chiaroscuro */}
@@ -62,7 +62,7 @@ const AboutContent = () => {
             >
               <img
                 src="/images/about/gessika-portrait.png"
-                alt="Gessika Olivieri · Director of LolaLab Studio"
+                alt="Gessika Olivieri Ramos · Director of LolaLab Studio"
                 loading="lazy"
                 className="absolute inset-0 w-full h-full object-cover"
                 onError={(e) => {
@@ -80,7 +80,7 @@ const AboutContent = () => {
                 color: 'hsl(var(--cool-gray-secondary))',
               }}
             >
-              Gessika Olivieri · Director
+              Gessika Olivieri Ramos · Director
             </p>
           </div>
         </section>

@@ -92,12 +92,16 @@ const CastTeaser = () => {
           <p style={{ color: '#FFFFFF', fontWeight: 300 }}>Received. Thank you.</p>
         ) : (
           <form onSubmit={submit} className="flex flex-col sm:flex-row gap-3">
+            <label htmlFor="signal-reads-email" className="sr-only">
+              Email
+            </label>
             <input
+              id="signal-reads-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Notify me when the first conversation drops"
-              className="flex-1 focus:outline-none px-4 py-3"
+              className="flex-1 px-4 py-3"
               style={inputStyle}
             />
             <button
@@ -184,7 +188,7 @@ const CollectiveForm = () => {
     setDone(true);
   };
 
-  const inputCls = 'w-full focus:outline-none px-4 py-3';
+  const inputCls = 'w-full px-4 py-3';
 
   return (
     <section
@@ -233,7 +237,11 @@ const CollectiveForm = () => {
           </div>
         ) : (
           <form onSubmit={submit} className="space-y-5">
+            <label htmlFor="collective-name" className="sr-only">
+              Name
+            </label>
             <input
+              id="collective-name"
               className={inputCls}
               style={inputStyle}
               placeholder="Name"
@@ -241,7 +249,11 @@ const CollectiveForm = () => {
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               required
             />
+            <label htmlFor="collective-location" className="sr-only">
+              Where you're based
+            </label>
             <input
+              id="collective-location"
               className={inputCls}
               style={inputStyle}
               placeholder="Where you're based"
@@ -249,7 +261,11 @@ const CollectiveForm = () => {
               onChange={(e) => setForm({ ...form, location: e.target.value })}
               required
             />
+            <label htmlFor="collective-portfolio" className="sr-only">
+              Portfolio URL
+            </label>
             <input
+              id="collective-portfolio"
               className={inputCls}
               style={inputStyle}
               type="url"
@@ -286,7 +302,11 @@ const CollectiveForm = () => {
                 })}
               </div>
             </div>
+            <label htmlFor="collective-favorite-project" className="sr-only">
+              Favorite project
+            </label>
             <textarea
+              id="collective-favorite-project"
               className={inputCls}
               style={inputStyle}
               rows={3}
@@ -296,7 +316,11 @@ const CollectiveForm = () => {
               onChange={(e) => setForm({ ...form, favorite_project: e.target.value })}
               required
             />
+            <label htmlFor="collective-linkedin" className="sr-only">
+              LinkedIn URL
+            </label>
             <input
+              id="collective-linkedin"
               className={inputCls}
               style={inputStyle}
               type="url"
@@ -304,7 +328,11 @@ const CollectiveForm = () => {
               value={form.linkedin_url}
               onChange={(e) => setForm({ ...form, linkedin_url: e.target.value })}
             />
+            <label htmlFor="collective-website" className="sr-only">
+              Website
+            </label>
             <input
+              id="collective-website"
               className={inputCls}
               style={inputStyle}
               type="url"
@@ -312,7 +340,11 @@ const CollectiveForm = () => {
               value={form.website_url}
               onChange={(e) => setForm({ ...form, website_url: e.target.value })}
             />
+            <label htmlFor="collective-why" className="sr-only">
+              Why LolaLab?
+            </label>
             <textarea
+              id="collective-why"
               className={inputCls}
               style={inputStyle}
               rows={4}
@@ -479,12 +511,16 @@ const SignalReads = () => {
             <p style={{ color: '#FFFFFF', fontWeight: 300 }}>Received. Thank you.</p>
           ) : (
             <form onSubmit={submit} className="flex flex-col sm:flex-row gap-3">
+              <label htmlFor="signal-reads-footer-email" className="sr-only">
+                Email
+              </label>
               <input
+                id="signal-reads-footer-email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Get new reads by email"
-                className="flex-1 focus:outline-none px-4 py-3"
+                className="flex-1 px-4 py-3"
                 style={inputStyle}
               />
               <button

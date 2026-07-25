@@ -37,9 +37,9 @@ const IndexContent = () => {
   useLenis();
   useScrollAnimations();
   useSeo({
-    title: 'LolaLab — AI-Native Editorial Film Studio · Direction over prompt',
+    title: 'LolaLab — Human intention, made visible. · Direction Over Prompt',
     description:
-      'Translating human intention into form. AI-native editorial film studio for brand films, character-driven series, and persistent visual worlds.',
+      'LolaLab is a creative direction studio and editorial system for deciding what deserves to exist when AI makes production abundant.',
     path: '/',
   });
 

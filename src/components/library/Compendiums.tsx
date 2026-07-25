@@ -32,11 +32,14 @@ const BOOKS = [
     slug: 'book_direction_over_prompt',
     roman: 'COMPENDIUM I',
     title: 'Direction Over Prompt',
-    subtitle: 'The Art of Human Translation & the Recovery of Creative Repertoire',
+    // Subtítulo travado na Book Bible (correção 24/jul) — antes divergia do
+    // canônico. "When Everything Can Be Made" é o título do Capítulo 1, não
+    // do livro; não usar aqui.
+    subtitle: 'Human Intent, Creative Authority, and the Craft of Direction in the Age of AI',
     desc: 'Prompt engineering is a career with a six-month shelf life. Repertoire is not. How directors think, why aesthetic restriction extracts genius from machines, and the method behind the Creative Direction Pack.',
-    digital: '€29',
-    hardcover: '€59',
-    cover: '/covers/direction-over-prompt-cover-en.png',
+    digital: 'US$29',
+    hardcover: 'US$59',
+    cover: '/covers/direction-over-prompt-cover-en.jpg',
     gumroadUrl: 'https://lola182.gumroad.com/l/ffaxv',
   },
   {
@@ -45,15 +48,21 @@ const BOOKS = [
     title: 'The Book of Tactility',
     subtitle: 'The LolaLab Manual of Aesthetics, Texture & Imperfection in the Synthetic Era',
     desc: 'Why the human eye rejects digital perfection — and how grain, friction and deliberate imperfection became the proof of life that validates luxury. The grammar of matter, from 35mm noise to Nordic chiaroscuro.',
-    digital: '€29',
-    hardcover: '€59',
+    digital: 'US$29',
+    hardcover: 'US$59',
   },
 ];
 
 const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'form' | 'sending' | 'done' | 'error'>('idle');
-  const checkoutReady = LIBRARY_CHECKOUT_ENABLED && CHECKOUT_READY_SLUGS.has(book.slug);
+  // Pivô 24/jul: hardcover não tem produto/checkout real (Gumroad hoje só
+  // vende a edição digital, tier único). "Reserve Hardcover" tem que ficar
+  // SEMPRE no caminho seguro de captura de e-mail, nunca no checkout Lemon
+  // Squeezy morto — daí o tier ser rastreado separadamente do checkoutReady
+  // (que só descreve o estado do digital).
+  const [tier, setTier] = useState<'digital' | 'hardcover'>('digital');
+  const checkoutReady = LIBRARY_CHECKOUT_ENABLED && CHECKOUT_READY_SLUGS.has(book.slug) && tier === 'digital';
 
   const reserve = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -127,7 +136,7 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
                   textTransform: 'uppercase',
                 }}
               >
-                LolaLab Studio
+                LolaLab Atelier
               </span>
             </div>
           </div>
@@ -177,7 +186,9 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
           <p style={{ fontSize: '0.8125rem', fontWeight: 300, color: 'hsl(var(--bronze-soft))' }}>
             {checkoutReady
               ? "Reserved. Your copy is held for the first printing — we'll write when it opens."
-              : "Got it — we'll email you the moment this book is ready."}
+              : tier === 'hardcover'
+                ? "Got it — we'll email you when hardcover pre-orders open."
+                : "Got it — we'll email you the moment this book is ready."}
           </p>
         ) : status === 'idle' ? (
           <>
@@ -203,7 +214,7 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
               </a>
             ) : (
               <button
-                onClick={() => setStatus('form')}
+                onClick={() => { setTier('digital'); setStatus('form'); }}
                 className="px-7 py-3 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
                 style={{
                   backgroundColor: 'hsl(var(--bronze-soft))',
@@ -219,7 +230,7 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
               </button>
             )}
             <button
-              onClick={() => setStatus('form')}
+              onClick={() => { setTier('hardcover'); setStatus('form'); }}
               className="px-7 py-3 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
               style={{
                 backgroundColor: 'transparent',
@@ -232,25 +243,71 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
                 textTransform: 'uppercase',
               }}
             >
-              {checkoutReady ? `Reserve Hardcover · ${book.hardcover}` : 'Notify Me — Hardcover'}
+              {/* Hardcover não tem checkout real ainda (Gumroad só vende
+                  digital hoje) — sempre "Notify Me", nunca promete reserva
+                  paga que o backend não consegue cumprir. */}
+              Notify Me — Hardcover
             </button>
           </div>
           {book.gumroadUrl && (
+            <>
             <p className="mt-3" style={{ fontSize: '0.7rem', fontWeight: 300, color: 'hsl(var(--cool-gray-secondary))' }}>
-              Charged in USD + tax, via Gumroad
+              Charged in USD + tax, via Gumroad. Your bank or payment provider may apply currency
+              conversion fees.
             </p>
+            <details
+              className="mt-5 max-w-[540px]"
+              style={{ borderTop: '1px solid #1C1C1E', paddingTop: '1rem' }}
+            >
+              <summary
+                className="cursor-pointer"
+                style={{
+                  fontSize: '0.7rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: 'hsl(var(--bronze-soft))',
+                }}
+              >
+                Book + ElevenReader Listening Edition
+              </summary>
+              <div className="mt-4" style={{ fontSize: '0.8125rem', fontWeight: 300, lineHeight: 1.7, color: 'hsl(var(--cool-gray-secondary))' }}>
+                <p className="mb-4">
+                  Prefer to listen? Your purchase includes a listening-ready digital edition.
+                  Download the file, import it into the free ElevenReader app, and listen with the
+                  voice you prefer.
+                </p>
+                <ol className="mb-4 pl-5" style={{ listStyleType: 'decimal' }}>
+                  <li className="mb-1">Download the digital edition after purchase.</li>
+                  <li className="mb-1">Install ElevenReader on iOS or Android.</li>
+                  <li className="mb-1">Open the app and choose &quot;Import File&quot;.</li>
+                  <li className="mb-1">Select the downloaded PDF or EPUB.</li>
+                  <li>Press play and choose a voice.</li>
+                </ol>
+                <p style={{ fontSize: '0.75rem', fontStyle: 'italic' }}>
+                  ElevenReader is a third-party application. App availability, voice options and
+                  usage conditions are governed by ElevenLabs&apos; current terms. LolaLab does not
+                  provide a professionally mastered MP3 audiobook in this edition.
+                </p>
+              </div>
+            </details>
+            </>
           )}
           </>
         ) : (
           <form onSubmit={reserve} className="flex flex-wrap gap-3 items-center max-w-[540px]">
+            <label htmlFor={`reserve-email-${book.slug}`} className="sr-only">
+              Email
+            </label>
             <input
+              id={`reserve-email-${book.slug}`}
               type="email"
               required
               autoFocus
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@domain.com"
-              className="flex-1 min-w-[220px] py-3 px-4 focus:outline-none"
+              className="flex-1 min-w-[220px] py-3 px-4"
               style={{
                 backgroundColor: 'transparent',
                 color: 'hsl(var(--background))',

@@ -59,6 +59,7 @@ const AudioPlayer = ({ src, label }: AudioPlayerProps) => {
       <button
         onClick={toggle}
         className="w-10 h-10 flex items-center justify-center border border-border rounded-full text-foreground hover:bg-secondary transition-colors shrink-0"
+        aria-label={playing ? 'Pause' : 'Play'}
       >
         {playing ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
       </button>

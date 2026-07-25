@@ -1,7 +1,7 @@
 /**
  * Legal · Terms of Sale, Refund & Delivery, Privacy Note — digital books
  * (LolaLab Library). Fonte: LOLALAB_LEGAL_MINIMUM_PACK_LIBRARY_v1_GUMROAD.md
- * (22/jul/2026). Rascunho — pendente revisão jurídica formal.
+ * (22/jul/2026). Texto aprovado pela Gé (24/jul/2026).
  */
 import { LanguageProvider, useLanguage } from '@/hooks/use-language';
 import { useSeo } from '@/hooks/use-seo';
@@ -78,7 +78,7 @@ const ContentPT = () => (
     <SellerBlock lang="pt" />
     <Section title="1. O que está a comprar">
       <P>
-        Um exemplar digital (PDF) do livro &quot;Direction Over Prompt&quot;, de Gessika Olivieri,
+        Um exemplar digital (PDF) do livro &quot;Direction Over Prompt&quot;, de Gessika Olivieri Ramos,
         publicado por LolaLab (Mar D&apos;Opções — Unipessoal Lda). A compra dá acesso pessoal e
         intransmissível ao ficheiro; não inclui revenda, redistribuição ou uso comercial do
         conteúdo sem autorização escrita.
@@ -86,11 +86,12 @@ const ContentPT = () => (
     </Section>
     <Section title="2. Preço e pagamento">
       <P>
-        O preço de €29 anunciado no site não inclui impostos. No checkout, a Gumroad calcula e
+        O preço de US$29 anunciado no site não inclui impostos. No checkout, a Gumroad calcula e
         acrescenta o IVA/VAT do seu país automaticamente (enquanto Merchant of Record), antes do
         pagamento final — o valor total a pagar aparece claramente antes de você confirmar a
         compra. A Gumroad processa o pagamento e emite o recibo — a LolaLab não tem acesso aos
-        dados do seu cartão.
+        dados do seu cartão. Se o seu banco ou meio de pagamento operar em outra moeda, pode
+        aplicar taxas de conversão adicionais.
       </P>
     </Section>
     <Section title="3. Entrega">
@@ -122,7 +123,7 @@ const ContentPT = () => (
     </Section>
     <Section title="6. Direitos de autor">
       <P>
-        O conteúdo do livro é propriedade intelectual de Gessika Olivieri / LolaLab. A compra não
+        O conteúdo do livro é propriedade intelectual de Gessika Olivieri Ramos / LolaLab. A compra não
         transfere direitos de autor, apenas uma licença de uso pessoal do exemplar adquirido. É
         proibida a reprodução, distribuição ou publicação do conteúdo, total ou parcial, sem
         autorização escrita.
@@ -138,12 +139,14 @@ const ContentPT = () => (
         oposição): hello@lolalabstudio.com.
       </P>
     </Section>
-    <P>
-      <em>
-        Documento em revisão — minuta baseada em prática padrão para venda de e-book na UE, não
-        constitui aconselhamento jurídico definitivo.
-      </em>
-    </P>
+    <Section title="Ferramentas de terceiros">
+      <P>
+        A edição para escuta opcional (Listening Edition) é feita através do aplicativo
+        ElevenReader, de terceiros, não operado pela LolaLab. O uso do ElevenReader é regido
+        pelos termos próprios da ElevenLabs; a LolaLab não é responsável pela disponibilidade,
+        vozes oferecidas ou funcionamento do aplicativo.
+      </P>
+    </Section>
   </>
 );
 
@@ -152,7 +155,7 @@ const ContentEN = () => (
     <SellerBlock lang="en" />
     <Section title="1. What you're buying">
       <P>
-        A digital copy (PDF) of &quot;Direction Over Prompt&quot; by Gessika Olivieri, published
+        A digital copy (PDF) of &quot;Direction Over Prompt&quot; by Gessika Olivieri Ramos, published
         by LolaLab (Mar D&apos;Opções — Unipessoal Lda, Portugal). Your purchase grants personal,
         non-transferable access to the file. It does not include resale, redistribution, or
         commercial use of the content without written permission.
@@ -160,11 +163,12 @@ const ContentEN = () => (
     </Section>
     <Section title="2. Price and payment">
       <P>
-        The €29 price shown on the site does not include tax. At checkout, Gumroad calculates
+        The US$29 price shown on the site does not include tax. At checkout, Gumroad calculates
         and adds VAT/sales tax for your country automatically (as Merchant of Record), before
         final payment — the full total is shown clearly before you confirm the purchase. Gumroad
         processes your payment and issues the receipt — LolaLab never has access to your card
-        details.
+        details. Your bank or payment provider may apply additional currency conversion fees if
+        it operates in a different currency.
       </P>
     </Section>
     <Section title="3. Delivery">
@@ -192,7 +196,7 @@ const ContentEN = () => (
     </Section>
     <Section title="6. Copyright">
       <P>
-        The book&apos;s content is the intellectual property of Gessika Olivieri / LolaLab.
+        The book&apos;s content is the intellectual property of Gessika Olivieri Ramos / LolaLab.
         Purchase does not transfer copyright — only a personal-use license for the copy acquired.
         Reproduction, distribution, or republication of the content, in whole or in part, without
         written permission is prohibited.
@@ -207,12 +211,13 @@ const ContentEN = () => (
         rights (access, rectification, erasure, portability, objection): hello@lolalabstudio.com.
       </P>
     </Section>
-    <P>
-      <em>
-        Document under review — a solid draft based on standard EU e-book sale practice, not
-        final legal advice.
-      </em>
-    </P>
+    <Section title="Third-party tools">
+      <P>
+        The optional Listening Edition uses ElevenReader, a third-party application not operated
+        by LolaLab. Use of ElevenReader is governed by ElevenLabs&apos; own terms; LolaLab is not
+        responsible for the app&apos;s availability, voice options, or functionality.
+      </P>
+    </Section>
   </>
 );
 

@@ -37,7 +37,7 @@ const COPY = {
     title: 'Quando tudo pode ser feito',
     subtitle: 'O que se torna escasso quando criar se torna abundante?',
     description:
-      'Um ensaio de Gessika Olivieri sobre direção, julgamento e autoria na era das mídias sintéticas.',
+      'Um ensaio de Gessika Olivieri Ramos sobre direção, julgamento e autoria na era das mídias sintéticas.',
     cta: 'LER O CAPÍTULO 01',
     note: 'Leitura gratuita · edição em português brasileiro',
     thesis: ['As ferramentas geram possibilidades.', 'A direção escolhe significado.'],
@@ -65,7 +65,7 @@ const COPY = {
     title: 'When Everything Can Be Made',
     subtitle: 'What becomes scarce when making becomes abundant?',
     description:
-      'An essay by Gessika Olivieri on direction, judgment and authorship in the age of synthetic media.',
+      'An essay by Gessika Olivieri Ramos on direction, judgment and authorship in the age of synthetic media.',
     cta: 'READ CHAPTER 01',
     note: 'Complimentary reading · English edition',
     thesis: ['Tools generate possibilities.', 'Direction chooses meaning.'],
@@ -99,18 +99,42 @@ function useSeo(title: string, description: string, path: string, loc?: Loc | 'n
     };
     setMeta('meta[name="description"]', description);
     document.documentElement.lang = loc === 'pt-BR' ? 'pt-BR' : 'en';
-    // canonical + hreflang (runtime · SPA — pré-render é pendência registrada)
-    document.querySelectorAll('link[data-dop-seo]').forEach((n) => n.remove());
+    // canonical + hreflang (runtime · SPA — pré-render é pendência registrada).
+    // Remove TODOS os alternates existentes, não só os próprios: sem isso, os
+    // hreflang estáticos do index.html (apontando pra homepage) ficam
+    // duplicados ao lado dos da DOP, e o Google trata hreflang duplicado/
+    // conflitante como inválido e ignora a anotação inteira.
+    document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((n) => n.remove());
     const base = window.location.origin;
     const url = `${base}${path}`;
-    const cover = `${base}/covers/direction-over-prompt-cover-${loc === 'pt-BR' ? 'pt' : 'en'}.png`;
+    const cover = `${base}/covers/direction-over-prompt-cover-${loc === 'pt-BR' ? 'pt' : 'en'}.jpg`;
     setMeta('meta[property="og:title"]', title);
     setMeta('meta[property="og:description"]', description);
     setMeta('meta[property="og:url"]', url);
     setMeta('meta[property="og:image"]', cover);
+    setMeta('meta[property="og:image:width"]', '1054');
+    setMeta('meta[property="og:image:height"]', '1492');
     setMeta('meta[name="twitter:title"]', title);
     setMeta('meta[name="twitter:description"]', description);
     setMeta('meta[name="twitter:image"]', cover);
+    // Canonical é atualizado in-place, nunca criado de novo: o `add()` abaixo
+    // só serve para os alternates (que são removidos por inteiro a cada
+    // render, acima). Um canonical criado via createElement toda vez, sem
+    // remover a tag estática do index.html nem a própria tag anterior, deixa
+    // MÚLTIPLAS tags <link rel="canonical"> conflitantes no documento — e o
+    // Google, diante de canonicals conflitantes, ignora todos e escolhe por
+    // conta própria (o que pode fazer a página do capítulo ser tratada como
+    // duplicata da home).
+    document.querySelectorAll('link[rel="canonical"]').forEach((n, i) => {
+      if (i > 0) n.remove();
+    });
+    let canonicalLink = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.rel = 'canonical';
+      document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.href = url;
     const add = (rel: string, href: string, hreflang?: string) => {
       const l = document.createElement('link');
       l.rel = rel;
@@ -119,7 +143,6 @@ function useSeo(title: string, description: string, path: string, loc?: Loc | 'n
       l.setAttribute('data-dop-seo', '1');
       document.head.appendChild(l);
     };
-    add('canonical', url);
     add('alternate', `${base}/pt-br/library/direction-over-prompt`, 'pt-BR');
     add('alternate', `${base}/en/library/direction-over-prompt`, 'en');
     add('alternate', `${base}/library/direction-over-prompt`, 'x-default');
@@ -234,7 +257,7 @@ export const DopNeutral = () => {
                   color: 'hsl(var(--background) / 0.45)',
                 }}
               >
-                Gessika Olivieri · LolaLab
+                Gessika Olivieri Ramos · LolaLab Atelier
               </span>
             </div>
           </div>
@@ -388,6 +411,17 @@ export const DopLanding = ({ loc }: { loc: Loc }) => {
         >
           {c.description}
         </p>
+        {/* Linha de campanha (24/jul, canon Gé) — descriptor do LIVRO como um
+            todo, não do Capítulo 01 especificamente (por isso separado do
+            c.subtitle acima, que é a tese do capítulo). */}
+        <p
+          className="mb-10 mx-auto max-w-[46ch]"
+          style={{ fontSize: '0.875rem', fontWeight: 300, fontStyle: 'italic', color: 'hsl(var(--cool-gray-tertiary))' }}
+        >
+          {loc === 'pt-BR'
+            ? 'Uma teoria em construção sobre criatividade, IA e intenção.'
+            : 'A working theory about creativity, AI and intention.'}
+        </p>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <a
             href="#preview"
@@ -425,14 +459,16 @@ export const DopLanding = ({ loc }: { loc: Loc }) => {
               textTransform: 'uppercase',
             }}
           >
-            {loc === 'pt-BR' ? 'Já decidido? Comprar o livro · €29' : 'Already sure? Buy the book · €29'}
+            {loc === 'pt-BR' ? 'Já decidido? Comprar o livro · US$29' : 'Already sure? Buy the book · US$29'}
           </a>
         </div>
         <p className="mt-4" style={{ fontSize: '0.8125rem', fontWeight: 300, color: inkSoft }}>
           {c.note}
         </p>
         <p className="mt-1" style={{ fontSize: '0.7rem', fontWeight: 300, color: inkSoft }}>
-          {loc === 'pt-BR' ? 'Cobrado em USD + impostos, via Gumroad' : 'Charged in USD + tax, via Gumroad'}
+          {loc === 'pt-BR'
+            ? 'Cobrado em USD + impostos, via Gumroad. Seu banco ou meio de pagamento pode aplicar taxas de conversão de moeda.'
+            : 'Charged in USD + tax, via Gumroad. Your bank or payment provider may apply currency conversion fees.'}
         </p>
       </section>
 
@@ -566,13 +602,17 @@ export const DopLanding = ({ loc }: { loc: Loc }) => {
                 aria-hidden="true"
                 style={{ position: 'absolute', left: '-5000px', height: 0, width: 0, opacity: 0 }}
               />
+              <label htmlFor="dop-landing-email" className="sr-only">
+                Email
+              </label>
               <input
+                id="dop-landing-email"
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@domain.com"
-                className="w-full py-3.5 px-5 mb-3 focus:outline-none"
+                className="w-full py-3.5 px-5 mb-3"
                 style={{
                   backgroundColor: 'transparent',
                   color: ink,
@@ -582,12 +622,16 @@ export const DopLanding = ({ loc }: { loc: Loc }) => {
                   fontWeight: 300,
                 }}
               />
+              <label htmlFor="dop-landing-first-name" className="sr-only">
+                {c.firstName}
+              </label>
               <input
+                id="dop-landing-first-name"
                 type="text"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder={c.firstName}
-                className="w-full py-3.5 px-5 mb-5 focus:outline-none"
+                className="w-full py-3.5 px-5 mb-5"
                 style={{
                   backgroundColor: 'transparent',
                   color: ink,
@@ -809,10 +853,12 @@ const BuyBookCTA = ({ loc }: { loc: Loc }) => {
           textTransform: 'uppercase',
         }}
       >
-        {loc === 'pt-BR' ? 'Comprar o livro · €29' : 'Buy the book · €29'}
+        {loc === 'pt-BR' ? 'Comprar o livro · US$29' : 'Buy the book · US$29'}
       </a>
       <p className="mt-3" style={{ fontSize: '0.7rem', fontWeight: 300, color: inkSoft }}>
-        {loc === 'pt-BR' ? 'Cobrado em USD + impostos, via Gumroad' : 'Charged in USD + tax, via Gumroad'}
+        {loc === 'pt-BR'
+          ? 'Cobrado em USD + impostos, via Gumroad. Seu banco ou meio de pagamento pode aplicar taxas de conversão de moeda.'
+          : 'Charged in USD + tax, via Gumroad. Your bank or payment provider may apply currency conversion fees.'}
       </p>
     </div>
   );
@@ -935,7 +981,7 @@ export const DopRead = ({ loc }: { loc: Loc }) => {
               {ch.closing}
             </p>
             <p style={{ ...label, fontSize: '0.65rem' }}>
-              Gessika Olivieri · LolaLab
+              Gessika Olivieri Ramos · LolaLab Atelier
             </p>
             <p className="mt-2" style={{ fontSize: '0.7rem', fontWeight: 300, color: inkSoft }}>
               © 2026 LolaLab · Direction Over Prompt
@@ -1225,13 +1271,17 @@ export const DopSpanish = () => {
               aria-hidden="true"
               style={{ position: 'absolute', left: '-5000px', height: 0, width: 0, opacity: 0 }}
             />
+            <label htmlFor="dop-es-email" className="sr-only">
+              Email
+            </label>
             <input
+              id="dop-es-email"
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="tu@dominio.com"
-              className="w-full py-3.5 px-5 mb-3 focus:outline-none"
+              className="w-full py-3.5 px-5 mb-3"
               style={{
                 backgroundColor: 'transparent',
                 color: ink,
@@ -1241,12 +1291,16 @@ export const DopSpanish = () => {
                 fontWeight: 300,
               }}
             />
+            <label htmlFor="dop-es-first-name" className="sr-only">
+              Nombre
+            </label>
             <input
+              id="dop-es-first-name"
               type="text"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder="Nombre (opcional)"
-              className="w-full py-3.5 px-5 mb-5 focus:outline-none"
+              className="w-full py-3.5 px-5 mb-5"
               style={{
                 backgroundColor: 'transparent',
                 color: ink,
