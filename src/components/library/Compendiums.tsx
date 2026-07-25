@@ -87,15 +87,19 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 py-12 md:py-16"
+    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 py-12 md:py-16 items-start"
       style={{ borderBottom: '1px solid #1C1C1E' }}>
-      {/* Capa (5/12) — arte final quando existir, senão placeholder tipográfico */}
+      {/* Capa (5/12) — arte final quando existir, senão placeholder tipográfico.
+          items-start no grid pai (24/jul) — sem isso, a coluna da capa
+          esticava pra acompanhar a altura da coluna de texto (que cresceu
+          com a caixa do Listening Edition), e a imagem sem object-fit
+          deformava junto. */}
       <div className="md:col-span-5 flex justify-center md:justify-start">
         {book.cover ? (
           <img
             src={book.cover}
             alt={`${book.title} — cover`}
-            className="w-[240px] h-auto"
+            className="w-[240px] h-auto flex-shrink-0"
             style={{
               border: '1px solid hsl(var(--background) / 0.25)',
               boxShadow: '14px 18px 40px rgba(0,0,0,0.55)',
