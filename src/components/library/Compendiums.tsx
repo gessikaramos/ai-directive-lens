@@ -255,12 +255,17 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
               Charged in USD + tax, via Gumroad. Your bank or payment provider may apply currency
               conversion fees.
             </p>
-            <details
-              className="mt-5 max-w-[540px]"
-              style={{ borderTop: '1px solid #1C1C1E', paddingTop: '1rem' }}
+            {/* Sempre visível (24/jul: era <details> fechado por padrão, lá
+                embaixo da página — a Gé não achou). Mesmo PDF do Gumroad,
+                não é um arquivo de áudio separado — deixado explícito logo
+                na primeira linha pra não dar a entender que existe um
+                segundo download. */}
+            <div
+              className="mt-5 max-w-[540px] p-5"
+              style={{ border: '1px solid hsl(var(--bronze-soft) / 0.3)', borderRadius: '4px' }}
             >
-              <summary
-                className="cursor-pointer"
+              <p
+                className="mb-3"
                 style={{
                   fontSize: '0.7rem',
                   fontWeight: 500,
@@ -270,15 +275,15 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
                 }}
               >
                 Book + ElevenReader Listening Edition
-              </summary>
-              <div className="mt-4" style={{ fontSize: '0.8125rem', fontWeight: 300, lineHeight: 1.7, color: 'hsl(var(--cool-gray-secondary))' }}>
+              </p>
+              <div style={{ fontSize: '0.8125rem', fontWeight: 300, lineHeight: 1.7, color: 'hsl(var(--cool-gray-secondary))' }}>
                 <p className="mb-4">
-                  Prefer to listen? Your purchase includes a listening-ready digital edition.
-                  Download the file, import it into the free ElevenReader app, and listen with the
-                  voice you prefer.
+                  Prefer to listen? The same digital edition you download from Gumroad above is
+                  listening-ready — there is no separate audio file to download. Import that PDF
+                  into the free ElevenReader app and listen with the voice you prefer.
                 </p>
                 <ol className="mb-4 pl-5" style={{ listStyleType: 'decimal' }}>
-                  <li className="mb-1">Download the digital edition after purchase.</li>
+                  <li className="mb-1">Download the digital edition after purchase (from Gumroad).</li>
                   <li className="mb-1">Install ElevenReader on iOS or Android.</li>
                   <li className="mb-1">Open the app and choose &quot;Import File&quot;.</li>
                   <li className="mb-1">Select the downloaded PDF or EPUB.</li>
@@ -290,7 +295,7 @@ const BookCard = ({ book }: { book: (typeof BOOKS)[number] }) => {
                   provide a professionally mastered MP3 audiobook in this edition.
                 </p>
               </div>
-            </details>
+            </div>
             </>
           )}
           </>
