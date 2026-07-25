@@ -1,0 +1,11 @@
+# Cloudflare Pages cache headers.
+# 24/jul: fixes production bug where a stale cached index.html referenced
+# JS chunk filenames deleted by a newer deploy ("Failed to fetch dynamically
+# imported module" -> blank page). Hashed asset filenames change on every
+# build, so they're safe to cache forever; index.html must always be
+# revalidated so it never points at deleted chunks.
+/index.html
+  Cache-Control: no-cache, must-revalidate
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
