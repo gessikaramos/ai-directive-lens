@@ -93,7 +93,7 @@ export default function HeroSection() {
             leitura grátis. Liga a manchete (que já ecoa a tese do livro) ao
             livro real e nomeado, antes mesmo do H1. */}
         <Link
-          to="/library/direction-over-prompt"
+          to="/library"
           className="inline-flex items-center gap-2 mb-6 transition-opacity duration-300 hover:opacity-80"
         >
           <span
@@ -168,7 +168,7 @@ export default function HeroSection() {
             {t('hero.cta.buy', lang)}
           </a>
           <Link
-            to="/library/direction-over-prompt"
+            to="/library"
             className="px-9 py-3.5 transition-all duration-300 hover:opacity-85 hover:scale-[1.02]"
             style={{
               backgroundColor: 'transparent',

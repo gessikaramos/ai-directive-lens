@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -62,7 +62,10 @@ const App = () => (
             {/* Legacy: página se chamava "Signal" antes de 13/jul, alias pra não quebrar links antigos */}
             <Route path="/signal" element={<Collective />} />
             {/* Direction Over Prompt · Wave DOP CH01 */}
-            <Route path="/library/direction-over-prompt" element={<DopNeutral />} />
+            {/* 24/jul: página neutra removida do funil (redirect direto pra
+                /library, que já tem os botões PT/EN inline desde 1e36fb5).
+                DopNeutral fica importado sem rota, pra rollback fácil. */}
+            <Route path="/library/direction-over-prompt" element={<Navigate to="/library" replace />} />
             <Route path="/pt-br/library/direction-over-prompt" element={<DopLanding loc="pt-BR" />} />
             <Route path="/en/library/direction-over-prompt" element={<DopLanding loc="en" />} />
             <Route path="/pt-br/library/direction-over-prompt/read" element={<DopRead loc="pt-BR" />} />

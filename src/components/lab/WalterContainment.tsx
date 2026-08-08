@@ -107,7 +107,7 @@ const WalterContainment = () => {
         <br />
 
         <Link
-          to="/library/direction-over-prompt"
+          to="/library"
           className="lolab-stage inline-flex items-center gap-2 hover:gap-3 transition-all duration-500"
           style={{ ...label, ...stage(5) }}
           onClick={() => track('walter_to_dop_click')}

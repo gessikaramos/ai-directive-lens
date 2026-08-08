@@ -165,7 +165,7 @@ const LibraryContent = () => {
                   substitui o antigo texto "PT-BR · EN" + página intermediária
                   /library/direction-over-prompt. Cada botão vai direto pra
                   landing por idioma (com formulário de leitor). */}
-              <div className="flex flex-wrap gap-4 mb-4">
+              <div id="reading-edition" className="flex flex-wrap gap-4 mb-4">
                 {(() => {
                   const suggestPt = (typeof navigator !== 'undefined' && (navigator.language || '').toLowerCase().startsWith('pt'));
                   const options: Array<[string, string, string, boolean]> = [
@@ -253,7 +253,7 @@ const LibraryContent = () => {
 
             <div className="mt-12 text-center">
               <Link
-                to="/library/direction-over-prompt"
+                to="#reading-edition"
                 onClick={() => track('dop_library_featured_click')}
                 className="inline-block px-10 py-4 transition-all duration-300 hover:opacity-85"
                 style={{
@@ -344,7 +344,7 @@ const LibraryContent = () => {
               Read the chapter. Join the readers shaping what comes next.
             </p>
             <Link
-              to="/library/direction-over-prompt"
+              to="#reading-edition"
               onClick={() => track('dop_library_closing_click')}
               className="inline-block px-9 py-3.5 transition-all duration-300 hover:opacity-85"
               style={{

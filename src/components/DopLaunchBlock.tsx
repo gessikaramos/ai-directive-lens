@@ -109,7 +109,7 @@ export default function DopLaunchBlock() {
               {pt ? 'Comprar o livro · US$29' : 'Buy the book · US$29'}
             </a>
             <Link
-              to="/library/direction-over-prompt"
+              to="/library"
               onClick={() => track('dop_home_block_click')}
               className="inline-block px-9 py-3.5 transition-all duration-300 hover:opacity-85"
               style={{
