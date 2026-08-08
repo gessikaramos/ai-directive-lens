@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import AudioPlayer from './AudioPlayer';
 import Lightbox from './Lightbox';
 
@@ -6,12 +7,15 @@ import Lightbox from './Lightbox';
 function ModalCTA() {
   return (
     <div className="flex flex-wrap gap-4 mt-12 pt-8 border-t border-border">
-      <a
-        href="#contact"
+      {/* 8/ago: era href="#contact" apontando pra uma ContactSection que não
+          é usada em lugar nenhum do site (link morto). /contact é a rota
+          real. */}
+      <Link
+        to="/contact"
         className="px-6 py-3 text-sm font-medium text-primary-foreground bg-foreground hover:bg-foreground/90 transition-colors"
       >
         Start a Project
-      </a>
+      </Link>
       <a
         href="https://www.upwork.com/freelancers/lolalabstudio?mp_source=share"
         target="_blank"

@@ -19,6 +19,7 @@ const Library = lazy(() => import("./pages/Library.tsx"));
 const LibraryAccess = lazy(() => import("./pages/LibraryAccess.tsx"));
 const LibraryThankYou = lazy(() => import("./pages/LibraryThankYou.tsx"));
 const Studio = lazy(() => import("./pages/Studio.tsx"));
+const StudioSkill = lazy(() => import("./pages/StudioSkill.tsx"));
 const About = lazy(() => import("./pages/About.tsx"));
 const Contact = lazy(() => import("./pages/Contact.tsx"));
 const Legal = lazy(() => import("./pages/Legal.tsx"));
@@ -80,6 +81,7 @@ const App = () => (
             <Route path="/library/access" element={<LibraryAccess />} />
             <Route path="/library/thank-you" element={<LibraryThankYou />} />
             <Route path="/studio" element={<Studio />} />
+            <Route path="/studio/:slug" element={<StudioSkill />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/legal" element={<Legal />} />

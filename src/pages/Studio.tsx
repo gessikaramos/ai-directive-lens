@@ -10,6 +10,7 @@
  *
  * Atmosfera canon Mary: mesa de luz de diretor de criação · dark ink.
  */
+import { useEffect } from 'react';
 import { useLanguage, LanguageProvider } from '@/hooks/use-language';
 import { useSeo } from '@/hooks/use-seo';
 import { t } from '@/lib/i18n';
@@ -19,7 +20,8 @@ import PageHero from '@/components/PageHero';
 import FooterLine from '@/components/FooterLine';
 import SelectedWork from '@/components/CreativePipelineSection';
 import StudioSkills from '@/components/studio/StudioSkills';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { STUDIO_SKILL_SLUGS } from '@/data/studioSkills';
 
 // SERVICES genérico removido (canon Gé 10/jul): o What We Make agora usa
 // as 8 disciplinas ricas do site antigo (StudioSkills + SkillModalContents).
@@ -39,12 +41,30 @@ const labelStyle = {
 
 const StudioContent = () => {
   const { lang } = useLanguage();
+  const navigate = useNavigate();
 
   useSeo({
     title: 'Studio · LolaLab',
     description: 'We make the work that moves culture.',
     path: '/studio',
   });
+
+  // 8/ago: migra links legados /studio#skill/<slug> (CVs, LinkedIn, share
+  // antigos) pra rota dedicada /studio/<slug>. useNavigate + replace, não
+  // history.replaceState puro — mutar só a URL não trocaria a árvore de
+  // componentes renderizada (StudioSkills continuaria de pé, com o modal
+  // tentando abrir), deixando a barra de endereço e a tela dizendo coisas
+  // diferentes.
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.startsWith('#skill/')) {
+      const slug = hash.slice('#skill/'.length);
+      if (STUDIO_SKILL_SLUGS.includes(slug)) {
+        navigate(`/studio/${slug}`, { replace: true });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

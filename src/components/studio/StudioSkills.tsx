@@ -6,68 +6,9 @@
  */
 import { useEffect, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import SkillModal from '@/components/SkillModal';
-import {
-  CharacterContent,
-  FashionContent,
-  CostumeContent,
-  VideoContent,
-  UGCContent,
-  SoundtrackContent,
-  VoiceDesignContent,
-  AtelierContent,
-} from '@/components/SkillModalContents';
-
-const SKILLS: Array<{ slug: string; title: string; desc: string; content: JSX.Element }> = [
-  {
-    slug: 'characters',
-    title: 'AI Character Design',
-    desc: 'Persistent people and avatars — identical across scenes, seasons and campaigns.',
-    content: <CharacterContent />,
-  },
-  {
-    slug: 'fashion',
-    title: 'AI Fashion Direction',
-    desc: 'Editorial fashion film and imagery with real garment logic and styling intent.',
-    content: <FashionContent />,
-  },
-  {
-    slug: 'costume',
-    title: 'Costume & Styling',
-    desc: 'Wardrobe systems for synthetic casts — texture, drape and era done properly.',
-    content: <CostumeContent />,
-  },
-  {
-    slug: 'video',
-    title: 'Video Production',
-    desc: 'Cinematic films from script to grade. AI-native pipeline, human direction.',
-    content: <VideoContent />,
-  },
-  {
-    slug: 'ugc',
-    title: 'UGC',
-    desc: 'Native-feeling creator content at brand quality — without the creator logistics.',
-    content: <UGCContent />,
-  },
-  {
-    slug: 'soundtrack',
-    title: 'Soundtrack',
-    desc: 'Original music directed for the film — not licensed, not library.',
-    content: <SoundtrackContent />,
-  },
-  {
-    slug: 'voice',
-    title: 'Voice Design',
-    desc: 'Voices cast, cloned and directed like actors.',
-    content: <VoiceDesignContent />,
-  },
-  {
-    slug: 'atelier',
-    title: 'Atelier',
-    desc: 'Custom creative systems built for one brand only. The bespoke tier.',
-    content: <AtelierContent />,
-  },
-];
+import { STUDIO_SKILLS as SKILLS } from '@/data/studioSkills';
 
 const StudioSkills = () => {
   const [active, setActive] = useState<string | null>(null);
@@ -116,15 +57,24 @@ const StudioSkills = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2" style={{ borderTop: '1px solid #1C1C1E' }}>
           {SKILLS.map((s, i) => (
-            <button
+            <div
               key={s.slug}
-              type="button"
-              onClick={() => setActive(s.slug)}
-              className="group text-left relative p-8 md:p-12 min-h-[220px] flex flex-col justify-between transition-colors duration-500 cursor-pointer"
+              className="relative"
               style={{
                 borderBottom: '1px solid #1C1C1E',
                 borderRight: i % 2 === 0 ? '1px solid #1C1C1E' : 'none',
               }}
+            >
+            {/* Link real (sr-only) pra rota dedicada /studio/<slug> — 8/ago,
+                pro Google/crawlers acharem a página mesmo com o clique
+                principal continuando a abrir o modal, não navegar. */}
+            <Link to={`/studio/${s.slug}`} className="sr-only">
+              {s.title} — full page
+            </Link>
+            <button
+              type="button"
+              onClick={() => setActive(s.slug)}
+              className="group text-left relative w-full h-full p-8 md:p-12 min-h-[220px] flex flex-col justify-between transition-colors duration-500 cursor-pointer"
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = '#121214'; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent'; }}
               aria-label={`Open ${s.title} details`}
@@ -176,12 +126,28 @@ const StudioSkills = () => {
                 </p>
               </div>
             </button>
+            </div>
           ))}
         </div>
       </div>
 
       <SkillModal open={active !== null} skillSlug={active ?? ''} onClose={() => setActive(null)}>
-        {current ? current.content : null}
+        {current && (
+          <>
+            {current.content}
+            {/* 8/ago: link pra página dedicada — SkillModal.tsx fica intocado,
+                então isso entra aqui via children mesmo. */}
+            <div className="mt-8 pt-8 border-t border-border text-right">
+              <Link
+                to={`/studio/${current.slug}`}
+                className="inline-flex items-center gap-2 hover:gap-3 transition-all duration-300 text-sm font-medium"
+                style={{ color: 'hsl(28 35% 45%)' }}
+              >
+                Open full page <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </>
+        )}
       </SkillModal>
     </section>
   );
