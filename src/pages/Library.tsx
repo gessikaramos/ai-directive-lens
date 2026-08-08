@@ -155,13 +155,50 @@ const LibraryContent = () => {
                 When Everything Can Be Made
               </p>
               <p
-                className="mb-8 max-w-[54ch]"
+                className="mb-10 max-w-[54ch]"
                 style={{ fontSize: '1rem', fontWeight: 300, lineHeight: 1.7, color: inkSoft }}
               >
                 An essay by Gessika Olivieri Ramos on direction, judgment and authorship in the
                 age of synthetic media.
               </p>
-              <span style={{ ...bronzeLabel, fontSize: '0.6rem' }}>PT-BR · EN</span>
+              {/* Reading edition picker — inline na Library (canon Gé 8/ago):
+                  substitui o antigo texto "PT-BR · EN" + página intermediária
+                  /library/direction-over-prompt. Cada botão vai direto pra
+                  landing por idioma (com formulário de leitor). */}
+              <div className="flex flex-wrap gap-4 mb-4">
+                {(() => {
+                  const suggestPt = (typeof navigator !== 'undefined' && (navigator.language || '').toLowerCase().startsWith('pt'));
+                  const options: Array<[string, string, string, boolean]> = [
+                    ['pt-BR', 'Português', '/pt-br/library/direction-over-prompt', suggestPt],
+                    ['en',    'English',   '/en/library/direction-over-prompt',    !suggestPt],
+                  ];
+                  return options.map(([loc, name, path, suggested]) => (
+                    <Link
+                      key={loc}
+                      to={path}
+                      onClick={() => track('dop_language_selected', { locale: loc, source: 'library_hero' })}
+                      className="px-9 py-3.5 transition-all duration-300 hover:opacity-85"
+                      style={{
+                        backgroundColor: suggested ? ink : 'transparent',
+                        color: suggested ? 'hsl(var(--background))' : ink,
+                        border: `1px solid ${ink}`,
+                        borderRadius: '9999px',
+                        fontSize: '0.75rem',
+                        fontWeight: 500,
+                        letterSpacing: '0.18em',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      {name}
+                    </Link>
+                  ));
+                })()}
+              </div>
+              <p style={{ fontSize: '0.8125rem', fontWeight: 300, color: inkSoft }}>
+                {(typeof navigator !== 'undefined' && (navigator.language || '').toLowerCase().startsWith('pt'))
+                  ? 'Seu navegador sugere português — a escolha é sua.'
+                  : 'Your browser suggests English — the choice is yours.'}
+              </p>
             </div>
           </div>
 
