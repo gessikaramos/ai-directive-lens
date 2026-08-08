@@ -57,16 +57,10 @@ const SelectedHighlight = () => {
         </span>
       </div>
 
-      {/* 1 · MasterChef · destaque Studio grande · player inline canon (não sai do site)
-          8/ago: id="masterchef" pra permitir deep-link direto ao case
-          (usado no CV externo, LinkedIn, etc.). data-lenis-prevent no
-          wrapper e no iframe pra Lenis (smooth scroll) parar de interceptar
-          hover events dentro do player Vimeo — bug relatado: controles somem
-          ao começar o vídeo e não voltam com mouseover. */}
-      <div id="masterchef" className="px-6 md:px-12 max-w-[1200px] mx-auto scroll-mt-24">
+      {/* 1 · MasterChef · destaque Studio grande · player inline canon (não sai do site) */}
+      <div className="px-6 md:px-12 max-w-[1200px] mx-auto">
         <div
           className="relative w-full mb-8 md:mb-10 overflow-hidden"
-          data-lenis-prevent
           style={{ aspectRatio: '16 / 9', backgroundColor: 'hsl(var(--ink-soft))' }}
         >
           {videoPlaying ? (
@@ -76,7 +70,6 @@ const SelectedHighlight = () => {
               title="MasterChef · LolaLab AI-Directed Cinematic Film"
               allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
               allowFullScreen
-              data-lenis-prevent
               style={{ border: 0 }}
             />
           ) : (
