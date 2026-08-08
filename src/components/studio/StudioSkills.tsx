@@ -4,7 +4,7 @@
  * Character, Fashion, Costume, Video, UGC, Soundtrack (player), Voice, Atelier.
  * Tiles dark editoriais; o modal abre em cream — inversão A24 proposital.
  */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import SkillModal from '@/components/SkillModal';
 import {
@@ -72,6 +72,31 @@ const SKILLS: Array<{ slug: string; title: string; desc: string; content: JSX.El
 const StudioSkills = () => {
   const [active, setActive] = useState<string | null>(null);
   const current = SKILLS.find((s) => s.slug === active);
+
+  /**
+   * Deep-link support (canon Cláudio 8/ago):
+   *   - Ao carregar /studio#skill/<slug>, abrir modal correspondente automaticamente.
+   *   - Reagir a hashchange (browser back/forward, links internos, share).
+   *   - Slug inválido/vazio ⇒ fecha o modal.
+   * O modal já faz pushState('#skill/<slug>') ao abrir e replaceState(limpo) ao
+   * fechar; este efeito completa o loop lendo o hash inicial e ouvindo mudanças.
+   */
+  useEffect(() => {
+    const openFromHash = () => {
+      const h = window.location.hash;
+      if (h.startsWith('#skill/')) {
+        const slug = h.slice('#skill/'.length);
+        if (SKILLS.some((s) => s.slug === slug)) {
+          setActive(slug);
+          return;
+        }
+      }
+      setActive(null);
+    };
+    openFromHash();
+    window.addEventListener('hashchange', openFromHash);
+    return () => window.removeEventListener('hashchange', openFromHash);
+  }, []);
 
   return (
     <section className="px-6 md:px-12 py-20 md:py-28">
