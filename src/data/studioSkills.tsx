@@ -20,7 +20,15 @@ export interface StudioSkill {
   title: string;
   desc: string;
   content: JSX.Element;
+  // Imagem pra og:image/twitter:image da página dedicada (8/ago) — só as
+  // disciplinas com galeria de imagem estática têm uma candidata razoável;
+  // as outras caem no og-image.jpg default do site (useSeo já resolve isso).
+  // Precisa ser URL absoluta: useSeo() só prefixa com o domínio o DEFAULT_IMAGE
+  // dele mesmo, não a `image` custom passada por quem chama.
+  ogImage?: string;
 }
+
+const SITE_URL = 'https://www.lolalabstudio.com';
 
 export const STUDIO_SKILLS: StudioSkill[] = [
   {
@@ -28,18 +36,21 @@ export const STUDIO_SKILLS: StudioSkill[] = [
     title: 'AI Character Design',
     desc: 'Persistent people and avatars — identical across scenes, seasons and campaigns.',
     content: <CharacterContent />,
+    ogImage: `${SITE_URL}/images/kris/casting/kris-closeup.jpg`,
   },
   {
     slug: 'fashion',
     title: 'AI Fashion Direction',
     desc: 'Editorial fashion film and imagery with real garment logic and styling intent.',
     content: <FashionContent />,
+    ogImage: `${SITE_URL}/images/hollis/campaign/campaign-06.jpg`,
   },
   {
     slug: 'costume',
     title: 'Costume & Styling',
     desc: 'Wardrobe systems for synthetic casts — texture, drape and era done properly.',
     content: <CostumeContent />,
+    ogImage: `${SITE_URL}/images/kris/still/kris-still-04.jpg`,
   },
   {
     slug: 'video',
@@ -52,6 +63,7 @@ export const STUDIO_SKILLS: StudioSkill[] = [
     title: 'UGC',
     desc: 'Native-feeling creator content at brand quality — without the creator logistics.',
     content: <UGCContent />,
+    ogImage: `${SITE_URL}/images/hollis/outras/hollis-outras-08.jpg`,
   },
   {
     slug: 'soundtrack',

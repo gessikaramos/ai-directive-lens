@@ -39,6 +39,7 @@ const StudioSkillContent = ({ slug }: { slug: string }) => {
     title: skill ? `${skill.title} · Studio · LolaLab` : 'Studio · LolaLab',
     description: skill ? skill.desc : 'LolaLab Studio.',
     path: `/studio/${slug}`,
+    image: skill?.ogImage,
   });
 
   if (!skill) return <NotFound />;
