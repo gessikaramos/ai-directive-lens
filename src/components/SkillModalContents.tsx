@@ -411,6 +411,19 @@ export function VoiceDesignContent() {
         <AudioPlayer src="/audio/voz-gessika.mp3" label="Voice Clone" />
       </div>
 
+      <SectionLabel>Client Work · Lingomastery</SectionLabel>
+      <p className="text-soft max-w-2xl mb-4 leading-relaxed">
+        Multi-narrator voice production for Lingomastery (2026). Three character-differentiated
+        narrators across two cloned voice models — 25 tracks delivered in a four-day sprint with
+        full change-log.
+      </p>
+      <div className="space-y-3">
+        <AudioPlayer
+          src="/audio/lingomastery/lingomastery-multi-narrator-showcase.mp3"
+          label="Lingomastery — Multi-Narrator Showcase (Climate Debate, 3 Experts)"
+        />
+      </div>
+
       <ModalCTA />
     </div>
   );
