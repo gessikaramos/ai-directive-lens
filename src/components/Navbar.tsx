@@ -3,6 +3,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
 import { getLenis } from '@/hooks/use-lenis';
+import { useNavTheme } from '@/hooks/use-nav-theme';
 import { Menu, X, Globe } from 'lucide-react';
 import { track } from '@/lib/analytics';
 
@@ -111,7 +112,15 @@ export default function Navbar() {
   // Wave 3.0-B · canon Apple/Mary Fred+Gé 7/jul
   // Home é toda dark ink · navbar cream sempre · backdrop ink sutil quando scrolled
   // Wave DOP: rotas cream/paper (Library) usam tom ink para não sumir no fundo.
-  const lightRoute = location.pathname.startsWith('/library');
+  //
+  // 8/ago hotfix: /studio/:slug (fundo creme também) ficava de fora desse
+  // prefixo e os links saíam invisíveis (mesma cor do fundo). Página nova
+  // opta explicitamente por modo claro via NavThemeProvider — ver
+  // use-nav-theme.tsx — sem precisar ensinar a Navbar sobre mais uma rota
+  // por prefixo. Rotas que não usam o provider caem no heurístico de antes.
+  const navTheme = useNavTheme();
+  const routeIsLight = location.pathname.startsWith('/library');
+  const lightRoute = navTheme ? navTheme === 'light' : routeIsLight;
   const navTextColor = lightRoute && !scrolled ? 'hsl(30 14% 15%)' : 'hsl(var(--background))';
   // logo-horizontal.svg é nativamente BRANCO: em rota cream vira ink com
   // brightness(0); em rota dark/scrolled permanece branco (item 10 · dark→paper).

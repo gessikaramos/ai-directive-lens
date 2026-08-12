@@ -16,6 +16,7 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { LanguageProvider } from '@/hooks/use-language';
 import { useSeo } from '@/hooks/use-seo';
+import { NavThemeProvider } from '@/hooks/use-nav-theme';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import FooterLine from '@/components/FooterLine';
@@ -45,7 +46,7 @@ const StudioSkillContent = ({ slug }: { slug: string }) => {
   if (!skill) return <NotFound />;
 
   return (
-    <>
+    <NavThemeProvider theme="light">
       <Navbar />
       <main style={{ backgroundColor: 'hsl(var(--background))', color: ink }}>
         {/* Hero editorial · fundo creme, mesma inversão do modal */}
@@ -101,7 +102,7 @@ const StudioSkillContent = ({ slug }: { slug: string }) => {
         <FooterLine />
       </main>
       <Footer />
-    </>
+    </NavThemeProvider>
   );
 };
 
