@@ -1,32 +1,27 @@
 /**
- * SelectedHighlight · Wave 3.2 · canon Cláudio+Mary Fred+Gé 8/jul
+ * SelectedHighlight · Wave 3.2 → Wave "Studio Homepage" (10/set, brief Gé)
  *
- * Reformulação canon Gé QA:
- *   - Home tem 3 DESTAQUES: 1 Studio (MasterChef) · 1 Lab (HIT) · 1 Library (Director's Prompt)
- *   - Pietra SAI da Home (fica no Studio · StudioExperiments · tile Hollis Pietra)
- *   - MasterChef categoria: INVESTOR PITCH · CINEMATIC PRODUCT REEL
- *   - MasterChef · destaque grande com poster + play Apple + Read Volume in Library CTA
- *   - HIT · card médio texto + Enter the Lab CTA
- *   - Director's Prompt · card médio texto + Read Volume CTA
- *   - Base dark ink coeso · aproximar internamente label→title→sub→CTA
+ * 10/set: a seção tinha 1 bloco só (MasterChef). O visitante-alvo agora é
+ * quem decide se bota o estúdio no roster de uma agência — "the work is the
+ * argument" — então a seção ganha 2 blocos de prova ANTES do filme:
+ * consistência de personagem (galeria de /studio/characters) e wardrobe
+ * (galeria de /studio/costume). Mesmas imagens, mesmos dados
+ * (src/data/galleryImages.ts) — não duplica arquivo, só reusa.
  *
- * Canon travado:
- *   - Retailgrid Oy não aparece publicamente
- *   - Walter interno = pública = HIT (nome do assistente WalterLab não é dado)
- *   - Director's Prompt = Vol 01 available (canon Library)
+ * MasterChef (Block C) mantém a cópia exatamente como estava; o único fix
+ * é o poster, que carregava um frame preto com o card de abertura ("A Film
+ * · Lola Lab.") em vez de um still real — ver public/images/masterchef-poster.jpg.
  */
 import { useState } from 'react';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
+import { CHARACTER_GALLERY_BUST, COSTUME_STYLING_GALLERY, GalleryImage } from '@/data/galleryImages';
 
-// Swap 24/jul: YouTube placeholder → link Vimeo confirmado pela Gé
-// (https://vimeo.com/1212739896). Poster hardcoded a partir do oEmbed da
-// Vimeo (i.vimeocdn.com não tem endpoint estático previsível por ID como o
-// img.youtube.com/vi/{id} usado antes — precisa da URL real do thumbnail).
 const MASTERCHEF_VIMEO_ID = '1212739896';
-const MASTERCHEF_POSTER =
-  'https://i.vimeocdn.com/video/2183250292-c757a84d4c294bc2f9b4d609ab1d10c71de2485ae9af912ef3a0f6777cd9ff7c-d_1920x1080?region=us';
-// title=0&byline=0&portrait=0 = equivalente Vimeo do modestbranding; dnt=1 desliga tracking
+// 10/set: era o thumbnail auto-selecionado pela Vimeo — caía bem no frame de
+// abertura (preto, título "A Film · Lola Lab." quase invisível). Trocado por
+// um still real do próprio filme (extraído do player em ~6s, cena "Selection").
+const MASTERCHEF_POSTER = '/images/masterchef-poster.jpg';
 const MASTERCHEF_EMBED = `https://player.vimeo.com/video/${MASTERCHEF_VIMEO_ID}?autoplay=1&title=0&byline=0&portrait=0&dnt=1&playsinline=1`;
 
 const labelStyle = {
@@ -36,6 +31,47 @@ const labelStyle = {
   letterSpacing: '0.24em',
   textTransform: 'uppercase' as const,
 };
+
+const blockHeadlineStyle = {
+  fontSize: 'clamp(1.5rem, 2.6vw, 2.25rem)',
+  fontWeight: 400,
+  letterSpacing: '-0.02em',
+  lineHeight: 1.15,
+  color: '#FFFFFF',
+};
+
+const blockBodyStyle = {
+  fontSize: '0.9375rem',
+  fontWeight: 300,
+  lineHeight: 1.65,
+  color: 'hsl(var(--cool-gray-tertiary))',
+};
+
+/* ─── Full-width proof grid (Block A · Block B) ───
+   Mesma linguagem visual da ModalGallery (aspect-[3/4], object-cover) só
+   que grande e full-width — aqui a imagem É o argumento, não uma prévia de
+   modal. Primeiras 2 de cada grid eager+high priority (mesma lógica de
+   perf da ModalGallery), resto lazy. */
+const ProofGrid = ({ images, cols }: { images: GalleryImage[]; cols: string }) => (
+  <div className={`grid grid-cols-2 ${cols} gap-2 md:gap-3`}>
+    {images.map((img, i) => (
+      <div key={img.src} className="overflow-hidden" style={{ backgroundColor: 'hsl(var(--ink-soft))' }}>
+        <picture>
+          <source srcSet={img.webp} type="image/webp" />
+          <img
+            src={img.src}
+            width={img.width}
+            height={img.height}
+            alt=""
+            loading={i < 2 ? 'eager' : 'lazy'}
+            {...(i < 2 ? { fetchpriority: 'high' } : {})}
+            className="w-full aspect-[3/4] object-cover object-top"
+          />
+        </picture>
+      </div>
+    ))}
+  </div>
+);
 
 const SelectedHighlight = () => {
   const { lang } = useLanguage();
@@ -48,16 +84,46 @@ const SelectedHighlight = () => {
       className="pt-20 md:pt-24 pb-20 md:pb-24"
       style={{ backgroundColor: 'hsl(var(--ink))' }}
     >
-      {/* Composition Pass: indicação curta → IMAGEM como primeira grande
-          revelação → título → contexto. A prova responde à promessa do hero
-          sem um vale de espaço morto no meio. */}
-      <div className="px-6 md:px-12 max-w-[1200px] mx-auto mb-10 md:mb-12">
+      <div className="px-6 md:px-12 max-w-[1200px] mx-auto mb-14 md:mb-16">
         <span className="block" style={labelStyle}>
           {t('selected.label', lang)}
         </span>
       </div>
 
-      {/* 1 · MasterChef · destaque Studio grande · player inline canon (não sai do site) */}
+      {/* Block A · Consistency — character sheet from /studio/characters */}
+      <div className="px-6 md:px-12 max-w-[1200px] mx-auto mb-20 md:mb-28">
+        <div className="max-w-[720px] mb-8 md:mb-10">
+          <span className="block mb-3" style={{ ...labelStyle, letterSpacing: '0.2em', fontSize: '0.65rem' }}>
+            Consistency
+          </span>
+          <h3 className="mb-4" style={blockHeadlineStyle}>
+            One person. Five angles. Generated, not photographed.
+          </h3>
+          <p style={blockBodyStyle}>
+            The same face, the same light, the same wardrobe — held across every frame. This is
+            the problem most AI production cannot solve.
+          </p>
+        </div>
+        <ProofGrid images={CHARACTER_GALLERY_BUST} cols="md:grid-cols-5" />
+      </div>
+
+      {/* Block B · Wardrobe — styling detail from /studio/costume */}
+      <div className="px-6 md:px-12 max-w-[1200px] mx-auto mb-20 md:mb-28">
+        <div className="max-w-[720px] mb-8 md:mb-10">
+          <span className="block mb-3" style={{ ...labelStyle, letterSpacing: '0.2em', fontSize: '0.65rem' }}>
+            Wardrobe
+          </span>
+          <h3 className="mb-4" style={blockHeadlineStyle}>
+            Real garment logic, on a cast that does not exist.
+          </h3>
+          <p style={blockBodyStyle}>
+            Fabric, drape and detail carried shot to shot — down to the cufflink.
+          </p>
+        </div>
+        <ProofGrid images={COSTUME_STYLING_GALLERY} cols="md:grid-cols-4" />
+      </div>
+
+      {/* Block C · Film · MasterChef — destaque Studio grande, cópia inalterada */}
       <div className="px-6 md:px-12 max-w-[1200px] mx-auto">
         <div
           className="relative w-full mb-8 md:mb-10 overflow-hidden"
@@ -85,6 +151,8 @@ const SelectedHighlight = () => {
                 src={MASTERCHEF_POSTER}
                 alt="MasterChef · LolaLab AI-Directed Cinematic Film"
                 loading="lazy"
+                width={1920}
+                height={1080}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
               />
               <div
@@ -149,15 +217,8 @@ const SelectedHighlight = () => {
           >
             {t('selected.masterchef.desc', lang)}
           </p>
-          {/* "Read Volume in the Library" REMOVIDO (canon Gé 10/jul): apontava
-              para o Vol 01 do Restricted Archive, descontinuado hoje. O case
-              fala por si — a ação é o play. */}
         </div>
       </div>
-
-      {/* Cards HIT + Director's Prompt REMOVIDOS (canon Gé 10/jul): Selected Work
-          é só trabalho — MasterChef expandido, estilo Vision Pro. Walter e Library
-          já têm hero, nav e Choose your path. */}
     </section>
   );
 };

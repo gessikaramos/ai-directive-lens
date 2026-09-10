@@ -11,10 +11,16 @@ import { AuthProvider } from "./hooks/use-auth";
 // 834KB sem divisão nenhuma — toda visita, mesmo em /legal, baixava o JS de
 // todas as páginas). Cada import() vira seu próprio chunk carregado sob
 // demanda; as 6 rotas DOP compartilham um chunk só (mesmo módulo de origem).
+// 10/set: Index.tsx era a home (venda do livro) — vira a página /book.
+// Nome do arquivo ficou desatualizado de propósito (evitar renomear +
+// tocar em import só por causa da rota; é o mesmo componente de sempre).
 const Index = lazy(() => import("./pages/Index.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const HunterRedirect = lazy(() => import("./pages/HunterRedirect.tsx"));
-const Lab = lazy(() => import("./pages/Lab.tsx"));
+// /lab (Walter) tirado do site inteiro (10/set, brief Gé) — rota removida,
+// import removido. Os arquivos de src/components/lab/**, Lab.tsx e Auth.tsx
+// (gate de login do Walter) continuam intocados no repo pra não mexer na
+// arquitetura do produto Walter, só ficam inalcançáveis por navegação.
 const Library = lazy(() => import("./pages/Library.tsx"));
 const LibraryAccess = lazy(() => import("./pages/LibraryAccess.tsx"));
 const LibraryThankYou = lazy(() => import("./pages/LibraryThankYou.tsx"));
@@ -56,8 +62,13 @@ const App = () => (
           <ScrollToTop />
           <Suspense fallback={null}>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/lab" element={<Lab />} />
+            {/* 10/set (brief Gé): a home vira o Studio — argumento pro
+                visitante-agência. A venda do livro (Index de sempre)
+                muda de endereço pra /book, só linkada no footer. /studio
+                continua existindo como alias pra não quebrar links já
+                distribuídos (LinkedIn, CVs, etc.). */}
+            <Route path="/" element={<Studio />} />
+            <Route path="/book" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/collective" element={<Collective />} />
             {/* Legacy: página se chamava "Signal" antes de 13/jul, alias pra não quebrar links antigos */}

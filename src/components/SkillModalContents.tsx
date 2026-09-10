@@ -2,6 +2,14 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AudioPlayer from './AudioPlayer';
 import Lightbox from './Lightbox';
+import {
+  GalleryImage,
+  CHARACTER_GALLERY,
+  COSTUME_STYLING_GALLERY,
+  COSTUME_ECOMMERCE_GALLERY,
+  FASHION_GALLERY,
+  UGC_GALLERY,
+} from '@/data/galleryImages';
 
 /* ─── CTA buttons ─── */
 function ModalCTA() {
@@ -32,9 +40,17 @@ function SectionLabel({ children }: { children: string }) {
   return <h4 className="label-style mb-4 mt-10">{children}</h4>;
 }
 
-/* ─── Reusable gallery ─── */
+/* ─── Reusable gallery ───
+   10/set perf fix: página renderizava em branco por 2-3s em 4G — todas as
+   imagens (inclusive as 2 primeiras, já visíveis ao abrir) saíam com
+   loading="lazy" e sem placeholder, então nada aparecia até a rede
+   terminar de baixar JPGs de vários MB cada. Agora: as 2 primeiras carregam
+   eager+high priority (são a primeira coisa que a pessoa vê), o resto
+   continua lazy; <picture> serve WebP (via cwebp, ~50% menor) com o JPG
+   original como fallback; width/height reais evitam layout shift; e um
+   fundo neutro (--ink-soft) ocupa o espaço da imagem antes dela carregar. */
 interface ModalGalleryProps {
-  images: string[];
+  images: GalleryImage[];
   title: string;
   onOpen: (src: string) => void;
 }
@@ -43,14 +59,25 @@ const ModalGallery = ({ images, title, onOpen }: ModalGalleryProps) => (
   <div className="mt-10">
     <h4 className="label-style mb-4">{title}</h4>
     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-      {images.map((src) => (
-        <div key={src} className="overflow-hidden cursor-pointer" onClick={() => onOpen(src)}>
-          <img
-            src={src}
-            alt=""
-            loading="lazy"
-            className="w-full aspect-[9/16] object-cover object-top transition-transform duration-500 hover:scale-[1.03]"
-          />
+      {images.map((img, i) => (
+        <div
+          key={img.src}
+          className="overflow-hidden cursor-pointer"
+          style={{ backgroundColor: 'hsl(var(--ink-soft))' }}
+          onClick={() => onOpen(img.src)}
+        >
+          <picture>
+            <source srcSet={img.webp} type="image/webp" />
+            <img
+              src={img.src}
+              width={img.width}
+              height={img.height}
+              alt=""
+              loading={i < 2 ? 'eager' : 'lazy'}
+              {...(i < 2 ? { fetchpriority: 'high' } : {})}
+              className="w-full aspect-[9/16] object-cover object-top transition-transform duration-500 hover:scale-[1.03]"
+            />
+          </picture>
         </div>
       ))}
     </div>
@@ -123,13 +150,7 @@ export function CharacterContent() {
 
       <ModalGallery
         title="CHARACTER GALLERY"
-        images={[
-          '/images/kris/casting/kris-closeup.jpg',
-          '/images/kris/casting/kris-frente.jpg',
-          '/images/kris/casting/kris-costas.jpg',
-          '/images/kris/casting/kris-perfil.jpg',
-          '/images/kris/casting/kris-34.jpg',
-        ]}
+        images={CHARACTER_GALLERY}
         onOpen={(src) => setLightbox(src)}
       />
 
@@ -181,26 +202,7 @@ export function FashionContent() {
         <li>• Art direction for brand campaigns</li>
       </ul>
 
-      <ModalGallery
-        title="EDITORIAL GALLERY"
-        images={[
-          '/images/hollis/campaign/campaign-06.jpg',
-          '/images/hollis/campaign/campaign-01.jpg',
-          '/images/hollis/campaign/campaign-02.jpg',
-          '/images/hollis/campaign/campaign-03.jpg',
-          '/images/hollis/campaign/campaign-04.jpg',
-          '/images/hollis/campaign/campaign-05.jpg',
-          '/images/hollis/campaign/campaign-07.jpg',
-          '/images/hollis/campaign/campaign-08.jpg',
-          '/images/hollis/campaign/campaign-09.jpg',
-          '/images/hollis/campaign/campaign-10.jpg',
-          '/images/hollis/campaign/campaign-11.jpg',
-          '/images/hollis/campaign/campaign-12.jpg',
-          '/images/hollis/campaign/campaign-13.jpg',
-          '/images/hollis/campaign/campaign-bottega.jpg',
-        ]}
-        onOpen={setLightbox}
-      />
+      <ModalGallery title="EDITORIAL GALLERY" images={FASHION_GALLERY} onOpen={setLightbox} />
 
       <ModalCTA />
 
@@ -239,30 +241,9 @@ export function CostumeContent() {
         <li>• Seasonal collection development</li>
       </ul>
 
-      <ModalGallery
-        title="STYLING GALLERY"
-        images={[
-          '/images/kris/still/kris-still-04.jpg',
-          '/images/kris/still/kris-still-01.jpg',
-          '/images/kris/still/kris-still-02.jpg',
-          '/images/kris/still/kris-still-03.jpg',
-        ]}
-        onOpen={setLightbox}
-      />
+      <ModalGallery title="STYLING GALLERY" images={COSTUME_STYLING_GALLERY} onOpen={setLightbox} />
 
-      <ModalGallery
-        title="E-COMMERCE LOOKS"
-        images={[
-          '/images/hollis/look1/look1-01.jpg',
-          '/images/hollis/look1/look1-02.jpg',
-          '/images/hollis/look1/look1-03.jpg',
-          '/images/hollis/look1/look1-04.jpg',
-          '/images/hollis/look1/look1-05.jpg',
-          '/images/hollis/look1/look1-06.jpg',
-          '/images/hollis/look1/look1-07.jpg',
-        ]}
-        onOpen={setLightbox}
-      />
+      <ModalGallery title="E-COMMERCE LOOKS" images={COSTUME_ECOMMERCE_GALLERY} onOpen={setLightbox} />
 
       <ModalCTA />
 
@@ -347,14 +328,7 @@ export function UGCContent() {
         <VideoThumbnail src="/videos/ugc-smartwatch.mp4" onOpen={(src) => setLightbox({ src, type: 'video' })} />
       </div>
 
-      <ModalGallery
-        title="SOCIAL CONTENT"
-        images={[
-          '/images/hollis/outras/hollis-outras-08.jpg',
-          '/images/hollis/outras/hollis-outras-09.jpg',
-        ]}
-        onOpen={(src) => setLightbox(src)}
-      />
+      <ModalGallery title="SOCIAL CONTENT" images={UGC_GALLERY} onOpen={(src) => setLightbox(src)} />
 
       <ModalCTA />
 

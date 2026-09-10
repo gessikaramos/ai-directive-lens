@@ -264,8 +264,8 @@ export const translations: Record<string, Record<Lang, string>> = {
     pt: 'Escreva ao estúdio.',
   },
   'contact.hero.sub': {
-    en: 'For collaborations, commissions and thoughtful questions.',
-    pt: 'Para colaborações, comissões e perguntas com intenção.',
+    en: 'For briefs, roster enquiries and production partnerships.',
+    pt: 'Para briefings, consultas de roster e parcerias de produção.',
   },
 };
 

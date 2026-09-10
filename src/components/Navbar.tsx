@@ -27,14 +27,13 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Wave 2.0 · canon-mestre navigation Fred+Gé 7/jul · Studio · Lab · Library · About · Contact
-  // Steve Jobs Lens: quero contratar → Studio · quero explorar ideia → Lab · quero aprender → Library
+  // 10/set (brief Gé): site vira single-purpose — um visitante decidindo se
+  // bota o estúdio no roster da agência. Nav reduzida a Studio · About ·
+  // Contact; Book/Walter/Library/Collective saem do menu principal (Book
+  // some pro footer, Walter sai do site inteiro, Library/Collective ficam
+  // só acessíveis por URL direta).
   const navLinks: NavItem[] = [
-    { key: 'nav.book', href: 'https://lola182.gumroad.com/l/ffaxv', type: 'external' },
     { key: 'nav.studio', href: '/studio', type: 'route' },
-    { key: 'nav.lab', href: '/lab', type: 'route' },
-    { key: 'nav.library', href: '/library', type: 'route' },
-    { key: 'nav.collective', href: '/collective', type: 'route' },
     { key: 'nav.about', href: '/about', type: 'route' },
     { key: 'nav.contact', href: '/contact', type: 'route' },
   ];
@@ -137,10 +136,15 @@ export default function Navbar() {
         }`}
         style={navBg}
       >
-        <div className="max-w-[1400px] mx-auto px-6 md:px-10 flex items-center justify-between">
+        {/* 10/set: gap-6 aqui é um piso mínimo entre logo e nav — antes só
+            justify-between segurava os dois, e sem nenhum espaço garantido
+            eles podiam se tocar ("LolaLab.BOOK") quando a largura disponível
+            ficava justa. flex-shrink-0 no logo evita ele encolher e mudar
+            de tamanho nesse aperto. */}
+        <div className="max-w-[1400px] mx-auto px-6 md:px-10 flex items-center justify-between gap-6">
           <Link
             to="/"
-            className="block"
+            className="block flex-shrink-0"
             onClick={() => {
               const lenis = getLenis();
               if (lenis) lenis.scrollTo(0);

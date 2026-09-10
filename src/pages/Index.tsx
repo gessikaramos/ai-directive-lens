@@ -1,5 +1,10 @@
 /**
- * Home · v3.3 · Wave 2.1 · canon Fred+Gé 7/jul
+ * Book page (was Home) · v3.3 · Wave 2.1 · canon Fred+Gé 7/jul
+ *
+ * 10/set: deixou de ser a home — /  agora renderiza Studio.tsx (brief Gé,
+ * site vira single-purpose pitch pra agência). Este componente passou a
+ * viver em /book, só linkado a partir do footer. Nome do arquivo
+ * (Index.tsx) ficou como estava de propósito — ver App.tsx.
  *
  * Estrutura canon Wave 2.1:
  *   Hero → Statement → Choose your path → Selected Work → Manifesto Slice → About preview → Contact preview → Footer line
@@ -26,7 +31,6 @@ import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
 import DopLaunchBlock from '@/components/DopLaunchBlock';
 import StatementSection from '@/components/StatementSection';
-import ChoosePathSection from '@/components/ChoosePathSection';
 import ManifestoSlice from '@/components/ManifestoSlice';
 import HomeAboutPreview from '@/components/HomeAboutPreview';
 import HomeContactPreview from '@/components/HomeContactPreview';
@@ -40,7 +44,7 @@ const IndexContent = () => {
     title: 'LolaLab — Human intention, made visible. · Direction Over Prompt',
     description:
       'LolaLab is a creative direction studio and editorial system for deciding what deserves to exist when AI makes production abundant.',
-    path: '/',
+    path: '/book',
   });
 
   return (
@@ -53,7 +57,9 @@ const IndexContent = () => {
             → caminhos da casa. A tese prepara; o capítulo responde. */}
         <StatementSection />
         <DopLaunchBlock />
-        <ChoosePathSection />
+        {/* ChoosePathSection removida (10/set, brief Gé): oferecia só Studio·
+            Lab·Library — Lab não pode ser linkado de lugar nenhum do site, e
+            um card sozinho (Studio, já no nav) não justificava a seção. */}
         {/* Selected Work (MasterChef) MIGRADO para /studio (canon Gé 10/jul):
             o destaque de case pertence à casa do Studio, não à home. */}
         <ManifestoSlice />

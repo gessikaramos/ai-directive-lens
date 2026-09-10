@@ -9,6 +9,7 @@
  *   - Aparece em TODAS as páginas (canon Gé)
  */
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '@/hooks/use-language';
 import { t } from '@/lib/i18n';
 import { supabase } from '@/integrations/supabase/client';
@@ -141,9 +142,25 @@ export default function Footer({ hideNewsletter = false }: { hideNewsletter?: bo
             <img
               src="/images/logos/logo-horizontal.svg"
               alt="LolaLab"
-              className="h-8 md:h-9"
+              className="h-8 md:h-9 mb-5"
               style={{ opacity: 0.95, width: 'auto' }}
             />
+            {/* 10/set (brief Gé): livro sai do nav principal e da home, mas
+                fica vivo em /book — único link daqui pra lá é este, discreto. */}
+            <Link
+              to="/book"
+              className="inline-block transition-colors duration-500"
+              style={{
+                color: 'hsl(var(--cool-gray-secondary))',
+                fontSize: '0.75rem',
+                fontWeight: 400,
+                fontStyle: 'italic',
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#FFFFFF'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'hsl(var(--cool-gray-secondary))'; }}
+            >
+              Direction Over Prompt — the book →
+            </Link>
           </div>
 
           {/* Coluna 2 · Social links */}
