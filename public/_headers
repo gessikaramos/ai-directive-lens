@@ -21,3 +21,12 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
   Vary: Accept-Encoding
+
+# 13/nov: /queens/ é um export estático standalone (não faz parte do SPA
+# React) com um <video> novo. Content-Type explícito porque esse projeto já
+# foi mordido por asset binário caindo no fallback SPA e sendo servido como
+# text/html (ver round 2 acima) -- não deixar isso ao acaso aqui também.
+/queens/motion.mp4
+  Content-Type: video/mp4
+  Cache-Control: public, max-age=31536000, immutable
+  Vary: Accept-Encoding
